@@ -1,0 +1,200 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- Paquetes Básicos y de Idioma ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage[margin=2.5cm]{geometry} % Márgenes estandarizados
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs} % Para tablas con estilo profesional
+\usepackage{graphicx}
+\usepackage{hyperref} % Para hipervínculos internos y externos
+
+% --- Configuración de Hipervínculos ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Propuesta de Trabajo Profesional - ParkLink},
+}
+
+% --- Formato de Párrafos ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+% =========================================================================
+% INICIO DEL DOCUMENTO
+% =========================================================================
+\begin{document}
+
+% --- CARÁTULA ---
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\Large \textbf{UNIVERSIDAD DE BUENOS AIRES}} \\
+    {\large FACULTAD DE INGENIERÍA} \\
+    \vspace{0.4cm}
+    {\large 75.99 Trabajo Profesional de Ingeniería Informática} \\
+    
+    \vspace{2.5cm}
+    
+    {\Huge \textbf{Propuesta de Trabajo Profesional \\ \vspace{0.3cm} Anteproyecto}} \\
+    
+    \vspace{1.5cm}
+    
+    {\Large \textbf{Proyecto: ParkLink}} \\
+    \vspace{0.3cm}
+    {\large Sistema Integral de Mapeo, Gestión y Reserva de Cocheras Urbanas} \\
+    
+    \vspace{3cm}
+    
+    % Tabla de Integrantes centrada
+    \begin{tabular}{l l l}
+        \textbf{Alumno} & \textbf{Correo electrónico} & \textbf{Padrón} \\
+        \midrule
+        [Nombre Alumno 1] & [Email 1] & [Padrón 1] \\
+        [Nombre Alumno 2] & [Email 2] & [Padrón 2] \\
+    \end{tabular}
+    
+    \vspace{2cm}
+    
+    \begin{flushleft}
+        \textbf{Tutor:} [Nombre del Tutor] \\
+        \textbf{Jefe de Cátedra:} Mg. Ing. Carlos Fontela
+    \end{flushleft}
+    
+    \vfill
+    {\large Buenos Aires, \the\year}
+\end{titlepage}
+
+\newpage
+
+% --- RESUMEN Y PALABRAS CLAVE ---
+\section*{Resumen}
+El presente documento detalla la propuesta para el diseño, desarrollo e implementación de ParkLink, una plataforma digital integral orientada a mitigar la problemática del estacionamiento en grandes centros urbanos con alta densidad vehicular, tomando como escenario inicial la Ciudad Autónoma de Buenos Aires (CABA). El sistema centraliza la oferta de espacios disponibles mediante un esquema que conecta a conductores particulares con propietarios de cocheras infrautilizadas, comercios y playas de estacionamiento tradicionales. A través de módulos de mapeo georreferenciado, reservas manuales, autenticación y procesamiento de pagos seguros, el proyecto busca viabilizar un modelo de economía colaborativa eficiente. El plan contempla un alcance acotado y escalable para el Producto Mínimo Viable (MVP), excluyendo automatizaciones complejas de sensores IoT en su primera etapa para mitigar riesgos tecnológicos, y establece la metodología híbrida (Scrum/Kanban) bajo la cual se gestionará el ciclo de vida del desarrollo de software.
+
+\vspace{0.5cm}
+\textbf{Palabras clave:} estacionamiento urbano, mapeo georreferenciado, reserva de cocheras, economía colaborativa, movilidad sustentable, optimización de espacios, CABA.
+
+\newpage
+% --- ÍNDICE AUTOMÁTICO ---
+\tableofcontents
+\newpage
+
+% =========================================================================
+% DESARROLLO DEL ANTEPROYECTO
+% =========================================================================
+
+\section{Introducción}
+La congestión vehicular en las metrópolis modernas constituye uno de los desafíos más complejos para la planificación urbana y la movilidad sustentable. En entornos de alta densidad comercial y residencial como la Ciudad Autónoma de Buenos Aires (CABA), la búsqueda de estacionamiento consume tiempo crítico, incrementa la huella de carbono debido a la circulación ineficiente y agrava el estrés en la vía pública. Paralelamente, existe un inventario significativo de espacios de estacionamiento privados (cocheras residenciales o comerciales) que permanecen desocupados durante extensas franjas horarias.
+
+Para mitigar esta ineficiencia distributiva, este Trabajo Profesional propone el desarrollo de \textbf{ParkLink}. El proyecto surge tras un análisis de oportunidades en el mercado y la validación de necesidades cruzadas entre conductores que demandan agilidad y dueños de espacios que buscan monetizar su capacidad ociosa. El compromiso del equipo se cimenta en la resolución de una problemática de ingeniería con impacto económico, social y tecnológico directo, garantizando la viabilidad técnica mediante el uso de tecnologías de desarrollo modernas y escalables.
+
+
+\section{Estado del Arte y Mercado Potencial}
+El mercado de la asistencia al conductor y la gestión de estacionamiento cuenta con actores consolidados en sistemas de navegación (como Google Maps o Waze) y aplicaciones de estacionamiento medido municipal (Blinklay). Sin embargo, estas soluciones tienden a enfocarse en la visualización del tráfico en la vía pública o el cobro de tasas, dejando un vacío en la consolidación y reserva anticipada de espacios privados y comerciales integrados.
+
+A nivel de modelo de negocio y competidores directos o indirectos se identifican los siguientes escenarios:
+\begin{itemize}
+    \item \textbf{Estacionamiento libre y playas públicas:} Oferta inelástica, sujeta a disponibilidad inmediata y volatilidad de precios sin posibilidad de previsión.
+    \item \textbf{Sistemas medidos (Blinklay):} Acotados a espacios públicos en calle, sin reserva previa y limitados por regulaciones horarias rígidas.
+    \item \textbf{Plataformas de alquiler temporario tradicionales:} Orientadas a contratos mensuales o anuales, careciendo de la flexibilidad transaccional por horas o fracciones de tiempo que requiere un conductor dinámico.
+\end{itemize}
+
+
+\section{Problema Detectado}
+Se ha identificado una asimetría de información y una falta de infraestructura tecnológica común en el mercado de estacionamientos urbanos, que se desglosa en los siguientes puntos críticos:
+
+\begin{enumerate}
+    \item \textbf{Pérdida de tiempo y previsibilidad:} Los conductores particulares carecen de herramientas confiables para asegurar una plaza antes de arribar a su destino, lo que genera demoras operativas crónicas.
+    \item \textbf{Activos subutilizados:} Propietarios particulares de cocheras residenciales y comercios con espacios libres no disponen de un canal seguro y masivo para ofrecer sus lugares por períodos cortos.
+    \item \textbf{Complejidad transaccional:} La falta de un sistema unificado que integre mapeo en tiempo real, pasarelas de pago y validación de identidad desalienta la apertura de mercados colaborativos de estacionamiento.
+\end{enumerate}
+
+
+\section{Solución Propuesta}
+Se propone el desarrollo de una plataforma web y móvil integral que actúe como un ecosistema transaccional y de geolocalización. Para asegurar la factibilidad técnica y respetar las restricciones de recursos humanos y temporales de la carrera, el alcance del Producto Mínimo Viable (MVP) se estructurará de forma modular, priorizando la carga manual y la reserva programada.
+
+\subsection{División en Módulos de Trabajo}
+\begin{itemize}
+    \item \textbf{Módulo de Mapeo y Geolocalización:} Visualización de plazas disponibles sobre mapas digitales interactivos mediante la integración de APIs de cartografía.
+    \item \textbf{Módulo de Reserva Dinámica:} Motor lógico para la gestión de disponibilidad horaria y reservas manuales en tiempo real.
+    \item \textbf{Módulo de Autenticación y Seguridad:} Gestión de perfiles diferenciados para conductores (demandantes) y propietarios/playas (oferentes).
+    \item \textbf{Módulo de Pagos:} Integración con procesadores de pago y billeteras virtuales para la retención automática de comisiones y liquidación a proveedores.
+\end{itemize}
+
+\subsection{Nota sobre el Alcance}
+Si bien la visión a largo plazo contempla la integración de sensores IoT para la detección automática de ocupación física en tiempo real y componentes de Inteligencia Artificial descriptiva para predicción de demanda, se concluye que dichos elementos representan un riesgo de complejidad elevado para la fase inicial. Por lo tanto, se posponen como evoluciones futuras del sistema.
+
+
+\section{Evaluación Preliminar de Impacto Económico}
+Con el fin de validar la sostenibilidad financiera del proyecto, se ha desarrollado un modelo analítico preliminar basado en la densidad demográfica de CABA. Se asume un universo inicial de conductores y cocheras con una penetración gradual en el mercado bajo tres escenarios operativos durante el primer año.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Proyecciones Financieras Estimadas para el Año 1.}
+    \vspace{0.2cm}
+    \begin{tabular}{l c c r r}
+        \toprule
+        \textbf{Escenario de Mercado} & \textbf{\% Penetración} & \textbf{Reservas Diarias} & \textbf{Ingreso Mensual (ARS)} & \textbf{Ingreso Anual (ARS)} \\
+        \midrule
+        Conservador & 0.4\% & 900 & \$16.200.000 & \$194.400.000 \\
+        Intermedio  & 1.0\% & 2.160 & \$38.880.000 & \$466.560.000 \\
+        Optimista   & 2.0\% & 5.400 & \$97.200.000 & \$1.166.400.000 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:impacto_economico}
+\end{table}
+
+\textbf{Premisas del modelo económico:}
+\begin{itemize}
+    \item Valor promedio de cochera por hora en zonas urbanas: Entre \$2.000 y \$5.000 ARS.
+    \item Ticket promedio por reserva de estadía corta (2 a 3 horas): \$6.000 ARS.
+    \item Tasa de monetización de la plataforma (comisión por intermediación): 10\%, equivalente a un ingreso neto promedio de \$600 ARS por operación exitosa.
+\end{itemize}
+
+
+\section{Metodología}
+Para la gestión del ciclo de vida del desarrollo se adoptará un enfoque metodológico híbrido que combina prácticas de \textbf{Scrum} y \textbf{Kanban}, asegurando adaptabilidad ante cambios de requisitos e iteraciones rápidas sin perder la predictibilidad del alcance global.
+
+\subsection{Definición de Roles}
+\begin{itemize}
+    \item \textbf{Equipo de Alumnos:} Responsables directos de la arquitectura, codificación, aseguramiento de la calidad (QA), descubrimiento de requisitos, mitigación de riesgos y documentación técnica.
+    \item \textbf{Cuerpo de Tutores:} Actuarán como facilitadores y \textit{Stakeholders} clave, validando el incremento de valor al cierre de cada ciclo y asistiendo en la priorización del \textit{Product Backlog}.
+\end{itemize}
+
+\subsection{Dinámica de Trabajo}
+\begin{itemize}
+    \item \textbf{Sprints Bisemanales:} Ciclos fijos de desarrollo orientados a la entrega de módulos potencialmente desplegables.
+    \item \textbf{Sprint Planning y Estimación:} Planificación al inicio de cada sprint utilizando la técnica de \textit{Planning Poker} basada en la escala de Fibonacci para asignar puntos de historia de manera consensuada.
+    \item \textbf{Review y Retrospectiva:} Reuniones al cierre de cada iteración para demostrar las funcionalidades ante los tutores, recibir feedback y refinar los procesos internos del equipo.
+\end{itemize}
+
+
+\section{Experimentación y Validación}
+El plan de validación funcional se centrará en asegurar la consistencia y la disponibilidad transaccional del sistema ante operaciones concurrentes. Para ello se estructurarán criterios estrictos de aceptación:
+
+\begin{itemize}
+    \item \textbf{Definition of Ready (DoR):} Ninguna historia de usuario entrará al \textit{Sprint Backlog} sin poseer un título unívoco, estimación explícita en puntos de historia, validación previa con tutoría, formato estándar de rol-funcionalidad-objetivo, y criterios de aceptación definidos bajo sintaxis Gherkin (Dado/Cuando/Entonces).
+    \item \textbf{Pruebas de código y control de calidad:} Se implementará una estrategia de pruebas unitarias y de integración sobre los módulos críticos de reserva y pagos. La validación del sistema se complementará mediante simulaciones de carga para comprobar la actualización en tiempo real de los mapas de reservas manuales.
+\end{itemize}
+
+
+\section{Plan de Actividades}
+El desarrollo se segmentará temporalmente respetando las fases típicas de un proyecto de ingeniería. El cronograma maestro contempla las siguientes macro-actividades distribuidas a lo largo del período lectivo:
+
+\begin{enumerate}
+    \item \textbf{Fase de Investigación y Requisitos:} Refinamiento del target de usuarios (conductores vs. rentadores) y definición de requisitos funcionales y no funcionales.
+    \item \textbf{Fase de Diseño y Arquitectura:} Modelado de la base de datos (relacional/NoSQL), diseño de interfaces de usuario (\textit{Mockups}) y definición de contratos de API.
+    \item \textbf{Fase de Desarrollo del MVP:} Implementación secuencial de los módulos de autenticación, mapeo cartográfico, lógica de reservas manuales e integración de pasarela de pagos.
+    \item \textbf{Fase de Pruebas e Implementación:} Ejecución del plan de validación, corrección de defectos y despliegue inicial en entornos de pruebas controlados (\textit{Staging}).
+    \item \textbf{Fase de Cierre y Documentación:} Redacción del informe final, preparación de minutas y confección del manual de despliegue técnico.
+\end{enumerate}
+
+
+\section{Referencias}
+En esta sección se incluyen las referencias que principalmente se encuentran en la introducción y estado del arte. El formato requerido por la cátedra corresponde al estándar APA.
+
+\end{document}
