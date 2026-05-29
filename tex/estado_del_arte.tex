@@ -8,19 +8,104 @@ A su vez, la creciente digitalización de servicios y la consolidación de model
 
 En este escenario, ParkLink busca posicionarse como una plataforma capaz de integrar y centralizar distintos tipos de espacios de estacionamiento, permitiendo a conductores acceder a información unificada, realizar reservas anticipadas y gestionar pagos de manera digital y segura. El proyecto apunta especialmente a cubrir la falta de soluciones flexibles orientadas a reservas de corta duración y disponibilidad dinámica.
 
-A nivel de mercado y competencia, pueden identificarse distintos modelos existentes que presentan limitaciones parciales frente a la propuesta planteada:
+\subsection*{Análisis de competidores}
 
+A nivel de mercado y competencia, pueden identificarse distintos actores con propuestas parcialmente superponibles a ParkLink. A continuación se describen los principales, junto con sus ventajas y limitaciones frente a la propuesta planteada.
+
+\subsubsection*{Blinkay}
+
+Blinkay es la plataforma de estacionamiento medido más difundida en Argentina y el competidor directo más relevante en el contexto local. Permite a los conductores gestionar el pago del estacionamiento en la vía pública mediante una aplicación móvil, consultando disponibilidad y tiempo habilitado en zonas reguladas de CABA y otras ciudades.
+
+\textbf{Ventajas:}
 \begin{itemize}
-\item \textbf{Estacionamiento libre y playas públicas:} representan la alternativa más tradicional utilizada por conductores urbanos. Sin embargo, su disponibilidad depende completamente de la ocupación inmediata, generando incertidumbre, tiempos prolongados de búsqueda y una fuerte variabilidad de precios según la zona y el horario.
-
-
-\item \textbf{Sistemas de estacionamiento medido:} se encuentran limitados exclusivamente al uso de espacios públicos sobre la vía urbana. Generalmente no permiten reservas anticipadas y operan bajo restricciones horarias y regulatorias definidas por cada municipio.
-
-\item \textbf{Plataformas de alquiler de cocheras tradicionales:} suelen estar orientadas a contratos mensuales o de larga duración, priorizando usuarios permanentes por sobre necesidades temporales o transaccionales. Esto reduce considerablemente la flexibilidad para conductores que requieren estacionamiento únicamente por horas o períodos breves.
-
-\item \textbf{Aplicaciones de navegación y tráfico:} herramientas como sistemas GPS o plataformas de mapas colaborativos brindan información sobre tránsito y rutas, pero no ofrecen integración completa con reservas de estacionamiento privado ni mecanismos centralizados de contratación.
-
-
+    \item Marca consolidada y amplia adopción en CABA.
+    \item Integración con los sistemas municipales de estacionamiento medido.
+    \item Disponibilidad de información en tiempo real sobre zonas habilitadas y tiempo restante.
+    \item Experiencia de usuario simple y flujo de pago validado en el mercado local.
 \end{itemize}
 
-A partir de este análisis, se observa una oportunidad concreta para el desarrollo de una plataforma que combine geolocalización, reserva anticipada, gestión digital de pagos y utilización colaborativa de espacios subutilizados. De esta manera, ParkLink busca diferenciarse mediante un enfoque centrado en la flexibilidad, accesibilidad y optimización de recursos urbanos existentes, apuntando inicialmente a contextos urbanos de alta densidad como la Ciudad Autónoma de Buenos Aires.
+\textbf{Limitaciones frente a ParkLink:}
+\begin{itemize}
+    \item Opera exclusivamente sobre espacios públicos regulados; no contempla cocheras privadas ni estacionamientos comerciales.
+    \item No ofrece ningún mecanismo de reserva anticipada: el conductor debe encontrar lugar al llegar.
+    \item No existe integración con espacios subutilizados de terceros ni modelo de economía colaborativa.
+    \item Su modelo de negocio está atado a contratos municipales, limitando su escalabilidad al sector privado.
+\end{itemize}
+
+\subsubsection*{SpotHero y ParkWhiz (referencia internacional)}
+
+SpotHero y ParkWhiz son plataformas norteamericanas líderes en la reserva de estacionamiento urbano. Permiten a los conductores buscar, comparar precios y reservar espacios en cocheras comerciales con anticipación, con integración de pagos digitales y confirmación instantánea.
+
+\textbf{Ventajas:}
+\begin{itemize}
+    \item Modelo de reserva anticipada totalmente desarrollado y validado a gran escala.
+    \item Amplia cobertura en ciudades de alta densidad vehicular.
+    \item Integración con garages comerciales y manejo de inventario en tiempo real.
+    \item Experiencia de usuario consolidada con valoraciones, mapas y comparación de precios.
+\end{itemize}
+
+\textbf{Limitaciones frente a ParkLink:}
+\begin{itemize}
+    \item No operan en Argentina ni en América Latina; su infraestructura, relaciones comerciales y modelo legal están adaptados exclusivamente al mercado norteamericano.
+    \item Están orientados casi exclusivamente a playas y garages comerciales; no contemplan el alquiler colaborativo de cocheras privadas o residenciales.
+    \item Sus costos de entrada y estructura tecnológica no son replicables en mercados emergentes sin una adaptación sustancial.
+\end{itemize}
+
+\subsubsection*{EasyPark (referencia internacional)}
+
+EasyPark es una plataforma europea con presencia en más de 20 países que permite gestionar el pago del estacionamiento en zonas reguladas y, en algunos mercados, realizar reservas en garages privados. Opera principalmente bajo acuerdos con municipios y operadores de estacionamiento.
+
+\textbf{Ventajas:}
+\begin{itemize}
+    \item Cobertura geográfica amplia y modelo de integración con múltiples actores: municipios, operadores privados y usuarios finales.
+    \item Interfaz unificada que combina pago de estacionamiento en vía pública y reservas en garages privados en algunos mercados.
+    \item Historial operativo extenso que valida la viabilidad técnica y comercial del modelo.
+\end{itemize}
+
+\textbf{Limitaciones frente a ParkLink:}
+\begin{itemize}
+    \item No tiene presencia en Argentina ni planes documentados de expansión en la región.
+    \item Su modelo depende fuertemente de acuerdos institucionales con municipios, lo que eleva las barreras de entrada y ralentiza la adopción.
+    \item No contempla el segmento de propietarios particulares que deseen monetizar espacios ociosos de forma autónoma.
+\end{itemize}
+
+\subsubsection*{Aplicaciones de navegación y tráfico (Waze, Google Maps)}
+
+Herramientas como Waze y Google Maps incorporan, en distintos grados, información sobre disponibilidad aproximada de estacionamiento en determinadas zonas urbanas, integrando datos de proveedores externos o estimaciones basadas en patrones históricos.
+
+\textbf{Ventajas:}
+\begin{itemize}
+    \item Altísima penetración y familiaridad entre los usuarios de todo el mundo.
+    \item Información de tráfico en tiempo real con alto nivel de precisión.
+    \item En algunos mercados, permiten visualizar garages cercanos y redirigir la navegación hacia ellos.
+\end{itemize}
+
+\textbf{Limitaciones frente a ParkLink:}
+\begin{itemize}
+    \item No permiten realizar reservas de estacionamiento ni confirmar disponibilidad real antes de llegar al destino.
+    \item No integran mecanismos de pago ni gestión de la relación entre conductor y proveedor del espacio.
+    \item La información sobre disponibilidad de estacionamiento es estimativa y no refleja la oferta real de cocheras privadas disponibles.
+\end{itemize}
+
+\subsubsection*{Clasificados digitales (MercadoLibre, OLX)}
+
+Los portales de clasificados digitales son utilizados frecuentemente para publicar cocheras en alquiler mensual o por períodos fijos. Constituyen el canal más común para que propietarios privados ofrezcan sus espacios en Argentina.
+
+\textbf{Ventajas:}
+\begin{itemize}
+    \item Amplia base de usuarios y alta visibilidad para publicaciones de alquiler de cocheras.
+    \item Bajo costo de publicación para propietarios.
+    \item Familiaridad del público con la interfaz y el proceso de contacto entre partes.
+\end{itemize}
+
+\textbf{Limitaciones frente a ParkLink:}
+\begin{itemize}
+    \item No ofrecen reservas en tiempo real ni disponibilidad dinámica por horas; el modelo está orientado al alquiler mensual o de largo plazo.
+    \item No existe integración de pagos transaccionales ni verificación de identidad dentro de la plataforma.
+    \item La coordinación entre conductor y propietario es completamente manual, generando fricción y falta de confianza.
+    \item No incluyen funcionalidades de geolocalización, mapas interactivos ni gestión de disponibilidad horaria.
+\end{itemize}
+
+\subsection*{Síntesis comparativa}
+
+A partir del análisis anterior, se observa que ninguno de los actores existentes en el mercado argentino ofrece de forma integrada la combinación de geolocalización, reserva anticipada, gestión digital de pagos y aprovechamiento colaborativo de espacios privados subutilizados. Blinkay cubre el segmento público regulado sin reservas; los clasificados cubren el alquiler permanente sin transaccionalidad; las referencias internacionales validan el modelo pero no operan localmente. ParkLink busca cubrir precisamente ese espacio: una plataforma transaccional, flexible y colaborativa orientada al estacionamiento de corta duración en el mercado local.

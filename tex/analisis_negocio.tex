@@ -1,0 +1,134 @@
+\section{Análisis de Negocio}
+
+Con el objetivo de validar la viabilidad estratégica de ParkLink y establecer un marco claro para la toma de decisiones, se aplicaron dos herramientas de análisis de negocios ampliamente utilizadas en la industria: el modelo de las 5C's, que permite mapear el entorno competitivo y colaborativo del proyecto, y el esquema de las 4P's, que estructura la propuesta de valor desde una perspectiva de marketing y posicionamiento.
+
+\subsection{Análisis de las 5C's}
+
+\subsubsection*{Compañía (\textit{Company})}
+
+ParkLink es una plataforma web y móvil que actúa como marketplace transaccional de estacionamiento urbano. Su propuesta de valor central consiste en conectar a conductores que necesitan un lugar donde estacionar con propietarios de espacios ociosos o cocheras comerciales, facilitando la reserva anticipada, la gestión de disponibilidad y el pago digital en un único entorno unificado.
+
+La estructura del sistema se organiza en cuatro módulos de trabajo independientes (mapeo y geolocalización, reserva dinámica, autenticación y seguridad, y pagos), cuyo detalle técnico se desarrolla en la sección de Metodología. Este enfoque modular permite un desarrollo incremental alineado con los recursos disponibles del equipo.
+
+La detección automática de disponibilidad mediante sensores IoT y la integración con sistemas municipales de tránsito se identifican como evoluciones futuras fuera del alcance del MVP, dada la complejidad técnica y los recursos externos que requieren.
+
+El principal riesgo operativo del modelo es el problema del arranque en frío: para que la plataforma funcione, se necesitan simultáneamente propietarios que ofrezcan espacios y conductores que los demanden. La estrategia para mitigar esto consiste en lanzar en una zona geográfica acotada de CABA, donde sea posible generar masa crítica en ambos lados del mercado antes de escalar.
+
+\subsubsection*{Clientes (\textit{Customers})}
+
+ParkLink atiende a cuatro segmentos de usuarios con necesidades diferenciadas:
+
+\begin{enumerate}
+    \item \textbf{Conductores particulares:} representan el lado de la demanda. Su necesidad principal es encontrar un espacio disponible, con precio conocido de antemano, sin necesidad de circular en busca de lugar. Es el segmento más fácil de captar inicialmente porque comprende el valor del producto de forma inmediata.
+
+    \item \textbf{Propietarios de espacios privados:} personas con cocheras o entradas de garaje que permanecen vacías durante determinados períodos del día. Su motivación es generar ingresos pasivos a partir de un activo subutilizado, sin necesidad de gestión adicional.
+
+    \item \textbf{Playas y cocheras comerciales:} estacionamientos que buscan incrementar su tasa de ocupación mediante reservas anticipadas y captación de usuarios a través de un canal digital. Aportan mayor volumen de oferta y pueden acceder a herramientas de gestión de tarifas y disponibilidad.
+
+    \item \textbf{Flotas, empresas y conductores frecuentes:} repartidores, técnicos de campo, vehículos corporativos que necesitan previsibilidad en el estacionamiento. Representan un segmento con alta recurrencia y potencial para planes de suscripción mensual.
+\end{enumerate}
+
+Un quinto segmento de interés es el \textbf{municipio o actores públicos}, que podrían convertirse en clientes institucionales en una etapa posterior, una vez que la plataforma demuestre capacidad para gestionar datos de movilidad urbana a escala. Este segmento queda fuera del alcance del MVP por los largos procesos de licitación y los requisitos técnicos y legales que implica.
+
+En términos de modelo de cobro, el foco del MVP debe estar en el conductor como primer pagador (cargo por reserva) y en el propietario o cochera como segundo pagador (comisión por operación concretada), evitando cobrar al lado de la oferta antes de haber demostrado demanda.
+
+\subsubsection*{Competidores (\textit{Competitors})}
+
+El análisis detallado de los competidores —incluyendo sus ventajas y limitaciones frente a ParkLink— se desarrolla en la sección de Estado del Arte. A modo de síntesis, los actores relevantes son: el estacionamiento libre en la vía pública, los sistemas de estacionamiento medido (Blinkay), los navegadores con información de tráfico (Waze, Google Maps), los clasificados digitales (MercadoLibre, OLX) y las plataformas internacionales de referencia (SpotHero, EasyPark). Ninguno de los actores locales cubre de forma integral la intersección entre reserva anticipada, disponibilidad en tiempo real, pago digital y acceso a espacios privados que define la propuesta de ParkLink.
+
+\subsubsection*{Colaboradores (\textit{Collaborators})}
+
+Para operar correctamente, ParkLink requiere la participación de varios actores externos:
+
+\begin{itemize}
+    \item \textbf{Propietarios y administradores de cocheras:} su disposición a incorporarse a la plataforma define el tamaño de la oferta disponible.
+    \item \textbf{Administradores de edificios:} canal natural de acceso a propietarios de cocheras residenciales en zonas de alta densidad.
+    \item \textbf{Procesadores de pago y billeteras digitales:} MercadoPago u equivalentes, necesarios para gestionar cobros, comisiones y liquidaciones de forma automatizada.
+    \item \textbf{Proveedores de APIs de mapas:} Google Maps Platform u OpenStreetMap, fundamentales para el módulo de geolocalización y visualización.
+    \item \textbf{Municipalidades:} fuente de información sobre regulaciones, zonas de estacionamiento medido y potenciales alianzas a futuro.
+\end{itemize}
+
+\subsubsection*{Contexto (\textit{Context})}
+
+El entorno en el que ParkLink se desarrolla presenta condiciones favorables para su adopción:
+
+\begin{itemize}
+    \item \textbf{Social:} la población urbana ya utiliza con normalidad aplicaciones de mapas, reservas y pagos digitales. La adopción de plataformas tipo Airbnb o Uber estableció patrones de comportamiento compatibles con el modelo de ParkLink.
+    \item \textbf{Tecnológico:} la penetración de smartphones en Argentina supera el 80\%, y la conectividad móvil en zonas urbanas permite el uso fluido de aplicaciones con geolocalización en tiempo real.
+    \item \textbf{Económico:} en contextos de inflación, la monetización de activos ociosos como cocheras resulta especialmente atractiva para propietarios. Para conductores, conocer el precio exacto antes de llegar reduce la incertidumbre económica del traslado.
+    \item \textbf{Legal:} el uso de espacios privados como cocheras para alquiler temporal tiene respaldo en el Código Civil y Comercial, bajo la figura de la locación. El tratamiento de datos personales está regulado por la Ley 25.326 y la normativa de la AAIP, lo que implica requisitos de consentimiento, declaración de bases de datos y habilitación de mecanismos para el ejercicio de derechos de los titulares.
+    \item \textbf{Regulatorio:} las regulaciones municipales sobre estacionamiento medido y uso del espacio urbano varían por jurisdicción. En una etapa inicial, operar sobre espacios 100\% privados reduce la exposición regulatoria y simplifica el marco legal de la operación.
+\end{itemize}
+
+\subsection{Análisis de las 4P's}
+
+\subsubsection*{Producto (\textit{Product})}
+
+ParkLink es una aplicación móvil y plataforma web que permite encontrar, reservar y pagar espacios de estacionamiento en la Ciudad Autónoma de Buenos Aires.
+
+El sistema contempla tres experiencias de usuario diferenciadas:
+
+\begin{itemize}
+    \item \textbf{Conductor:} accede a un mapa interactivo con los espacios disponibles cercanos, visualiza el precio y el horario de disponibilidad de cada uno, realiza una reserva indicando la duración estimada, y llega directamente al espacio confirmado sin necesidad de circular en busca de lugar. El pago puede realizarse a través de la aplicación o en efectivo al llegar, según la preferencia del propietario.
+
+    \item \textbf{Propietario particular:} publica su cochera o espacio libre, define los horarios en que está disponible y el precio por hora, y recibe reservas de forma automática sin necesidad de intervención adicional por cada operación.
+
+    \item \textbf{Cochera comercial o playa de estacionamiento:} gestiona su capacidad disponible, establece tarifas diferenciadas por horario o tipo de vehículo, y recibe reservas anticipadas que le permiten optimizar la ocupación de sus instalaciones.
+\end{itemize}
+
+El diferencial competitivo central frente a los actores locales existentes es la combinación de reserva anticipada con confirmación de disponibilidad real, pago integrado y acceso a espacios privados. A diferencia de Blinkay, que informa sobre el estacionamiento medido pero no permite reservar; y a diferencia de los clasificados digitales, que facilitan alquileres mensuales pero no transacciones por horas, ParkLink resuelve el problema completo del conductor en una única interfaz.
+
+\subsubsection*{Precio (\textit{Price})}
+
+ParkLink no cobra a los propietarios por publicar sus espacios: el ingreso de la plataforma proviene exclusivamente de las transacciones exitosas. El modelo de comisiones se estructura de la siguiente forma:
+
+\begin{itemize}
+    \item \textbf{Comisión al propietario:} 10\% del valor de cada reserva concretada, retenido automáticamente en el momento del pago.
+    \item \textbf{Cargo de servicio al conductor:} 5\% adicional sobre el valor de la reserva, facturado al usuario como cargo de plataforma.
+\end{itemize}
+
+Este esquema garantiza que la publicación sea gratuita para los propietarios, eliminando barreras de entrada al lado de la oferta. Al mismo tiempo, alinea los incentivos de la plataforma con el éxito de cada operación: ParkLink solo genera ingresos cuando hay una transacción real. Este modelo es consistente con los utilizados por marketplaces de referencia internacional en el segmento de estacionamiento urbano, donde el cobro por operación es el estándar de la industria.
+
+Para etapas posteriores se contempla la posibilidad de incorporar planes de suscripción mensual para cocheras comerciales con alto volumen de reservas, servicios de visibilidad destacada en el mapa, y planes para flotas empresariales con tarifas negociadas y facturación centralizada.
+
+\subsubsection*{Plaza (\textit{Place})}
+
+La distribución de ParkLink es 100\% digital. El acceso a la plataforma se realiza a través de:
+
+\begin{itemize}
+    \item Aplicación móvil para iOS y Android.
+    \item Plataforma web accesible desde cualquier dispositivo con navegador.
+\end{itemize}
+
+La estrategia de lanzamiento contempla un despliegue geográfico progresivo:
+
+\begin{enumerate}
+    \item \textbf{MVP (año 1):} foco en uno o dos barrios de CABA con alta densidad vehicular y demanda de estacionamiento comprobada (por ejemplo, Palermo, Recoleta o el microcentro). El objetivo es generar masa crítica local antes de escalar.
+    \item \textbf{Mediano plazo (año 2):} expansión a toda la Ciudad Autónoma de Buenos Aires y primeros municipios del Gran Buenos Aires.
+    \item \textbf{Largo plazo:} expansión a otras ciudades argentinas de alta densidad (Córdoba, Rosario, Mendoza) y evaluación de mercados de América Latina.
+\end{enumerate}
+
+\subsubsection*{Promoción (\textit{Promotion})}
+
+La estrategia de adquisición de usuarios se diferencia según el segmento:
+
+\textbf{Para conductores (lado de la demanda):}
+\begin{itemize}
+    \item Campañas en Google Ads segmentadas por búsquedas relacionadas con estacionamiento en CABA.
+    \item Publicidad geolocalizada en Instagram y TikTok orientada a conductores en zonas de alta congestión.
+    \item Presencia en comunidades de conductores y grupos de autos en redes sociales.
+\end{itemize}
+
+\textbf{Para propietarios (lado de la oferta):}
+\begin{itemize}
+    \item Contacto directo con administradores de edificios de alta densidad en las zonas de lanzamiento.
+    \item Campañas en Facebook orientadas a propietarios de inmuebles en CABA.
+    \item Comunicación enfocada en el ingreso pasivo: ``tu cochera vacía puede generar ingresos mientras no la usás''.
+\end{itemize}
+
+\textbf{Estrategias de crecimiento orgánico:}
+\begin{itemize}
+    \item Programa de referidos entre propietarios: descuento en comisiones por cada nuevo espacio incorporado a través de una recomendación.
+    \item Período de comisión reducida para los primeros propietarios en cada nueva zona de expansión, como incentivo de adopción temprana.
+    \item Generación de contenido sobre movilidad urbana y estacionamiento en CABA, posicionando a ParkLink como referente del tema en redes sociales y medios digitales.
+\end{itemize}
