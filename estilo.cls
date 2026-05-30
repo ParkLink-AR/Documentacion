@@ -110,7 +110,7 @@
 	\begin{center}
     \begin{tabular}{c@{\hskip 1cm}c@{\hskip 1cm}c@{\hskip 1cm}c}
         \large{Thiago Baez} & \large{Santiago Domínguez} & \large{Facundo Luzzi} & \large{Santiago Varga} \\ \\
-        \large{110014} & \large{110010} & \large{110034} & \large{110034} \\
+        \large{110703} & \large{110010} & \large{105229} & \large{110561} \\
     \end{tabular}
     \end{center}        
     \end{center}
