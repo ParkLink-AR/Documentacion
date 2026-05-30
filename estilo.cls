@@ -106,7 +106,7 @@
 	\textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.4cm]    % Subtítulo materia
 	{ \huge \bfseries Anteproyecto Parklink}\\[0.3cm]      % Título
 	\andreasline \\[0.2cm]
-	{\large 28 de Mayo 2026 \\[0.4cm]} % Fecha
+	{\large 01 de Junio 2026 \\[0.4cm]} % Fecha
 	\begin{center}
     \begin{tabular}{c@{\hskip 1cm}c@{\hskip 1cm}c@{\hskip 1cm}c}
         \large{Thiago Baez} & \large{Santiago Domínguez} & \large{Facundo Luzzi} & \large{Santiago Varga} \\ \\
