@@ -100,18 +100,17 @@
 \renewcommand*{\maketitle}{
 \thispagestyle{firststyle}
 \begin{center}
-\includegraphics[width=7cm]{logo}
-\\[1cm]
-	\textsc{\Large Trabajo Práctico Profesional}\\           % Materia
-	\textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.4cm]    % Subtítulo materia
-	{ \huge \bfseries Anteproyecto Parklink}\\[0.3cm]      % Título
-	\andreasline \\[0.2cm]
-	{\large 01 de Junio 2026 \\[0.4cm]} % Fecha
-	\begin{center}
-    \begin{tabular}{c@{\hskip 1cm}c@{\hskip 1cm}c@{\hskip 1cm}c}
-        \large{Thiago Fernando Baez} & \large{Santiago Domínguez} & \large{Facundo Luzzi} & \large{Santiago Jorge Varga} \\ \\
-        \large{110703} & \large{110010} & \large{105229} & \large{110561} \\
-    \end{tabular}
-    \end{center}        
-    \end{center}
+    \includegraphics[width=7cm]{logo} \\[1cm]
+    \textsc{\Large Trabajo Práctico Profesional}\\[0.1cm] % Materia
+    \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.4cm] % Subtítulo materia
+    {\huge \bfseries Anteproyecto Parklink}\\[0.3cm]      % Título
+    \andreasline \\[0.2cm]
+    {\large 01 de Junio 2026}\\[0.8cm]                    % Fecha
+
+    % Tabla adaptada al ancho de la página para un centrado perfecto
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccc}
+        \large Thiago Fernando Baez & \large Santiago Domínguez & \large Facundo Luzzi & \large Santiago Jorge Varga \\ [0.2cm]
+        \large 110703               & \large 110010              & \large 105229         & \large 110561 \\
+    \end{tabular*}
+\end{center}
 }
