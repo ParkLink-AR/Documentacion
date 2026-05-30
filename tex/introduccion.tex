@@ -5,7 +5,7 @@ Paralelamente, existe una gran cantidad de espacios de estacionamiento privados 
 
 A partir de esta problemática surge ParkLink, una plataforma digital orientada a facilitar la conexión entre conductores que necesitan estacionamiento y propietarios de espacios disponibles que desean monetizar su capacidad ociosa. El objetivo principal del proyecto es centralizar la oferta de estacionamiento mediante una aplicación accesible y sencilla, permitiendo visualizar espacios disponibles en tiempo real, realizar reservas y gestionar pagos de forma segura.
 
-El proyecto se plantea inicialmente sobre un alcance acotado y escalable, priorizando el desarrollo de un Producto Mínimo Viable (MVP) que permita validar la utilidad y viabilidad del sistema en un entorno real. En esta primera etapa se busca desarrollar una solución funcional basada principalmente en reservas manuales y geolocalización, evitando incorporar tecnologías de automatización más complejas —como sensores IoT o sistemas inteligentes de detección vehicular— que podrían incrementar significativamente los costos y riesgos de implementación.
+El proyecto se plantea inicialmente sobre un alcance acotado y escalable, priorizando el desarrollo de un Producto Mínimo Viable (MVP) que permita validar la utilidad y viabilidad del sistema en un entorno real. En esta primera etapa se busca desarrollar una solución funcional basada principalmente en reservas manuales y geolocalización, evitando incorporar tecnologías de automatización más complejas —como sistemas inteligentes de detección y predicción vehicular— que podrían incrementar significativamente los costos y riesgos de implementación.
 
 Asimismo, ParkLink no solo busca brindar beneficios a los conductores, reduciendo tiempos de búsqueda y mejorando la experiencia de estacionamiento, sino también generar nuevas oportunidades económicas para propietarios de espacios subutilizados. De esta manera, el proyecto propone un modelo colaborativo que favorece una utilización más eficiente de la infraestructura urbana existente y contribuye al desarrollo de soluciones de movilidad más sostenibles para las grandes ciudades.
 
@@ -27,15 +27,15 @@ A fin de evaluar estratégicamente cada alternativa bajo un marco unificado, se 
 \begin{itemize}
     \item \textbf{ParkLink:}
     \begin{itemize}
-        \item \textit{Company:} Competencias sólidas en desarrollo ágil full-stack y consumo de servicios georreferenciados.
+        \item \textit{Company:} Aplicación y web app para reservar, alquilar y gestionar espacios públicos o privados disponibles para estacionamiento por la ciudad.
         \item \textit{Customers:} Conductores particulares urbanos y propietarios de plazas de estacionamiento subutilizadas.
         \item \textit{Competitors:} Aplicaciones de estacionamiento medido municipal, parkings tradicionales y la búsqueda errática en calle.
-        \item \textit{Collaborators:} Pasarelas de pago seguro, consorcios residenciales y administraciones locales.
-        \textit{Context:} Crecimiento exponencial del parque automotor en CABA, saturación de la vía pública y digitalización de micro-pagos.
+        \item \textit{Collaborators:} Consorcios residenciales, administraciones locales, tráfico urbano, mal manejo del sistema de estacionamiento medido.
+        \item \textit{Context:} Crecimiento exponencial del parque automotor en CABA, saturación de la vía pública y digitalización de micro-pagos.
     \end{itemize}
     \item \textbf{Prompt Coaching:}
     \begin{itemize}
-        \item \textit{Company:} Interés técnico en modelos de lenguaje (LLMs) pero con limitaciones operativas para realizar pruebas de volumen a gran escala.
+        \item \textit{Company:} Middleware que analiza la interacción entre un usuario y un agente de inteligencia artificial, y plantea mejoras para que el usuario pueda identificar cuáles son sus puntos débiles
         \item \textit{Customers:} Industrias de software (ej. Mercado Libre, Accenture), estudios jurídicos y agencias de marketing masivo.
         \item \textit{Competitors:} Generadores de prompts integrados, cursos de ingeniería de prompts y funciones nativas de optimización de los propios proveedores de LLMs.
         \item \textit{Collaborators:} Interfaces de desarrollo (VS Code, Cursor) y proveedores de modelos (OpenAI, Anthropic).
@@ -43,7 +43,7 @@ A fin de evaluar estratégicamente cada alternativa bajo un marco unificado, se 
     \end{itemize}
     \item \textbf{Consorcio360:}
     \begin{itemize}
-        \item \textit{Company:} Capacidad de desarrollo para arquitecturas SaaS multi-inquilino y tableros analíticos.
+        \item \textit{Company:} Plataforma digital SaaS (Software as a Service) orientada a la gestión de consorcios. Su objetivo es modernizar la administración tradicional mediante la digitalización de procesos y la incorporación de herramientas de análisis inteligente.
         \item \textit{Customers:} Administradores de consorcios tradicionales y prestadores de servicios de mantenimiento.
         \item \textit{Competitors:} Plataformas establecidas (ConsorcioAbierto, Octopus Proptech), planillas de Excel y redes informales de contacto.
         \item \textit{Collaborators:} Proveedores de infraestructura en la nube, procesadores de pago y profesionales matriculados (electricistas, plomeros).
@@ -51,7 +51,7 @@ A fin de evaluar estratégicamente cada alternativa bajo un marco unificado, se 
     \end{itemize}
     \item \textbf{VoxLedger:}
     \begin{itemize}
-        \item \textit{Company:} Experiencia en flujos de datos estructurados y consumo de APIs conversacionales.
+        \item \textit{Company:} Aplicación y chatbot (integrable con WhatsApp, Telegram o web app) que permite a los usuarios registrar pedidos, gastos, ingresos y stock mediante audios o mensajes de texto.
         \item \textit{Customers:} Emprendedores independientes, freelancers, trabajadores de oficios y comercios barriales informales.
         \item \textit{Competitors:} Anotaciones manuales en papel, notas de voz de WhatsApp sin estructurar y hojas de cálculo tradicionales.
         \item \textit{Collaborators:} Proveedores de modelos Speech-to-Text, redes de mensajería (WhatsApp, Telegram) y ecosistemas fintech.
@@ -69,7 +69,7 @@ Para los tres productos que superaron el filtro inicial, se modeló su estrategi
     \item \textbf{Price:} Esquema híbrido. Plan \textit{Freemium} con gestión básica. Plan \textit{Premium} escalonado según unidades funcionales (Ticket promedio estimado de \$40.000 ARS/mes por consorcio) más una comisión del 5\% por contrataciones en el marketplace.
     \item \textbf{Place:} Despliegue en CABA como mercado inicial, expandiéndose hacia el Gran Buenos Aires y los principales centros urbanos del país.
     \item \textbf{Promotion:} Venta directa a administradores mediante LinkedIn, pauta digital segmentada en Google Ads e informes mensuales de tendencias de costos por zona para generar autoridad de marca.
-    \item \textbf{Proyección Financiera (Año 1):} Con un universo nacional de 120.000 consorcios, el escenario medio estima alcanzar 600 consorcios activos, proyectando un ingreso combinado anual de \$396.000.000 ARS (\$288.000.000 ARS vía suscripción SaaS y \$108.000.000 ARS por comisiones del marketplace).
+    \item \textbf{Proyección Financiera (Año 1):} Con un universo nacional de 120.000 consorcios, el escenario medio estima alcanzar 600 consorcios activos, proyectando un ingreso combinado anual de \$282.857 USD (\$205.714 USD vía suscripción SaaS y \$77.143 USD por comisiones del marketplace).
 \end{itemize}
 
 \subsubsection{VoxLedger}
@@ -78,7 +78,7 @@ Para los tres productos que superaron el filtro inicial, se modeló su estrategi
     \item \textbf{Price:} Modelo \textit{Freemium}. Plan gratuito limitado en volumen de audios mensuales. Plan \textit{Premium} de \$8.000 ARS mensuales con almacenamiento histórico completo, múltiples dispositivos vinculados y reportes automáticos exportables.
     \item \textbf{Place:} Distribución digital global focalizada inicialmente en mercados hispanohablantes con altos índices de informalidad laboral (Argentina, México, Colombia y Perú).
     \item \textbf{Promotion:} Demostraciones dinámicas de flujo punta a punta (audio a gráfico) en formatos de video corto (YouTube Shorts, TikTok) y campañas orgánicas orientadas a comunidades de emprendedores.
-    \item \textbf{Proyección Financiera (Año 1):} Apuntando a una conversión conservadora del 8\% sobre una base estimada de 20.000 usuarios activos en el escenario medio (1.600 usuarios Premium), se proyecta un ingreso anual de \$153.600.000 ARS.
+    \item \textbf{Proyección Financiera (Año 1):} Apuntando a una conversión conservadora del 8\% sobre una base estimada de 20.000 usuarios activos en el escenario medio (1.600 usuarios Premium), se proyecta un ingreso anual de \$109.714 USD.
 \end{itemize}
 
 \subsubsection{ParkLink}
@@ -87,7 +87,7 @@ Para los tres productos que superaron el filtro inicial, se modeló su estrategi
     \item \textbf{Price:} Modelo transaccional puro: comisión del 10\% sobre el valor de cada reserva descontada al propietario del espacio, más un cargo de servicio del 5\% aplicado al conductor. Publicar un espacio es gratuito; ParkLink solo genera ingresos cuando hay una transacción exitosa.
     \item \textbf{Place:} Concentración absoluta inicial en los corredores de alta densidad vehicular y comercial de la Ciudad Autónoma de Buenos Aires (CABA).
     \item \textbf{Promotion:} Campañas digitales geocercadas dirigidas a conductores recurrentes, programas de referidos vecinales e incentivos para la captación temprana de oferentes residenciales.
-    \item \textbf{Proyección Financiera (Año 1):} Estimando un valor de reserva promedio de \$6.000 ARS por estadía corta (comisión neta de \$600 ARS), el escenario intermedio (1.0\% de penetración de mercado con 2.160 reservas diarias) proyecta una recaudación anual para la plataforma de \$466.560.000 ARS.
+    \item \textbf{Proyección Financiera (Año 1):} Estimando un valor de reserva promedio de \$6.000 ARS por estadía corta (comisión neta de \$600 ARS), el escenario intermedio (1.0\% de penetración de mercado con 2.160 reservas diarias) proyecta una recaudación anual para la plataforma de \$333.257 USD.
 \end{itemize}
 
 \subsection{Justificación de la Selección de ParkLink}
@@ -95,6 +95,6 @@ La selección unánime de \textbf{ParkLink} sobre \textit{Consorcio360} y \texti
 
 \begin{enumerate}
     \item \textbf{Autonomía del MVP e Integración Abierta:} A diferencia de \textit{Consorcio360}, cuya viabilidad comercial e implementación requiere romper barreras culturales de administración sumamente rígidas y procesos de toma de decisión lentos en asambleas de copropietarios, ParkLink funciona bajo un modelo P2P directo de baja fricción y adopción inmediata. Asimismo, frente a \textit{VoxLedger}, evita la dependencia absoluta de canales de mensajería de terceros (como las políticas de las APIs corporativas de Meta para WhatsApp).
-    \item \textbf{Control de la Complejidad y Viabilidad del Alcance Académico:} Al acotar estrictamente el alcance de ParkLink al mapeo interactivo y la gestión de reservas manuales programadas (postergando deliberadamente la automatización mediante sensores físicos de ocupación IoT o algoritmos predictivos complejos para fases futuras del ciclo de vida del producto), se asegura un plan de desarrollo realizable por el equipo dentro de los tiempos del ciclo lectivo, garantizando robustez de software por sobre la dispersión tecnológica.
+    \item \textbf{Control de la Complejidad y Viabilidad del Alcance Académico:} Al acotar estrictamente el alcance de ParkLink al mapeo interactivo y la gestión de reservas manuales programadas (postergando deliberadamente la automatización mediante sensores físicos de ocupación o algoritmos predictivos complejos para fases futuras del ciclo de vida del producto), se asegura un plan de desarrollo realizable por el equipo dentro de los tiempos del ciclo lectivo, garantizando robustez de software por sobre la dispersión tecnológica.
     \item \textbf{Previsibilidad y Validación de Datos Financieros:} El modelo transaccional de ParkLink ofrece una monetización lineal directamente ligada a la resolución del problema físico del conductor (tiempo de búsqueda de estacionamiento). Esto permite una validación de métricas de negocio más transparente y medible dentro de un entorno urbano acotado como CABA, en comparación con la incertidumbre en las tasas de conversión de los modelos \textit{freemium} proyectados en las otras alternativas.
 \end{enumerate}

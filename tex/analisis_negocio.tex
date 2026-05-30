@@ -10,7 +10,7 @@ ParkLink es una plataforma web y móvil que actúa como marketplace transacciona
 
 La estructura del sistema se organiza en cuatro módulos de trabajo independientes (mapeo y geolocalización, reserva dinámica, autenticación y seguridad, y pagos), cuyo detalle técnico se desarrolla en la sección de Metodología. Este enfoque modular permite un desarrollo incremental alineado con los recursos disponibles del equipo.
 
-La detección automática de disponibilidad mediante sensores IoT y la integración con sistemas municipales de tránsito se identifican como evoluciones futuras fuera del alcance del MVP, dada la complejidad técnica y los recursos externos que requieren.
+La detección automática de disponibilidad mediante sensores IoT, predicciones mediante sistemas de IA y la integración con sistemas municipales de tránsito se identifican como evoluciones futuras fuera del alcance del MVP, dada la complejidad técnica y los recursos externos que requieren.
 
 El principal riesgo operativo del modelo es el problema del arranque en frío: para que la plataforma funcione, se necesitan simultáneamente propietarios que ofrezcan espacios y conductores que los demanden. La estrategia para mitigar esto consiste en lanzar en una zona geográfica acotada de CABA, donde sea posible generar masa crítica en ambos lados del mercado antes de escalar.
 
@@ -38,14 +38,13 @@ El análisis detallado de los competidores —incluyendo sus ventajas y limitaci
 
 \subsubsection*{Colaboradores (\textit{Collaborators})}
 
-Para operar correctamente, ParkLink requiere la participación de varios actores externos:
+Para conseguir un mayor volumen de clientes, ParkLink deberá valerse de diversas alianzas estratégicas con actores clave del ecosistema de movilidad urbana y gestión de espacios en grandes ciudades:
 
 \begin{itemize}
     \item \textbf{Propietarios y administradores de cocheras:} su disposición a incorporarse a la plataforma define el tamaño de la oferta disponible.
+    \item \textbf{Usuarios de la plataforma:} su experiencia y satisfacción determinarán la tasa de retención y el crecimiento orgánico a través de recomendaciones.
     \item \textbf{Administradores de edificios:} canal natural de acceso a propietarios de cocheras residenciales en zonas de alta densidad.
-    \item \textbf{Procesadores de pago y billeteras digitales:} MercadoPago u equivalentes, necesarios para gestionar cobros, comisiones y liquidaciones de forma automatizada.
-    \item \textbf{Proveedores de APIs de mapas:} Google Maps Platform u OpenStreetMap, fundamentales para el módulo de geolocalización y visualización.
-    \item \textbf{Municipalidades:} fuente de información sobre regulaciones, zonas de estacionamiento medido y potenciales alianzas a futuro.
+    \item \textbf{Municipalidades:} fuente de información sobre regulaciones, zonas de estacionamiento medido (y sus malas gestiones) y potenciales alianzas a futuro.
 \end{itemize}
 
 \subsubsection*{Contexto (\textit{Context})}
