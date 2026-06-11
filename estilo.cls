@@ -114,18 +114,18 @@
     % --- TABLA DE INTEGRANTES ---
     {\Large \bfseries Integrantes:}\\[0.25cm]
     \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{1.6}
+    \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|}
         \hline
-        \Large\textbf{Nombre} & \Large\textbf{Padrón} & \Large\textbf{Email} \\
+        \textbf{Nombre} & \textbf{Padrón} & \textbf{Email} \\
         \hline
-        \Large Thiago Fernando Baez & \Large 110703 & \Large tbaez@fi.uba.ar \\
+        Thiago Fernando Baez & 110703 & tbaez@fi.uba.ar \\
         \hline
-        \Large Santiago Domínguez & \Large 110010 & \Large sadominguez@fi.uba.ar \\
+        Santiago Domínguez & 110010 & sadominguez@fi.uba.ar \\
         \hline
-        \Large Facundo Luzzi & \Large 105229 & \Large fluzzi@fi.uba.ar \\
+        Facundo Luzzi & 105229 & fluzzi@fi.uba.ar \\
         \hline
-        \Large Santiago Jorge Varga & \Large 110561 & \Large svarga@fi.uba.ar \\
+        Santiago Jorge Varga & 110561 & svarga@fi.uba.ar \\
         \hline
     \end{tabular}
     \renewcommand{\arraystretch}{1}%
@@ -134,16 +134,16 @@
     % --- TABLA DE DOCENTES ---
     {\Large \bfseries Docentes de la Cátedra:}\\[0.25cm]
     \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{1.6}
+    \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|}
         \hline
-        \Large\textbf{Rol} & \Large\textbf{Nombre} & \Large\textbf{Email} \\
+        \textbf{Rol} & \textbf{Nombre} & \textbf{Email} \\
         \hline
-        \Large Jefe de Cátedra & \Large Mg. Ing. Carlos Fontela & \Large cfontela@fi.uba.ar \\
+        Jefe de Cátedra & Mg. Ing. Carlos Fontela & cfontela@fi.uba.ar \\
         \hline
-        \Large Director de Proyecto/Tutor & \Large Mg. Ing. Gabriel Piñeiro & \Large gpineiro@fi.uba.ar \\
+        Director de Proyecto/Tutor & Mg. Ing. Gabriel Piñeiro & gpineiro@fi.uba.ar \\
         \hline
-        \Large Director de Proyecto/Co-Tutor & \Large Ing. Agustín Perrotta & \Large aperrotta@fi.uba.ar \\
+        Director de Proyecto/Co-Tutor & Ing. Agustín Perrotta & aperrotta@fi.uba.ar \\
         \hline
     \end{tabular}
     \renewcommand{\arraystretch}{1}%
