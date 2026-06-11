@@ -100,20 +100,21 @@
 \renewcommand*{\maketitle}{
 \thispagestyle{firststyle}
 \begin{center}
-    \includegraphics[width=7cm]{logo} \\[1cm]
-    \textsc{\Large Trabajo Práctico Profesional}\\[0.1cm] % Materia
-    \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.4cm] % Subtítulo materia
-    {\huge \bfseries Anteproyecto Parklink}\\[0.3cm]      % Título
-    \andreasline \\[0.2cm]
-    {\large 25 de Junio 2026}\\[0.8cm]                    % Fecha
+    \includegraphics[width=7cm]{logo} \\[0.4cm]
+    \textsc{\Large Trabajo Práctico Profesional}\\[0.05cm] % Materia
+    \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.25cm] % Subtítulo materia
+    {\huge \bfseries Anteproyecto Parklink}\\[0.25cm]      % Título
+    \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
+    \andreasline \\[0.1cm]
+    {\large 25 de Junio 2026}\\[0.4cm]                    % Fecha
 
     % --- EQUIPO ---
-    {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.8cm]
+    {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.4cm]
 
     % --- TABLA DE INTEGRANTES ---
-    {\Large \bfseries Integrantes:}\\[0.5cm]
+    {\Large \bfseries Integrantes:}\\[0.25cm]
     \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{2}
+    \renewcommand{\arraystretch}{1.6}
     \begin{tabular}{|c|c|c|}
         \hline
         \Large\textbf{Nombre} & \Large\textbf{Padrón} & \Large\textbf{Email} \\
@@ -128,12 +129,12 @@
         \hline
     \end{tabular}
     \renewcommand{\arraystretch}{1}%
-    }\\[1.2cm]
+    }\\[0.5cm]
 
     % --- TABLA DE DOCENTES ---
-    {\Large \bfseries Docentes de la Cátedra:}\\[0.5cm]
+    {\Large \bfseries Docentes de la Cátedra:}\\[0.25cm]
     \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{2}
+    \renewcommand{\arraystretch}{1.6}
     \begin{tabular}{|c|c|c|}
         \hline
         \Large\textbf{Rol} & \Large\textbf{Nombre} & \Large\textbf{Email} \\
