@@ -107,10 +107,45 @@
     \andreasline \\[0.2cm]
     {\large 01 de Junio 2026}\\[0.8cm]                    % Fecha
 
-    % Tabla adaptada al ancho de la página para un centrado perfecto
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccc}
-        \large Thiago Fernando Baez & \large Santiago Domínguez & \large Facundo Luzzi & \large Santiago Jorge Varga \\ [0.2cm]
-        \large 110703               & \large 110010              & \large 105229         & \large 110561 \\
-    \end{tabular*}
+    % --- EQUIPO ---
+    {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.8cm]
+
+    % --- TABLA DE INTEGRANTES ---
+    {\Large \bfseries Integrantes:}\\[0.5cm]
+    \makebox[\linewidth][c]{%
+    \renewcommand{\arraystretch}{2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \Large\textbf{Nombre} & \Large\textbf{Padrón} & \Large\textbf{Email} \\
+        \hline
+        \Large Thiago Fernando Baez & \Large 110703 & \Large tbaez@fi.uba.ar \\
+        \hline
+        \Large Santiago Domínguez & \Large 110010 & \Large sadominguez@fi.uba.ar \\
+        \hline
+        \Large Facundo Luzzi & \Large 105229 & \Large fluzzi@fi.uba.ar \\
+        \hline
+        \Large Santiago Jorge Varga & \Large 110561 & \Large svarga@fi.uba.ar \\
+        \hline
+    \end{tabular}
+    \renewcommand{\arraystretch}{1}%
+    }\\[1.2cm]
+
+    % --- TABLA DE DOCENTES ---
+    {\Large \bfseries Docentes de la Cátedra:}\\[0.5cm]
+    \makebox[\linewidth][c]{%
+    \renewcommand{\arraystretch}{2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \Large\textbf{Rol} & \Large\textbf{Nombre} & \Large\textbf{Email} \\
+        \hline
+        \Large Jefe de Cátedra & \Large Mg. Ing. Carlos Fontela & \Large cfontela@fi.uba.ar \\
+        \hline
+        \Large Director de Proyecto/Tutor & \Large Mg. Ing. Gabriel Piñeiro & \Large gpineiro@fi.uba.ar \\
+        \hline
+        \Large Director de Proyecto/Co-Tutor & \Large Ing. Agustín Perrotta & \Large aperrotta@fi.uba.ar \\
+        \hline
+    \end{tabular}
+    \renewcommand{\arraystretch}{1}%
+    }
 \end{center}
 }
