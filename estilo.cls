@@ -105,7 +105,7 @@
     \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.4cm] % Subtítulo materia
     {\huge \bfseries Anteproyecto Parklink}\\[0.3cm]      % Título
     \andreasline \\[0.2cm]
-    {\large 01 de Junio 2026}\\[0.8cm]                    % Fecha
+    {\large 25 de Junio 2026}\\[0.8cm]                    % Fecha
 
     % --- EQUIPO ---
     {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.8cm]
