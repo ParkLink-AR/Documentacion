@@ -8,6 +8,16 @@
 \usepackage{hyperref}       % para utilizar referencias
 \usepackage{multirow}       % para las tablas
 \usepackage{booktabs}       % para tablas con estilo profesional e ingeniería
+\usepackage{colortbl}       % para colorear celdas de tablas
+\usepackage{tikz}           % para círculos de colores en tablas
+
+\definecolor{vivgreen}{RGB}{0,176,80}
+\definecolor{vivyellow}{RGB}{255,192,0}
+\definecolor{vivred}{RGB}{220,0,0}
+
+\newcommand{\gcircle}{\tikz\fill[vivgreen] (0,0) circle (6pt);}
+\newcommand{\ycircle}{\tikz\fill[vivyellow] (0,0) circle (6pt);}
+\newcommand{\rcircle}{\tikz\fill[vivred] (0,0) circle (6pt);}
 \usepackage{dsfont}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -106,6 +116,8 @@
 \input{tex/metodologia}
 \input{tex/validacion}
 \input{tex/plan_actividades}
+
+\input{tex/anexo_seleccion}
 
 \newpage
 \printbibliography[title={Referencias}]
