@@ -102,7 +102,7 @@
 \begin{center}
     \includegraphics[width=7cm]{logo} \\[0.4cm]
     \textsc{\Large Trabajo Práctico Profesional}\\[0.05cm] % Materia
-    \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.25cm] % Subtítulo materia
+    \textsc{\small (TAO53) Curso Piñeiro-Perrotta}\\[0.25cm] % Subtítulo materia
     {\huge \bfseries Anteproyecto Parklink}\\[0.25cm]      % Título
     \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
     \andreasline \\[0.1cm]
