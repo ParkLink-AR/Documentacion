@@ -10,10 +10,18 @@
 \usepackage{booktabs}       % para tablas con estilo profesional e ingeniería
 \usepackage{colortbl}       % para colorear celdas de tablas
 \usepackage{tikz}           % para círculos de colores en tablas
+\usepackage{tabularx}       % para tablas con columnas de ancho flexible
+\usepackage{mdframed}       % para bloques destacados con fondo de color
 
 \definecolor{vivgreen}{RGB}{0,176,80}
 \definecolor{vivyellow}{RGB}{255,192,0}
 \definecolor{vivred}{RGB}{220,0,0}
+
+% Paleta oficial ParkLink
+\definecolor{deepnavy}{HTML}{042347}
+\definecolor{modernteal}{HTML}{168B8D}
+\definecolor{plgray}{HTML}{F5F5F5}
+\definecolor{midgray}{HTML}{CCCCCC}
 
 \newcommand{\gcircle}{\tikz\fill[vivgreen] (0,0) circle (6pt);}
 \newcommand{\ycircle}{\tikz\fill[vivyellow] (0,0) circle (6pt);}
@@ -118,6 +126,7 @@
 \input{tex/plan_actividades}
 
 \input{tex/anexo_seleccion}
+\input{tex/anexo_colorimetria}
 
 \newpage
 \printbibliography[title={Referencias}]

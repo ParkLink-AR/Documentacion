@@ -1,110 +1,28 @@
-\documentclass{estilo}
-\usepackage[spanish, es-tabla]{babel}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{colortbl}
-\usepackage{ragged2e}
-\usepackage{enumitem}
-\usepackage{mdframed}
-\usepackage{tabularx}
-\usepackage{titlesec}
-
-% ---------------------------------------------------------------
-% Paleta oficial ParkLink
-% ---------------------------------------------------------------
-\definecolor{deepnavy}{HTML}{042347}
-\definecolor{modernteal}{HTML}{168B8D}
-\definecolor{lightgray}{HTML}{F5F5F5}
-\definecolor{midgray}{HTML}{CCCCCC}
-
-% ---------------------------------------------------------------
-% Estilos de sección — idénticos al documento principal
-% ---------------------------------------------------------------
-\titleformat{\section}
-  {\large\bfseries}{\thesection.}{0.6em}{}[\titlerule]
-
-\titleformat{\subsection}
-  {\normalsize\bfseries}{\thesubsection.}{0.5em}{}
-
-% ---------------------------------------------------------------
-\begin{document}
-
-% ======================== CARÁTULA ============================
-\thispagestyle{firststyle}
-\begin{center}
-    \includegraphics[width=7cm]{logo} \\[0.4cm]
-    \textsc{\Large Trabajo Práctico Profesional}\\[0.05cm]
-    \textsc{\small (TAO53) Curso Piñeiro-Perrota}\\[0.25cm]
-    {\huge \bfseries Informe de Colorimetría}\\[0.1cm]
-    {\large \bfseries y Estrategia de Marca: ParkLink}\\[0.25cm]
-    \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
-    \andreasline \\[0.1cm]
-    {\large 25 de Junio 2026}\\[0.4cm]
-
-    {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.4cm]
-
-    {\Large \bfseries Integrantes:}\\[0.25cm]
-    \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{Nombre} & \textbf{Padrón} & \textbf{Email} \\
-        \hline
-        Thiago Fernando Baez & 110703 & tbaez@fi.uba.ar \\
-        \hline
-        Santiago Domínguez & 110010 & sadominguez@fi.uba.ar \\
-        \hline
-        Facundo Luzzi & 105229 & fluzzi@fi.uba.ar \\
-        \hline
-        Santiago Jorge Varga & 110561 & svarga@fi.uba.ar \\
-        \hline
-    \end{tabular}
-    \renewcommand{\arraystretch}{1}%
-    }\\[0.5cm]
-
-    {\Large \bfseries Docentes de la Cátedra:}\\[0.25cm]
-    \makebox[\linewidth][c]{%
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{Rol} & \textbf{Nombre} & \textbf{Email} \\
-        \hline
-        Jefe de Cátedra & Mg. Ing. Carlos Fontela & cfontela@fi.uba.ar \\
-        \hline
-        Director de Proyecto/Tutor & Mg. Ing. Gabriel Piñeiro & gpineiro@fi.uba.ar \\
-        \hline
-        Director de Proyecto/Co-Tutor & Ing. Agustín Perrotta & aperrotta@fi.uba.ar \\
-        \hline
-    \end{tabular}
-    \renewcommand{\arraystretch}{1}%
-    }
-\end{center}
-
-% ======================== CUERPO ============================
 \newpage
-\justifying
+\section{Anexo 2: Informe de Colorimetría y Estrategia de Marca}
 
-\section{Especificaciones Técnicas de la Paleta}
+El presente anexo documenta las decisiones de identidad visual de ParkLink, estableciendo la paleta de colores oficial, su fundamentación psicológica y semiótica, y las reglas de uso que garantizan la coherencia de marca en todos los soportes digitales y físicos del proyecto.
+
+\subsection{Variante Seleccionada: 3C — Edición Plana (\textit{Flat})}
+
+Tras evaluar las alternativas de diseño gráfico generadas durante el proceso de ideación, el equipo seleccionó por consenso la \textbf{Variante 3C (Edición Plana / Flat)} como identidad visual definitiva de ParkLink. Esta variante se caracteriza por la ausencia total de sombras, degradados y efectos de profundidad, priorizando la versatilidad y la legibilidad en todos los contextos de uso.
+
+\subsection{Especificaciones Técnicas de la Paleta}
 
 Para garantizar la consistencia visual en la aplicación, el sitio web y las presentaciones institucionales, se deben utilizar \textbf{exclusivamente} los siguientes códigos de color. Cualquier variación de los valores especificados compromete la integridad de la identidad de marca.
 
-\vspace{0.6cm}
+\vspace{0.4cm}
 
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{2.0}
-\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{2cm} >{\bfseries}p{3.5cm} p{2.4cm} p{2.4cm} X}
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{2cm} >{\bfseries}p{3.2cm} p{2.4cm} p{2.4cm} X}
 \toprule
-\rowcolor{deepnavy}
-\color{white}\textbf{Muestra} &
-\color{white}\textbf{Nombre} &
-\color{white}\textbf{HEX} &
-\color{white}\textbf{RGB} &
-\color{white}\textbf{Aplicación principal} \\
+\textbf{Muestra} &
+\textbf{Nombre} &
+\textbf{HEX} &
+\textbf{RGB} &
+\textbf{Aplicación principal} \\
 \midrule
 
 \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (1.5cm,0.7cm); &
@@ -113,7 +31,7 @@ Deep Navy &
 \texttt{4, 35, 71} &
 Logotipo (letra «P»), fondos primarios, encabezados y elementos de navegación. \\
 
-\rowcolor{lightgray}
+\rowcolor{plgray}
 \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (1.5cm,0.7cm); &
 Modern Teal &
 \texttt{\#168B8D} &
@@ -129,51 +47,47 @@ Texto sobre fondos oscuros, espacios negativos y modo claro. \\
 \bottomrule
 \end{tabularx}
 \caption{Paleta oficial ParkLink — Especificaciones técnicas}
-\label{tab:paleta}
+\label{tab:paleta_colorimetria}
 \end{table}
 
-\vspace{0.3cm}
-
-\begin{mdframed}[backgroundcolor=lightgray, linecolor=midgray, linewidth=0.6pt,
+\begin{mdframed}[backgroundcolor=plgray, linecolor=midgray, linewidth=0.6pt,
   innertopmargin=8pt, innerbottommargin=8pt]
-\small\textbf{Nota de implementación:} Los valores HEX son la referencia canónica para entornos digitales (web, mobile). Para impresión offset, solicitar conversión Pantone/CMYK al área de diseño: \texttt{\#042347} corresponde aproximadamente a \textbf{Pantone 2767 C} y \texttt{\#168B8D} a \textbf{Pantone 3145 C}.
+\small\textbf{Nota de implementación:} Los valores HEX son la referencia canónica para entornos digitales (web, mobile). Para impresión offset solicitar conversión Pantone/CMYK al área de diseño: \texttt{\#042347} corresponde aproximadamente a \textbf{Pantone 2767\,C} y \texttt{\#168B8D} a \textbf{Pantone 3145\,C}.
 \end{mdframed}
 
-% ---------------------------------------------------------------
-\section{Análisis de Colorimetría y Psicología del Color}
+\subsection{Análisis de Colorimetría y Psicología del Color}
 
-\subsection{Azul Marino Profundo (\texttt{\#042347}) — La Base de la Seguridad}
+\subsubsection{Azul Marino Profundo (\texttt{\#042347}) — La Base de la Seguridad}
 
-\begin{minipage}{0.15\textwidth}
-  \tikz\fill[deepnavy] (0,0) rectangle (2.2cm,2.2cm);
+\begin{minipage}{0.13\textwidth}
+  \tikz\fill[deepnavy] (0,0) rectangle (2cm,2cm);
 \end{minipage}
 \hfill
-\begin{minipage}{0.81\textwidth}
+\begin{minipage}{0.83\textwidth}
 \textbf{Lo que transmite:} Confianza, estabilidad, seriedad, control y profesionalismo.
 
 \textbf{Aplicación en ParkLink:} Al ser una plataforma de economía compartida donde los usuarios confían el cuidado de su vehículo —un bien de alto valor— o abren las puertas de su cochera privada a un tercero, la marca debe proyectarse como \textit{extremadamente} segura. Este tono elimina cualquier percepción de informalidad y aporta el respaldo institucional necesario para reducir la barrera de adopción inicial.
 \end{minipage}
 
-\vspace{0.8cm}
+\vspace{0.6cm}
 
-\subsection{Teal / Azul Verdoso (\texttt{\#168B8D}) — El Impulso Tecnológico}
+\subsubsection{Teal / Azul Verdoso (\texttt{\#168B8D}) — El Impulso Tecnológico}
 
-\begin{minipage}{0.15\textwidth}
-  \tikz\fill[modernteal] (0,0) rectangle (2.2cm,2.2cm);
+\begin{minipage}{0.13\textwidth}
+  \tikz\fill[modernteal] (0,0) rectangle (2cm,2cm);
 \end{minipage}
 \hfill
-\begin{minipage}{0.81\textwidth}
+\begin{minipage}{0.83\textwidth}
 \textbf{Lo que transmite:} Modernidad, innovación digital, eficiencia, frescura y conexión.
 
 \textbf{Aplicación en ParkLink:} Este color rompe la rigidez del azul corporativo. Se aplica en el lazo que une el símbolo de infinito con el pin de ubicación, reforzando visualmente el concepto central de \textit{vincular} (\textit{Link}). Le comunica al usuario que está ante una solución tecnológica, ágil y de vanguardia; no ante una empresa de parking tradicional.
 \end{minipage}
 
-% ---------------------------------------------------------------
-\section{Contexto Urbano y Código Universal del Estacionamiento}
+\subsection{Contexto Urbano y Código Universal del Estacionamiento}
 
 La elección del azul marino no es arbitraria: responde a una lógica de \textbf{apropiación semiótica} de un código ya instalado en el entorno urbano global.
 
-\begin{itemize}[leftmargin=1.5em, itemsep=0.4em]
+\begin{itemize}
   \item \textbf{Asociación Inconsciente:} En el diseño vial global, la señalética de estacionamientos (la clásica «E» o «P» de \textit{Parking}) utiliza de forma estandarizada el azul oscuro como color dominante. Esta convención está presente en Argentina, España, la Unión Europea y gran parte de América Latina.
 
   \item \textbf{Sesgo Cognitivo Positivo:} Al adoptar el azul marino como base, ParkLink aprovecha la \textit{memoria visual} que los conductores ya tienen incorporada en la calle. El cerebro del usuario asocia instantáneamente el color de la aplicación con un «lugar seguro para dejar el auto», reduciendo la resistencia cognitiva en la primera interacción.
@@ -181,22 +95,21 @@ La elección del azul marino no es arbitraria: responde a una lógica de \textbf
   \item \textbf{Curva de Aprendizaje Reducida:} La combinación opera en dos registros simultáneos. El azul urbano tradicional comunica \textit{qué hace} la aplicación; el teal moderno comunica \textit{cómo lo hace} (a través de la tecnología). Esta dualidad elimina fricciones en el proceso de onboarding del usuario.
 \end{itemize}
 
-% ---------------------------------------------------------------
-\section{Ventajas de Diseño UX / UI}
+\subsection{Ventajas de Diseño UX / UI}
 
-\subsection{Armonía Cromática y Valor Percibido}
+\subsubsection{Armonía Cromática y Valor Percibido}
 
 La combinación de \texttt{\#042347} y \texttt{\#168B8D} pertenece a la familia de \textbf{tonos análogos} (vecinos en el círculo cromático dentro del espectro azul-verde). Esta cercanía espectral genera:
 
-\begin{itemize}[leftmargin=1.5em, itemsep=0.3em]
+\begin{itemize}
   \item Una estética \textbf{premium, madura y de alto valor percibido}, evitando estridencias visuales que desgastan la atención del usuario.
   \item Contraste suficiente entre ambos tonos para cumplir los estándares de accesibilidad \textbf{WCAG 2.1 AA} cuando se emplean sobre fondo blanco.
   \item Una identidad visualmente coherente en interfaces de alta densidad informativa (mapas, listados, formularios de reserva).
 \end{itemize}
 
-\subsection{Idoneidad del Diseño Plano (\textit{Flat Design})}
+\subsubsection{Idoneidad del Diseño Plano (\textit{Flat Design})}
 
-La variante 3C adopta una filosofía de \textit{flat design} sin sombras ni degradados. Esta decisión reporta ventajas concretas de ingeniería de producto:
+La variante 3C elimina sombras y degradados, lo que reporta ventajas concretas de ingeniería de producto:
 
 \vspace{0.3cm}
 
@@ -208,26 +121,24 @@ La variante 3C adopta una filosofía de \textit{flat design} sin sombras ni degr
 Ventaja & Descripción \\
 \midrule
 Legibilidad universal & Rendimiento óptimo tanto en modo claro como en modo oscuro, sin pérdida de contraste. \\
-\rowcolor{lightgray}
+\rowcolor{plgray}
 Escalabilidad & Fidelidad visual desde el tamaño de un ícono de aplicación (16×16\,px) hasta una valla publicitaria. \\
 Versatilidad de soporte & Reproducible en pantallas OLED, papel, serigrafía y bordado sin dependencia de perfiles de color complejos. \\
-\rowcolor{lightgray}
+\rowcolor{plgray}
 Rendimiento técnico & Archivos SVG de menor peso al no requerir máscaras de degradado, mejorando los tiempos de carga en dispositivos de gama media. \\
 \bottomrule
 \end{tabularx}
 \caption{Ventajas del flat design para ParkLink}
-\label{tab:flatdesign}
+\label{tab:flatdesign_colorimetria}
 \end{table}
 
-% ---------------------------------------------------------------
-\section{Guía de Uso y Restricciones}
+\subsection{Guía de Uso y Restricciones}
 
-\begin{mdframed}[backgroundcolor=deepnavy, linewidth=0pt,
+\begin{mdframed}[backgroundcolor=plgray, linecolor=midgray, linewidth=0.6pt,
   innertopmargin=10pt, innerbottommargin=10pt,
   innerleftmargin=14pt, innerrightmargin=14pt]
-\color{white}
 \textbf{Usos correctos}
-\begin{itemize}[leftmargin=1.2em, itemsep=0.2em, topsep=0.4em]
+\begin{itemize}
   \item Logotipo sobre fondo blanco (\texttt{\#FFFFFF}) o fondo Deep Navy (\texttt{\#042347}).
   \item CTAs y botones primarios en Modern Teal (\texttt{\#168B8D}) con texto blanco.
   \item Encabezados y texto de cuerpo principal en Deep Navy sobre fondo claro.
@@ -235,14 +146,14 @@ Rendimiento técnico & Archivos SVG de menor peso al no requerir máscaras de de
 \end{itemize}
 \end{mdframed}
 
-\vspace{0.5cm}
+\vspace{0.4cm}
 
-\begin{mdframed}[backgroundcolor=lightgray, linecolor=midgray, linewidth=0.6pt,
+\begin{mdframed}[backgroundcolor=plgray, linecolor=midgray, linewidth=0.6pt,
   innertopmargin=10pt, innerbottommargin=10pt,
   innerleftmargin=14pt, innerrightmargin=14pt]
 \textbf{Usos prohibidos}
-\begin{itemize}[leftmargin=1.2em, itemsep=0.2em, topsep=0.4em]
-  \item Modificar los valores HEX especificados en la Tabla~\ref{tab:paleta} bajo ninguna circunstancia.
+\begin{itemize}
+  \item Modificar los valores HEX especificados en la Tabla~\ref{tab:paleta_colorimetria} bajo ninguna circunstancia.
   \item Aplicar efectos de sombra, bisel, degradado o transparencia al logotipo.
   \item Colocar el logotipo sobre fondos con escaso contraste (grises medios, fondos de color saturado ajenos a la paleta).
   \item Combinar la paleta ParkLink con colores cálidos (rojos, naranjas, amarillos) fuera de contextos de alerta o error definidos en el sistema de diseño.
@@ -250,39 +161,36 @@ Rendimiento técnico & Archivos SVG de menor peso al no requerir máscaras de de
 \end{itemize}
 \end{mdframed}
 
-% ---------------------------------------------------------------
-\section{Resumen Estratégico}
+\subsection{Resumen Estratégico}
 
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{2.0}
-\begin{tabularx}{\textwidth}{>{\bfseries\centering\arraybackslash}p{3.2cm} >{\centering\arraybackslash}p{2.2cm} X}
+\begin{tabularx}{\textwidth}{>{\bfseries\centering\arraybackslash}p{3.5cm} >{\centering\arraybackslash}p{2cm} X}
 \toprule
 \textbf{Dimensión} & \textbf{Color} & \textbf{Aporte estratégico} \\
 \midrule
 Confianza y Seguridad &
-  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (1.4cm,0.6cm); &
+  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (1.3cm,0.6cm); &
   Reduce la barrera de adopción en transacciones P2P de alto valor percibido. \\
-\rowcolor{lightgray}
+\rowcolor{plgray}
 Innovación Tecnológica &
-  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (1.4cm,0.6cm); &
+  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (1.3cm,0.6cm); &
   Diferencia a ParkLink de los actores tradicionales del sector. \\
 Reconocimiento Urbano &
-  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (1.4cm,0.6cm); &
-  Aprovecha la señalética vial global para una asociación instantánea. \\
-\rowcolor{lightgray}
+  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (1.3cm,0.6cm); &
+  Aprovecha la señalética vial global para una asociación instantánea con el estacionamiento. \\
+\rowcolor{plgray}
 UX / Accesibilidad &
-  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (0.6cm,0.6cm);
-  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (0.6cm,0.6cm); &
-  Contraste WCAG 2.1 AA y versatilidad en modo claro/oscuro. \\
+  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (0.55cm,0.6cm);%
+  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (0.55cm,0.6cm); &
+  Contraste WCAG 2.1 AA y versatilidad en modo claro y oscuro. \\
 Escalabilidad de Marca &
-  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (0.6cm,0.6cm);
-  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (0.6cm,0.6cm); &
+  \tikz\fill[deepnavy, draw=midgray, line width=0.3pt] (0,0) rectangle (0.55cm,0.6cm);%
+  \tikz\fill[modernteal, draw=midgray, line width=0.3pt] (0,0) rectangle (0.55cm,0.6cm); &
   Flat design apto para todos los soportes digitales y físicos. \\
 \bottomrule
 \end{tabularx}
 \caption{Resumen estratégico de la paleta ParkLink}
-\label{tab:resumen}
+\label{tab:resumen_colorimetria}
 \end{table}
-
-\end{document}
