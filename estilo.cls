@@ -106,7 +106,7 @@
     {\huge \bfseries Anteproyecto Parklink}\\[0.25cm]      % Título
     \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
     \andreasline \\[0.1cm]
-    {\large 25 de Junio 2026}\\[0.4cm]                    % Fecha
+    {\large 16 de Junio 2026}\\[0.4cm]                    % Fecha
 
     % --- EQUIPO ---
     {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.4cm]
