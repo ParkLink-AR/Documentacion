@@ -77,7 +77,7 @@
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
-\rhead{\footnotesize \textsc {Anteproyecto Parklink\\ Trabajo Práctico Profesional}} % Trabajo práctico
+\rhead{\footnotesize \textsc {Informe Completo Final de Parklink\\ Trabajo Práctico Profesional}} % Trabajo práctico
 \lhead{\includegraphics[width=2.5cm]{logo}}
 \cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
 
@@ -103,10 +103,10 @@
     \includegraphics[width=7cm]{logo} \\[0.4cm]
     \textsc{\Large Trabajo Práctico Profesional}\\[0.05cm] % Materia
     \textsc{\small (TAO53) Curso Piñeiro-Perrotta}\\[0.25cm] % Subtítulo materia
-    {\huge \bfseries Anteproyecto Parklink}\\[0.25cm]      % Título
+    {\huge \bfseries Informe Completo Final de Parklink}\\[0.25cm]      % Título
     \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
     \andreasline \\[0.1cm]
-    {\large 16 de Junio 2026}\\[0.4cm]                    % Fecha
+    {\large 30 de Octubre 2026}\\[0.4cm]                    % Fecha
 
     % --- EQUIPO ---
     {\Large \bfseries Equipo 198 (Grupo 14 Piñeiro/Perrotta)}\\[0.4cm]
