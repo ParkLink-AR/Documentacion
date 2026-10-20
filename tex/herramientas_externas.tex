@@ -1,3 +1,34 @@
 \section{Herramientas externas utilizadas}
 
-Como ejemplo de esta sección para el anteproyecto, ParkLink prevé utilizar herramientas externas para resolver necesidades específicas del sistema sin desarrollar desde cero capacidades de cartografía, autenticación y pagos. Entre ellas se consideran una API de mapas para la visualización georreferenciada, un proveedor de autenticación y una pasarela de pagos digitales. La selección definitiva se realizará según criterios de disponibilidad, costos, documentación, límites de uso y compatibilidad con la arquitectura del MVP.
+ParkLink utiliza herramientas y servicios externos para resolver capacidades específicas del sistema. La selección considera la disponibilidad en Argentina, los costos, la documentación, los límites de uso, la seguridad y la compatibilidad con la arquitectura basada en microservicios.
+
+\subsection{Mapas y geolocalización}
+
+Para mostrar mapas en la aplicación móvil se emplea \textit{react-native-maps}, integrado con React Native y Expo. La información geográfica se representa mediante PostgreSQL con la extensión PostGIS, que permite almacenar coordenadas y realizar búsquedas por radio.
+
+Cuando se registra una dirección sin coordenadas, se utiliza Nominatim, basado en OpenStreetMap, para geocodificarla y obtener su latitud y longitud. Esta herramienta se utiliza sin costo para el MVP, respetando sus políticas de uso y límites de consulta.
+
+\subsection{Autenticación, comunicación y notificaciones}
+
+Para la comunicación y las notificaciones se utilizan:
+\begin{itemize}
+	\item \textbf{Brevo}: envío de correos transaccionales, como códigos de verificación y recuperación de contraseña.
+	\item \textbf{Twilio}: envío de códigos de verificación mediante mensajes SMS.
+	\item \textbf{Firebase Cloud Messaging (FCM)}: envío de notificaciones push a dispositivos Android e iOS. El \textit{notifications-service} consume eventos de RabbitMQ, como reservas confirmadas, cancelaciones y solicitudes de aprobación, y los convierte en notificaciones para los usuarios correspondientes.
+\end{itemize}
+
+\subsection{Pagos digitales}
+
+Mercado Pago se utiliza como pasarela de pagos para permitir que los conductores abonen sus reservas. La plataforma permite crear preferencias de pago, consultar el estado de las transacciones y recibir notificaciones mediante webhooks.
+
+La integración contempla también estados pendientes y reembolsos. Durante el desarrollo puede utilizarse un endpoint de prueba y, para recibir webhooks desde un entorno local, una URL pública temporal mediante ngrok.
+
+\subsection{Almacenamiento de archivos y mensajería interna}
+
+Las fotografías de las cocheras se almacenan en Cloudflare R2, un servicio compatible con la API de Amazon S3. Este servicio permite conservar los archivos y acceder a ellos mediante sus URL.
+
+Para la comunicación asincrónica entre componentes se utiliza RabbitMQ, un broker de mensajería que permite publicar y consumir eventos mediante colas.
+
+\subsection{Infraestructura y despliegue}
+
+Docker y Docker Compose permiten ejecutar localmente los servicios y dependencias en un entorno reproducible. Para despliegues alternativos se contempla Render como plataforma PaaS, CloudAMQP para disponer de RabbitMQ gestionado y Hetzner Cloud como VPS para ejecutar contenedores Docker. Caddy funciona como proxy inverso y gestiona automáticamente los certificados TLS de Let's Encrypt. Cloudflare Pages puede utilizarse para alojar el panel web de administración.
