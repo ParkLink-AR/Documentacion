@@ -1,34 +1,107 @@
-\section{Herramientas externas utilizadas}
+\section{Herramientas externas utilizadas}\label{sec:herramientas}
 
-ParkLink utiliza herramientas y servicios externos para resolver capacidades específicas del sistema. La selección considera la disponibilidad en Argentina, los costos, la documentación, los límites de uso, la seguridad y la compatibilidad con la arquitectura basada en microservicios.
+En esta sección se detallan los lenguajes, \textit{frameworks}, bases de datos, servicios de terceros y herramientas de infraestructura empleados en la construcción de ParkLink, junto con la finalidad concreta que cumplió cada uno dentro del sistema. La selección se basó en cinco criterios: La adecuación técnica de cada herramienta al problema que debía resolver, su adopción y madurez en la industria, la calidad de su documentación, su disponibilidad y aceptación en el mercado argentino y su costo, priorizando las alternativas de código abierto o con planes gratuitos suficientes para la etapa de MVP.
+
+\subsection{Lenguajes de programación}
+
+La arquitectura de microservicios permitió elegir el lenguaje de cada componente según las características de su dominio, en lugar de imponer uno único para todo el sistema.
+
+\begin{itemize}
+    \item \textbf{Python 3.12} \autocite{python}: Se utilizó en la puerta de enlace, en el servicio de autenticación y en el servicio de notificaciones. Se eligió por su rapidez de desarrollo, por la claridad de su sintaxis para expresar reglas de negocio y por contar con bibliotecas oficiales y maduras para las integraciones que estos servicios necesitaban, como el SDK de administración de Firebase y los clientes asincrónicos de RabbitMQ.
+    \item \textbf{Go 1.25} \autocite{golang}: Se utilizó en el servicio de reservas, el componente con mayor carga de reglas de negocio y con mayores exigencias de concurrencia. Su tipado estático, su modelo de concurrencia y su rendimiento lo hicieron adecuado para calcular disponibilidades y procesar reservas simultáneas de forma segura. Al compilarse a un único binario, su imagen de contenedor resultó la más liviana del sistema, de alrededor de 24~MB.
+    \item \textbf{TypeScript} \autocite{typescript}: Se utilizó en el servicio de cocheras, en la aplicación móvil y en el panel de administración. El tipado estático permitió detectar errores en tiempo de compilación y compartir un mismo lenguaje entre el \textit{frontend} y parte del \textit{backend}, lo que facilitó el trabajo cruzado entre integrantes.
+    \item \textbf{JavaScript sobre Node.js 20} \autocite{nodejs}: Se utilizó en el servicio de pagos, aprovechando la madurez del SDK oficial de Mercado Pago para este entorno.
+    \item \textbf{SQL}: Se utilizó para la definición de los esquemas y para las consultas de mayor complejidad, en particular en el servicio de reservas, que trabaja con consultas SQL explícitas para tener control preciso sobre las transacciones y los bloqueos, y en el servicio de cocheras, para las consultas geoespaciales.
+\end{itemize}
+
+\subsection{Frameworks y librerías principales}
+
+\begin{itemize}
+    \item \textbf{FastAPI} \autocite{fastapi}: \textit{Framework} web asincrónico de Python sobre el que se construyeron la puerta de enlace y los servicios de autenticación y de notificaciones. Se eligió por su alto rendimiento, por la validación automática de datos de entrada y salida mediante modelos tipados y por la generación automática de la especificación de la API. Se complementó con SQLAlchemy como mapeador objeto-relacional, \textit{httpx} como cliente HTTP asincrónico para reenviar las solicitudes desde la puerta de enlace y \textit{loguru} para el registro de eventos.
+    \item \textbf{Librerías de seguridad en Python}: \textit{Passlib} se utilizó para el almacenamiento de contraseñas mediante la función de derivación de claves PBKDF2-SHA256, y \textit{python-jose} para la emisión y validación de los tokens JWT de acceso.
+    \item \textbf{chi y librerías de Go}: En el servicio de reservas se utilizó el enrutador HTTP \textit{chi}, el controlador \textit{lib/pq} para PostgreSQL, \textit{zap} para el registro estructurado de eventos y el cliente oficial de RabbitMQ. El servicio se organizó en capas (controladores, casos de uso, servicios, repositorios y dominio), con dependencias en un único sentido, lo que facilitó probar cada capa de forma aislada.
+    \item \textbf{NestJS} \autocite{nestjs}: \textit{Framework} de Node.js con el que se construyó el servicio de cocheras. Su estructura modular basada en inyección de dependencias ordenó un servicio con muchas responsabilidades (publicación, fotos, horarios, búsqueda y moderación). Se complementó con TypeORM para el acceso a datos, \textit{class-validator} para la validación de las solicitudes y \textit{sharp} para el procesamiento de las imágenes antes de almacenarlas.
+    \item \textbf{Express} \autocite{expressjs}: \textit{Framework} minimalista de Node.js utilizado en el servicio de pagos, suficiente para un servicio de alcance acotado con pocos puntos de entrada.
+    \item \textbf{React Native y Expo} \autocite{reactnative, expo}: La aplicación móvil se desarrolló con React Native sobre Expo (SDK 57), lo que permitió mantener una única base de código para Android e iOS. Se utilizaron Expo Router para la navegación basada en archivos, que permitió separar con claridad la experiencia del conductor de la del propietario; Zustand para el estado global; Expo SecureStore para guardar los tokens de sesión en el almacenamiento cifrado del dispositivo, y un sistema propio de internacionalización con soporte para varios idiomas.
+    \item \textbf{React Native Web}: Permitió construir el panel de administración con la misma tecnología y los mismos patrones que la aplicación móvil, pero ejecutándose en el navegador, con un diseño adaptado a pantallas de escritorio.
+\end{itemize}
+
+\subsection{Bases de datos}
+
+\begin{itemize}
+    \item \textbf{PostgreSQL} \autocite{postgresql}: Se eligió como motor de base de datos relacional para todo el sistema por su robustez, su soporte transaccional completo y su condición de software libre. Se aplicó el patrón de base de datos por servicio: Los servicios de autenticación, reservas, pagos y notificaciones utilizan cada uno su propia instancia de PostgreSQL 15, de modo que ningún servicio accede directamente a los datos de otro y cada uno puede evolucionar su esquema con independencia. El servicio de reservas aprovechó además los bloqueos transaccionales de PostgreSQL para impedir la sobre-reserva ante solicitudes concurrentes.
+    \item \textbf{PostGIS} \autocite{postgis}: Extensión geoespacial de PostgreSQL, utilizada en la base de datos del servicio de cocheras (PostgreSQL 16 con PostGIS 3.4). Permite almacenar la ubicación de cada cochera como un punto geográfico, indexarla espacialmente y resolver en la propia base de datos las búsquedas de cocheras dentro de un radio determinado, ordenadas por distancia y filtradas por precio.
+\end{itemize}
+
+\subsection{Mensajería asincrónica}
+
+\textbf{RabbitMQ} \autocite{rabbitmq} (versión 3.13) se utilizó como intermediario de mensajes para la comunicación asincrónica entre servicios. Los servicios publican eventos de negocio (por ejemplo, que una reserva fue confirmada, cancelada o requiere la aprobación del propietario) en un \textit{exchange} de tipo \textit{topic}, y los servicios interesados los consumen desde colas propias. Este mecanismo desacopla al emisor del receptor: El servicio de reservas no necesita conocer quién reacciona a sus eventos, y una demora en el envío de notificaciones nunca bloquea la operación de reservar o pagar. Su consola de administración web facilitó además la inspección de colas y mensajes durante el desarrollo.
 
 \subsection{Mapas y geolocalización}
 
-Para mostrar mapas en la aplicación móvil se emplea \textit{react-native-maps}, integrado con React Native y Expo. La información geográfica se representa mediante PostgreSQL con la extensión PostGIS, que permite almacenar coordenadas y realizar búsquedas por radio.
-
-Cuando se registra una dirección sin coordenadas, se utiliza Nominatim, basado en OpenStreetMap, para geocodificarla y obtener su latitud y longitud. Esta herramienta se utiliza sin costo para el MVP, respetando sus políticas de uso y límites de consulta.
-
-\subsection{Autenticación, comunicación y notificaciones}
-
-Para la comunicación y las notificaciones se utilizan:
 \begin{itemize}
-	\item \textbf{Brevo}: envío de correos transaccionales, como códigos de verificación y recuperación de contraseña.
-	\item \textbf{Twilio}: envío de códigos de verificación mediante mensajes SMS.
-	\item \textbf{Firebase Cloud Messaging (FCM)}: envío de notificaciones push a dispositivos Android e iOS. El \textit{notifications-service} consume eventos de RabbitMQ, como reservas confirmadas, cancelaciones y solicitudes de aprobación, y los convierte en notificaciones para los usuarios correspondientes.
+    \item \textbf{react-native-maps} \autocite{reactnativemaps}: Componente de mapas utilizado en la aplicación móvil para mostrar las cocheras disponibles. Utiliza el mapa nativo de cada plataforma: El SDK de Google Maps en Android y Apple Maps en iOS. Se complementó con una librería de agrupamiento de marcadores, que mantiene el mapa legible cuando hay muchas cocheras cercanas entre sí.
+    \item \textbf{Expo Location}: Permitió obtener la ubicación del conductor, con su consentimiento, para centrar el mapa y buscar cocheras cercanas a su posición.
+    \item \textbf{Nominatim} \autocite{nominatim}: Servicio de geocodificación basado en los datos abiertos de OpenStreetMap. El servicio de cocheras lo utiliza para convertir la dirección que carga el propietario en coordenadas geográficas y, de forma inversa, para obtener la dirección correspondiente a un punto del mapa. Se eligió por ser gratuito y no requerir clave de acceso, respetando su política de uso, que exige identificar a la aplicación en cada consulta y limitar su frecuencia.
 \end{itemize}
 
-\subsection{Pagos digitales}
+\subsection{Servicios de terceros}
 
-Mercado Pago se utiliza como pasarela de pagos para permitir que los conductores abonen sus reservas. La plataforma permite crear preferencias de pago, consultar el estado de las transacciones y recibir notificaciones mediante webhooks.
+\subsubsection{Mercado Pago (procesamiento de pagos)}
 
-La integración contempla también estados pendientes y reembolsos. Durante el desarrollo puede utilizarse un endpoint de prueba y, para recibir webhooks desde un entorno local, una URL pública temporal mediante ngrok.
+Mercado Pago \autocite{mercadopago} se utilizó como pasarela de pagos de la plataforma. El servicio de pagos genera, mediante el SDK oficial, una preferencia de pago por cada reserva y redirige al conductor al entorno de pago seguro de Mercado Pago, sin que ParkLink reciba ni almacene en ningún momento los datos de su tarjeta. Una vez procesado el pago, la pasarela notifica el resultado de forma asincrónica (\textit{webhook}); el servicio verifica la firma de esa notificación para asegurar que proviene efectivamente de Mercado Pago y confirma la reserva correspondiente. La misma integración se utiliza para procesar los reembolsos ante cancelaciones. Se eligió por ser el medio de pago digital más difundido en Argentina, lo que reduce la fricción del conductor al pagar, y por su cumplimiento de los estándares de seguridad de la industria de tarjetas de pago (PCI-DSS).
 
-\subsection{Almacenamiento de archivos y mensajería interna}
+\subsubsection{Brevo (correo electrónico transaccional)}
 
-Las fotografías de las cocheras se almacenan en Cloudflare R2, un servicio compatible con la API de Amazon S3. Este servicio permite conservar los archivos y acceder a ellos mediante sus URL.
+Brevo \autocite{brevo} se utilizó para el envío de los correos electrónicos transaccionales del servicio de autenticación: Los códigos de verificación del correo durante el registro, la confirmación de un cambio de dirección de correo y los códigos de recuperación de contraseña. Se eligió por su plan gratuito, suficiente para el volumen del MVP, y por la simplicidad de su API. Durante el desarrollo local, en ausencia de credenciales, el servicio registra los códigos en lugar de enviarlos, lo que permitió probar el flujo completo sin depender del proveedor.
 
-Para la comunicación asincrónica entre componentes se utiliza RabbitMQ, un broker de mensajería que permite publicar y consumir eventos mediante colas.
+\subsubsection{Twilio (mensajes SMS)}
 
-\subsection{Infraestructura y despliegue}
+Twilio \autocite{twilio} se utilizó para enviar por SMS el código de verificación del número de teléfono, tanto en el registro como ante un cambio de teléfono. La verificación del teléfono, sumada a la del correo, eleva la confianza entre conductores y propietarios que no se conocen entre sí. Su habilitación para enviar mensajes reales a números argentinos requirió una cuenta paga y la aprobación de un perfil de cumplimiento normativo por parte del proveedor, con un costo aproximado de 0,10 dólares por mensaje enviado.
 
-Docker y Docker Compose permiten ejecutar localmente los servicios y dependencias en un entorno reproducible. Para despliegues alternativos se contempla Render como plataforma PaaS, CloudAMQP para disponer de RabbitMQ gestionado y Hetzner Cloud como VPS para ejecutar contenedores Docker. Caddy funciona como proxy inverso y gestiona automáticamente los certificados TLS de Let's Encrypt. Cloudflare Pages puede utilizarse para alojar el panel web de administración.
+\subsubsection{Firebase Cloud Messaging (notificaciones \textit{push})}
+
+Firebase Cloud Messaging \autocite{firebase} se utilizó para enviar notificaciones \textit{push} a los dispositivos Android e iOS. La aplicación registra el identificador de cada dispositivo al iniciar sesión, y el servicio de notificaciones, mediante el SDK de administración de Firebase, envía los avisos que corresponden a cada evento: Una nueva solicitud de reserva para el propietario, la confirmación o el rechazo para el conductor, un mensaje recibido o una liquidación pagada, entre otros. Se eligió por ser gratuito, por cubrir ambas plataformas con una única integración y por ser el estándar en aplicaciones móviles.
+
+\subsubsection{Cloudflare (almacenamiento y publicación)}
+
+De la plataforma de Cloudflare se utilizaron dos servicios:
+
+\begin{itemize}
+    \item \textbf{Cloudflare R2} \autocite{cloudflarer2}: Servicio de almacenamiento de objetos compatible con la API de Amazon S3, en el que se guardan los archivos del sistema: Las fotos de las cocheras, las imágenes de verificación de las publicaciones y las fotos de perfil de los usuarios. Las imágenes que la aplicación muestra se sirven desde un depósito de acceso público, mientras que los comprobantes de las transferencias realizadas a los propietarios se guardan en un depósito privado separado. Al ser compatible con S3, los servicios lo integraron con los SDK estándar de cada lenguaje, y su ausencia de costos por transferencia de salida resultó conveniente para una aplicación que sirve imágenes de forma constante.
+    \item \textbf{Cloudflare Tunnel} \autocite{cloudflaretunnel}: Permitió publicar el sistema en internet bajo el dominio del proyecto (\texttt{parklink.com.ar}) sin abrir puertos ni exponer directamente el equipo en el que se ejecuta. Se utilizó para exponer la puerta de enlace y el servidor de desarrollo de la aplicación, lo que permitió realizar demostraciones y pruebas desde cualquier dispositivo con conexión a internet.
+\end{itemize}
+
+\subsubsection{Sentry (monitoreo de errores)}
+
+Sentry \autocite{sentry} se integró en todos los componentes del sistema, tanto en los servicios de \textit{backend} como en la aplicación móvil y el panel de administración. Captura automáticamente los errores que ocurren en ejecución, junto con el contexto necesario para reproducirlos, y los centraliza en un único panel, lo que permitió detectar y corregir fallas que de otro modo habrían pasado inadvertidas.
+
+\subsection{Infraestructura, contenedores y despliegue}
+
+\begin{itemize}
+    \item \textbf{Docker} \autocite{docker}: Cada servicio se empaquetó en una imagen de contenedor propia, construida sobre imágenes base livianas de cada lenguaje y, en el caso del servicio de reservas, mediante una compilación en dos etapas que deja en la imagen final únicamente el binario compilado. Esto garantizó que el sistema se comportara de la misma manera en la computadora de cada integrante y en cualquier entorno de despliegue.
+    \item \textbf{Docker Compose}: Permitió definir y levantar con un único comando el sistema completo, compuesto por cinco bases de datos, el intermediario de mensajes y seis servicios, con controles de salud que aseguran que cada servicio arranque recién cuando sus dependencias están disponibles.
+    \item \textbf{Git con submódulos y Make}: El repositorio raíz agrupó a todos los servicios como submódulos de Git, y un \textit{Makefile} encapsuló las operaciones frecuentes: Levantar el entorno local, exponerlo a la red local para probar la aplicación desde teléfonos reales, publicarlo en internet a través de Cloudflare Tunnel y ejecutar la prueba de punta a punta del sistema.
+    \item \textbf{EAS Build} \autocite{eas}: Servicio de compilación de Expo utilizado para generar los instaladores de la aplicación móvil para Android e iOS, con perfiles diferenciados para desarrollo, pruebas internas y producción.
+    \item \textbf{GitHub Pages}: Alojó el sitio web del proyecto, que presenta el producto y publica los Términos y Condiciones, la Política de Privacidad y las preguntas frecuentes.
+    \item \textbf{ngrok}: Se utilizó durante el desarrollo local para obtener una dirección pública temporal en la que Mercado Pago pudiera entregar sus notificaciones de pago, dado que la pasarela no puede comunicarse con un equipo local.
+    \item \textbf{Alternativas de despliegue evaluadas}: El equipo analizó y documentó dos opciones de despliegue productivo. La primera, sobre la plataforma administrada Render, con su definición completa como infraestructura declarativa, un servicio externo de RabbitMQ (CloudAMQP) y un costo estimado de 49 dólares mensuales en su plan pago. La segunda, sobre un servidor virtual propio en Hetzner Cloud que ejecuta la misma configuración de Docker Compose detrás del proxy inverso Caddy, que gestiona automáticamente los certificados TLS, con un costo estimado de 8 dólares mensuales.
+\end{itemize}
+
+\subsection{Calidad, pruebas e integración continua}
+
+\begin{itemize}
+    \item \textbf{Git y GitHub}: Control de versiones y alojamiento de los repositorios dentro de una organización dedicada al proyecto. Los cambios se integraron mediante solicitudes de integración (\textit{pull requests}), que dejaron un registro revisable de cada modificación.
+    \item \textbf{GitHub Actions} \autocite{githubactions}: Motor de integración continua que, ante cada cambio, ejecutó automáticamente el análisis estático, la verificación de tipos, la compilación y las pruebas de los servicios, sin necesidad de mantener servidores de integración propios.
+    \item \textbf{Marcos de pruebas}: \textit{Pytest} para los servicios en Python; el paquete de pruebas nativo de Go, complementado con \textit{testify} y \textit{gomock} para aserciones y dobles de prueba, en el servicio de reservas; y \textit{Jest} para los servicios en Node.js y para la aplicación móvil.
+    \item \textbf{Análisis estático}: \textit{Ruff} para el código Python, \textit{go vet} y \textit{staticcheck} para el código Go, el compilador de TypeScript para la verificación de tipos y ESLint con reglas orientadas a seguridad en el servicio de pagos, para detectar patrones de código riesgosos antes de su integración.
+    \item \textbf{\LaTeX}: Utilizado para la redacción del presente informe, por su calidad tipográfica y su manejo de referencias cruzadas y bibliografía.
+\end{itemize}
+
+\subsection{Declaración de uso de Inteligencia Artificial Generativa}
+
+En cumplimiento de las consideraciones de ética profesional de la Facultad de Ingeniería de la Universidad de Buenos Aires, se declara que durante el desarrollo del Trabajo Profesional el equipo utilizó herramientas de Inteligencia Artificial Generativa (IAG) basadas en grandes modelos de lenguaje (LLM), entre ellas asistentes conversacionales y asistentes de programación integrados al entorno de desarrollo y a la terminal, como Claude (Anthropic) y GitHub Copilot.
+
+Estas herramientas se emplearon exclusivamente como asistencia técnica, en tareas como la resolución de errores, la consulta de documentación y de buenas prácticas, la aceleración de tareas repetitivas de codificación, la redacción de pruebas, la revisión de código, la configuración de herramientas de infraestructura y el apoyo en el uso de LaTex, corrección y maquetado de la documentación. En algunos repositorios se mantuvieron además archivos de instrucciones con las convenciones de código del proyecto, de manera que la asistencia generada respetara la arquitectura y las reglas acordadas por el equipo.
+
+Ninguna decisión de diseño, arquitectura o negocio fue delegada a estas herramientas. Todo el contenido generado con su asistencia fue revisado, comprendido, adaptado y validado por los integrantes del equipo antes de incorporarse al proyecto, sometido a las mismas pruebas automatizadas y revisiones que el resto del código. En consecuencia, \textbf{cada integrante del equipo asume la responsabilidad plena sobre la totalidad del trabajo presentado} y se encuentra en condiciones de explicarlo y defenderlo en las instancias de evaluación.

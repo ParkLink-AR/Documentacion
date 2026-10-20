@@ -12,7 +12,7 @@ Se optó por una arquitectura cliente-servidor con microservicios. Este enfoque 
 \textbf{PostgreSQL} \autocite{postgresql} con la extensión \textbf{PostGIS} \autocite{postgis}. Persiste los datos del sistema (usuarios, cocheras, reservas, pagos). PostGIS habilita las búsquedas de cocheras por proximidad geográfica.
 
 \subsection{Caché}
-\textbf{Redis} \autocite{redis}. Acelera el acceso a datos consultados frecuentemente: sesiones de usuario, tokens y disponibilidad de cocheras en tiempo real.
+\textbf{Redis} \autocite{redis}. Acelera el acceso a datos consultados frecuentemente: Sesiones de usuario, tokens y disponibilidad de cocheras en tiempo real.
 
 \subsection{Mensajería}
 \textbf{RabbitMQ} \autocite{rabbitmq}. Permite que los microservicios se comuniquen de forma asincrónica mediante eventos. Por ejemplo, al procesar un pago, otros servicios reaccionan al evento sin bloquear el flujo principal.
