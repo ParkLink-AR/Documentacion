@@ -1,15 +1,88 @@
-\section{Metodología aplicada}
-Para la gestión del ciclo de vida del desarrollo se adoptará un enfoque metodológico híbrido que combina prácticas de \textbf{Scrum} y \textbf{Kanban}, asegurando adaptabilidad ante cambios de requisitos e iteraciones rápidas sin perder la predictibilidad del alcance global.
+\section{Metodología aplicada}\label{sec:metodologia}
 
-\subsection{División en Módulos de Trabajo}
-El sistema se dividirá en módulos de trabajo que permitan organizar el desarrollo y delimitar las responsabilidades funcionales. El módulo de mapeo y geolocalización estará orientado a la visualización de plazas disponibles sobre mapas digitales interactivos mediante la integración de APIs de cartografía. A su vez, el módulo de reserva dinámica implementará la lógica necesaria para gestionar la disponibilidad horaria y las reservas manuales en tiempo real.
+La gestión del ciclo de vida del proyecto se basó en un enfoque ágil híbrido que combinó prácticas de \textbf{Scrum} y \textbf{Kanban}. La elección respondió a la necesidad de trabajar de forma iterativa sobre un sistema compuesto por varios servicios independientes, con requerimientos que se fueron refinando a medida que avanzaba el desarrollo, sin perder la previsibilidad sobre el alcance global del Producto Mínimo Viable (MVP). El enfoque no se aplicó de manera uniforme durante todo el proyecto, sino que se adaptó a la naturaleza de cada una de sus fases, como se describe en la Sección~\ref{sec:fases}.
 
-El módulo de autenticación y seguridad se encargará de administrar perfiles diferenciados para conductores, considerados demandantes, y propietarios o playas, considerados oferentes. Finalmente, el módulo de pagos contemplará la integración con procesadores de pago y billeteras virtuales, permitiendo la retención automática de comisiones y la liquidación correspondiente a los proveedores.
+\subsection{División del sistema en microservicios}\label{sec:division_microservicios}
 
-\subsection{Definición de Roles}
-El equipo de alumnos será responsable de la arquitectura, la codificación, el aseguramiento de la calidad (QA), el descubrimiento de requisitos, la mitigación de riesgos y la documentación técnica. Por su parte, el cuerpo de tutores actuará como facilitador y promotor del proyecto, validando el incremento de valor al cierre de cada ciclo.
+Como se detalla en la Sección~\ref{sec:microservicios}, el sistema se dividió en servicios independientes, cada uno con su propio repositorio y su propia base de datos. Esta división se trasladó también a la organización del equipo: cada componente tuvo un responsable principal, lo que permitió avanzar en paralelo sobre distintas partes del sistema a partir de contratos de comunicación acordados de antemano. La Tabla~\ref{tab:microservicios} resume la tecnología de cada componente y el integrante que tuvo a cargo su desarrollo principal.
 
-\subsection{Dinámica de Trabajo y Gestión de Tiempos}
-El trabajo se organizará en sprints bisemanales, entendidos como ciclos fijos de desarrollo orientados a la entrega de módulos potencialmente desplegables. Al inicio de cada sprint se realizará la planificación y estimación mediante la técnica de \textit{Planning Poker}, basada en la escala de Fibonacci, con el objetivo de asignar puntos de historia de manera consensuada.
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.1cm} >{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+\textbf{Componente} & \textbf{Tecnología} & \textbf{Responsabilidad principal} & \textbf{Responsable} \\
+\midrule
+\textit{gateway} & Python, FastAPI & Punto de entrada, autenticación perimetral y tiempo real & Thiago Baez, Facundo Luzzi, Santiago Varga \\
+\textit{auth-service} & Python, FastAPI & Identidad, registro, sesiones y perfil de usuarios & Thiago Baez \\
+\textit{parking-service} & TypeScript, NestJS, PostGIS & Publicación, geolocalización y gestión de cocheras & Santiago Varga \\
+\textit{booking-service} & Go & Disponibilidad, reservas, liquidaciones y soporte & Facundo Luzzi \\
+\textit{payment-service} & Node.js, Express & Cobros, confirmación y reembolsos con Mercado Pago & Santiago Domínguez \\
+\textit{notifications-service} & Python, FastAPI, RabbitMQ & Bandeja, notificaciones \textit{push} y en tiempo real & Facundo Luzzi \\
+\textit{mobile} & React Native, Expo & Aplicación para conductores y propietarios & Thiago Baez, Facundo Luzzi \\
+\textit{admin-web} & React Native Web, Expo & Panel de administración interno & Thiago Baez \\
+\bottomrule
+\end{tabularx}
+\caption{Componentes del sistema, tecnología y responsable principal.}
+\label{tab:microservicios}
+\end{table}
 
-Al cierre de cada iteración se llevarán a cabo reuniones de revisión y retrospectiva. En ellas se demostrarán las funcionalidades desarrolladas ante los tutores, se recibirá feedback y se analizarán posibles mejoras para refinar los procesos internos del equipo.
+\subsection{Fases del desarrollo}\label{sec:fases}
+
+El proyecto se extendió entre abril y octubre de 2026 y atravesó tres fases con objetivos distintos. La metodología de trabajo se ajustó a cada una de ellas: el marco Scrum se aplicó en la fase de construcción del producto, mientras que las fases de análisis y de validación se organizaron con un esquema más flexible, guiado por entregables.
+
+\subsubsection{Fase 1: Propuesta y análisis de viabilidad (abril a junio de 2026)}
+
+La primera fase tuvo como objetivo definir qué producto construir y demostrar que era viable. El equipo generó y evaluó distintas propuestas mediante una dinámica de \textit{brainwriting}, aplicó los marcos de las 5C y las 4P para compararlas y seleccionó ParkLink por sobre las demás alternativas, según el proceso documentado en el \hyperref[anexo:seleccion]{Anexo 1}. Sobre la propuesta elegida se realizó el estudio de mercado descripto en la Sección~\ref{sec:introduccion}: el relevamiento de competidores, el dimensionamiento del mercado potencial, la cuantificación del costo de la búsqueda de estacionamiento y la definición del modelo de negocio.
+
+En esta fase se definieron también el alcance del MVP y sus casos de uso, la arquitectura preliminar de microservicios, los prototipos de las pantallas principales y la identidad visual de la marca. Al tratarse de un trabajo de investigación y análisis, no se aplicó el marco Scrum: el avance se organizó en reuniones periódicas de discusión y en tareas asincrónicas de investigación y redacción. La fase concluyó con la presentación del anteproyecto y la firma del acta acuerdo con los directores, el 16 de junio de 2026.
+
+\subsubsection{Fase 2: Desarrollo del MVP bajo Scrum (julio a septiembre de 2026)}
+
+La segunda fase concentró la construcción del producto y se gobernó mediante el marco Scrum, en iteraciones de duración fija. A mediados de julio se crearon los repositorios de cada servicio dentro de la organización del proyecto en GitHub, y el primer objetivo fue contar con una versión navegable de la aplicación móvil con todos sus flujos funcionando sobre datos simulados. Los módulos de acceso a datos de la aplicación se diseñaron desde el inicio con los mismos nombres y estructuras que los endpoints reales, de manera que la conexión posterior con el \textit{backend} no requiriera modificar las pantallas.
+
+En paralelo, cada integrante avanzó sobre los servicios a su cargo. Mientras alguno de los servicios de los que dependía otro todavía no estaba disponible, se trabajó contra versiones simuladas de su contrato, lo que permitió que el desarrollo no quedara bloqueado por el orden de construcción. En agosto se incorporaron la puerta de enlace como punto único de entrada y el motor de disponibilidad y reservas; en septiembre se completaron la comunicación por eventos y el envío de notificaciones, se habilitó la verificación real por SMS, se sumó el panel de administración y se integraron los servicios de punta a punta. Septiembre fue el mes de mayor actividad de todo el proyecto, con más de la mitad de los cambios de código registrados en los repositorios.
+
+\subsubsection{Fase 3: Validación legal y de mercado (octubre de 2026)}
+
+Con el MVP funcional, la tercera fase se orientó a preparar la plataforma para su uso por personas reales, tanto desde el punto de vista legal como comercial. En el plano legal, se redactaron los Términos y Condiciones y la Política de Privacidad de ParkLink, publicados en el sitio oficial del proyecto. Los Términos regulan el funcionamiento de las reservas, los pagos, las cancelaciones, las liquidaciones a los propietarios y las responsabilidades de cada parte, exigen que los usuarios sean mayores de edad y que el propietario declare tener derecho a ofrecer la cochera publicada, y preservan los derechos que la Ley 24.240 de Defensa del Consumidor reconoce a los usuarios. La Política de Privacidad se elaboró conforme a la Ley 25.326 de Protección de los Datos Personales, detallando qué datos se recolectan, con qué finalidad, con quién se comparten, cuánto tiempo se conservan y cómo ejercer los derechos de acceso, rectificación y supresión. La aceptación de ambos documentos se incorporó como paso obligatorio del registro en la aplicación, que además permite consultarlos en todo momento y eliminar la cuenta propia.
+
+En el plano comercial, se consolidó el sitio web del proyecto (\url{https://www.parklink.com.ar}), con la presentación del producto, capturas actualizadas de la aplicación y una sección de preguntas frecuentes, como canal de presentación hacia conductores y propietarios. Se incorporaron además funcionalidades orientadas a la experiencia comercial del usuario, como el ordenamiento de los resultados de búsqueda, la posibilidad de repetir una reserva anterior y la descarga de comprobantes.
+
+En esta fase el equipo dejó de trabajar en iteraciones de duración fija y adoptó un flujo continuo de tipo Kanban, en el que las tareas de corrección, ajuste y documentación se priorizaron a medida que surgían, junto con la preparación del presente informe y de la defensa final.
+
+\subsection{Distribución de Roles por Integrante}\label{sec:roles}
+
+Si bien los cuatro integrantes participaron de manera transversal en todas las fases del proyecto, cada uno asumió la responsabilidad principal sobre un conjunto de componentes y áreas. Esta asignación permitió que cada parte del sistema tuviera un referente encargado de su diseño, su calidad y su integración con el resto.
+
+\begin{itemize}
+    \item \textbf{Thiago Fernando Baez:} Se encargó del desarrollo de \textit{frontend} y del diseño de la experiencia y la interfaz de usuario (UX/UI). Tuvo a su cargo la gestión de usuarios, el panel de administración (\textit{backoffice}) utilizado por el personal de la plataforma y la integración de los servicios a través de la puerta de enlace (\textit{API gateway}).
+    \item \textbf{Santiago Domínguez:} Fue responsable del aseguramiento de la calidad (QA) del sistema y de la integración del sistema de pagos con Mercado Pago, incluyendo la confirmación de transacciones y los reembolsos. Colaboró además en la documentación del proyecto y en el sistema de geolocalización de cocheras.
+    \item \textbf{Facundo Luzzi:} Se encargó del sistema de reservas, núcleo transaccional de la plataforma, y del sistema de notificaciones. Tuvo a su cargo la aplicación móvil para conductores y propietarios, además de la integración general entre los distintos componentes y el desarrollo orientado a garantizar la compatibilidad de la aplicación en dispositivos móviles.
+    \item \textbf{Santiago Jorge Varga:} Fue responsable de la documentación del proyecto, del entendimiento del negocio y del contacto con actores externos. En el plano técnico, tuvo a su cargo la creación, geolocalización y gestión de cocheras, y fue el encargado de la imagen de la marca. Participó además en las tareas de aseguramiento de la calidad (QA) del sistema.
+\end{itemize}
+
+Por su parte, los directores del Trabajo Profesional, el Mg. Ing. Gabriel Piñeiro y el Ing. Agustín Perrotta, acompañaron al equipo como facilitadores durante todo el proyecto: validaron los incrementos presentados, aportaron correcciones y orientaron las decisiones técnicas y de negocio en las reuniones periódicas de seguimiento.
+
+\subsection{Dinámica de Trabajo y Gestión de Tiempos}\label{sec:dinamica}
+
+\subsubsection{Iteraciones y ceremonias}
+
+Durante la fase de desarrollo, el trabajo se organizó en \textit{sprints} bisemanales, ciclos de duración fija orientados a obtener al final de cada uno un incremento del producto funcionando. Cada \textit{sprint} comenzó con una reunión de planificación, en la que el equipo seleccionó las historias de usuario a abordar y las estimó de manera consensuada mediante la técnica de \textit{Planning Poker}, asignando puntos de historia según la escala de Fibonacci. La estimación por complejidad, en lugar de por horas, permitió comparar el esfuerzo de tareas muy distintas entre sí, como una pantalla de la aplicación y una regla de negocio del servicio de reservas.
+
+Al cierre de cada iteración se realizó una revisión, en la que las funcionalidades terminadas se demostraron ante los directores para recibir su retroalimentación, y una retrospectiva, en la que el equipo analizó qué había funcionado y qué debía ajustarse en su forma de trabajar. Entre ceremonias, la coordinación cotidiana se resolvió de manera asincrónica, complementada con encuentros breves para destrabar dependencias entre servicios.
+
+\subsubsection{Seguimiento con los directores}
+
+En cumplimiento de lo acordado en el acta del proyecto, el equipo se reunió con los directores con una periodicidad no mayor a dos semanas, de manera presencial o remota. Estos encuentros sirvieron para presentar el avance, validar las decisiones de alcance, priorizar las funcionalidades del MVP y ajustar el rumbo del proyecto a partir de las observaciones recibidas.
+
+\subsubsection{Organización del código y flujo de integración}
+
+El código fuente se organizó en una organización de GitHub dedicada al proyecto, con un repositorio independiente para cada servicio, para la aplicación móvil, para el panel de administración y para el sitio web. Un repositorio raíz agrupó a todos los servicios mediante submódulos de Git y centralizó la configuración necesaria para levantar el sistema completo con un único comando, incluyendo una base de datos propia para cada servicio y el intermediario de mensajes. Esta organización permitió que cada integrante trabajara con autonomía sobre su repositorio, manteniendo a la vez una versión integrada y reproducible de todo el sistema.
+
+Los cambios se incorporaron mediante solicitudes de integración (\textit{pull requests}), lo que dejó un registro revisable de cada modificación relevante. En los servicios de \textit{backend}, cada solicitud disparó un circuito de integración continua con GitHub Actions que ejecutó, según el lenguaje de cada servicio, el análisis estático del código, la verificación de tipos, la compilación y las pruebas automatizadas, de modo que los errores se detectaran antes de integrar los cambios. Cada repositorio mantuvo además su propia documentación, con la descripción de sus endpoints, su modelo de datos y las decisiones de diseño adoptadas, que funcionó como contrato de referencia para el resto del equipo.
+
+\subsubsection{Entornos de trabajo y pruebas integradas}
+
+Para validar el sistema de punta a punta, el equipo trabajó sobre tres modalidades de ejecución. La primera, completamente local, levantó todos los servicios en contenedores en la computadora de cada integrante. La segunda expuso ese mismo entorno a la red local, de manera que la aplicación pudiera probarse desde teléfonos reales conectados a la misma red. La tercera publicó el sistema en internet a través de un dominio propio, lo que permitió realizar demostraciones y pruebas desde cualquier lugar. Se desarrollaron además herramientas de apoyo, como un generador de datos de demostración con cocheras distribuidas en distintos barrios de la Ciudad de Buenos Aires y un \textit{script} de prueba de punta a punta que recorre el flujo completo, desde la creación de un propietario y su cochera hasta la reserva de un conductor, que facilitaron la verificación de los flujos completos de búsqueda, reserva, pago y notificación.
