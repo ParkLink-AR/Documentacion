@@ -1,14 +1,80 @@
-\section{Introducción}
-La movilidad urbana representa uno de los principales desafíos de las grandes ciudades modernas. El crecimiento sostenido del parque automotor, combinado con la alta densidad poblacional y comercial de los centros urbanos, genera diariamente problemas vinculados con la congestión vehicular, la circulación ineficiente y la dificultad para acceder a espacios de estacionamiento disponibles. En ciudades como la Ciudad Autónoma de Buenos Aires (CABA), una parte considerable del tránsito diario está asociada a conductores que recorren múltiples cuadras buscando estacionamiento, incrementando no solo los tiempos de traslado, sino también el consumo de combustible, la contaminación ambiental y el nivel de estrés urbano.
+\section{Introducción}\label{sec:introduccion}
 
-Paralelamente, existe una gran cantidad de espacios de estacionamiento privados que permanecen desocupados durante extensos períodos de tiempo. Cocheras residenciales, estacionamientos comerciales y espacios pertenecientes a empresas u organizaciones suelen encontrarse subutilizados debido a la falta de herramientas que permitan conectarlos de manera eficiente con potenciales usuarios. Esta situación evidencia una ineficiencia en la distribución y utilización de recursos urbanos ya existentes.
+\subsection{Contexto y motivación}
 
-A partir de esta problemática surge ParkLink, una plataforma digital orientada a facilitar la conexión entre conductores que necesitan estacionamiento y propietarios de espacios disponibles que desean monetizar su capacidad ociosa. El objetivo principal del proyecto es centralizar la oferta de estacionamiento mediante una aplicación accesible y sencilla, permitiendo visualizar espacios disponibles en tiempo real, realizar reservas y gestionar pagos de forma segura.
+La movilidad urbana es uno de los desafíos centrales de las grandes ciudades, y el estacionamiento ocupa en ella un lugar particular: es el último tramo de casi cualquier viaje en automóvil y, al mismo tiempo, el que menos herramientas tecnológicas ha recibido. En los últimos años, la población urbana incorporó con naturalidad aplicaciones que resuelven problemas cotidianos conectando a quien ofrece un recurso con quien lo necesita, como el transporte (Uber) o el alojamiento temporario (Airbnb). Sin embargo, en la Ciudad Autónoma de Buenos Aires el estacionamiento sigue resolviéndose por canales separados que no dialogan entre sí: el estacionamiento medido en la vía pública, las playas comerciales a las que se accede sin reserva previa y los avisos clasificados de cocheras orientados casi exclusivamente al alquiler mensual.
 
-El proyecto se plantea inicialmente sobre un alcance acotado y escalable, priorizando el desarrollo de un Producto Mínimo Viable (MVP) que permita validar la utilidad y viabilidad del sistema en un entorno real. En esta primera etapa se busca desarrollar una solución funcional basada principalmente en reservas manuales y geolocalización, evitando incorporar tecnologías de automatización más complejas —como sistemas inteligentes de detección y predicción vehicular— que podrían incrementar significativamente los costos y riesgos de implementación.
+En esa brecha se apoya la motivación del proyecto. Por un lado, existe un conductor que no puede saber, antes de salir, si va a tener dónde estacionar ni cuánto le va a costar. Por otro, existen propietarios de cocheras particulares y playas de estacionamiento con capacidad ociosa durante buena parte del día, que no cuentan con un medio seguro y sencillo para ofrecerla por períodos cortos. El análisis detallado de esta problemática y de su costo para el conductor se desarrolla en la Sección~\ref{sec:problema}, mientras que la revisión de las soluciones existentes se presenta en la Sección~\ref{sec:estado_arte}.
 
-Asimismo, ParkLink no solo busca brindar beneficios a los conductores, reduciendo tiempos de búsqueda y mejorando la experiencia de estacionamiento, sino también generar nuevas oportunidades económicas para propietarios de espacios subutilizados. De esta manera, el proyecto propone un modelo colaborativo que favorece una utilización más eficiente de la infraestructura urbana existente y contribuye al desarrollo de soluciones de movilidad más sostenibles para las grandes ciudades.
+Para el equipo, el problema reunía además las condiciones de un desafío de ingeniería completo. Resolverlo de punta a punta exigía coordinar disponibilidad horaria en tiempo real, evitar que dos conductores reserven el mismo lugar, integrar cobros digitales y liquidaciones a terceros, construir confianza entre personas que no se conocen y sostener todo ello sobre un sistema distribuido. ParkLink fue elegido entre cuatro propuestas evaluadas por el equipo, mediante el proceso de selección que se documenta en el \hyperref[anexo:seleccion]{Anexo 1}.
 
-Finalmente, el desarrollo del sistema será llevado a cabo mediante una metodología híbrida basada en prácticas ágiles de Scrum y Kanban, permitiendo organizar el trabajo de manera iterativa, adaptable y orientada a la entrega progresiva de funcionalidades.
+El desarrollo del software se extendió entre abril y octubre de 2026 y dio como resultado una plataforma en funcionamiento compuesta por una aplicación móvil para conductores y propietarios, un panel web de administración y un conjunto de microservicios que la sostienen. Este informe documenta el recorrido completo del proyecto: desde el análisis del problema y del mercado hasta la solución implementada, la metodología aplicada y los resultados obtenidos.
 
-La definición del proyecto fue resultado de un proceso de generación de ideas y selección entre múltiples alternativas, cuyo análisis detallado se encuentra desarrollado en el \textbf{Anexo 1}.
+\subsection{Estudio de mercado}
+
+Antes de definir el alcance del producto se realizó un estudio de mercado orientado a responder tres preguntas: si el problema era real y de qué magnitud, quiénes eran los actores existentes y qué espacio dejaban sin cubrir, y si existía un modelo de negocio sostenible para la plataforma. El estudio se desarrolló en cuatro líneas de trabajo, cuyos resultados se exponen en detalle en las secciones correspondientes del informe:
+
+\begin{enumerate}
+    \item \textbf{Relevamiento de competidores:} se analizaron las plataformas de estacionamiento medido con presencia local, las aplicaciones de navegación, los portales de clasificados y las plataformas internacionales de reserva de estacionamiento. La conclusión fue que ningún actor del mercado argentino combina reserva anticipada, disponibilidad real, pago integrado y acceso a cocheras privadas (Sección~\ref{sec:estado_arte}).
+    \item \textbf{Dimensionamiento del mercado potencial:} a partir del volumen de vehículos que circulan diariamente en CABA y de la proporción de conductores que buscan estacionamiento de forma activa, se estimó un mercado de entre 180.000 y 270.000 búsquedas diarias, sobre el que se construyeron las proyecciones de adopción e ingresos (Sección~\ref{sec:plan_economico}).
+    \item \textbf{Cuantificación del costo de la búsqueda:} se estimó el costo económico que asume un conductor cada vez que sale sin un lugar asegurado, considerando tiempo, combustible, riesgo de multa y recurso a playas de emergencia, junto con los precios de referencia de las cocheras por hora en la ciudad (Sección~\ref{sec:problema}).
+    \item \textbf{Análisis estratégico:} se aplicaron los marcos de las 5C y las 4P para caracterizar a la compañía, los segmentos de clientes, los colaboradores, los competidores y el contexto, y para definir la propuesta de producto, precio, plaza y promoción (Sección~\ref{sec:negocio}).
+\end{enumerate}
+
+Las conclusiones del estudio se reflejan en decisiones concretas de producto. La naturaleza de mercado de dos lados del negocio llevó a que la publicación de cocheras sea gratuita y a que la plataforma obtenga ingresos únicamente mediante una comisión sobre cada reserva concretada, configurable desde el panel de administración. La desconfianza entre conductores y propietarios desconocidos se abordó con la verificación de correo electrónico y teléfono en el registro, el cobro dentro de la plataforma, la verificación presencial del ingreso y las reseñas entre usuarios. La presencia de playas comerciales en la oferta se resolvió permitiendo que una cochera admita varias reservas simultáneas según su capacidad, y la demanda de alquileres más extensos que se observa en los clasificados se incorporó mediante las reservas por estadía de días, semanas o meses.
+
+\subsection{Objetivos del Trabajo Profesional}
+
+\subsubsection{Objetivo general}
+
+Diseñar, desarrollar y validar una plataforma digital que conecte a conductores que necesitan estacionar con propietarios de cocheras particulares y playas de estacionamiento de la Ciudad Autónoma de Buenos Aires, permitiendo buscar, reservar y pagar un lugar con disponibilidad confirmada antes de llegar a destino, y aplicando en su construcción los conocimientos y las prácticas profesionales adquiridos a lo largo de la carrera de Ingeniería en Informática.
+
+\subsubsection{Objetivos académicos}
+
+\begin{itemize}
+    \item Integrar en un único producto los conocimientos adquiridos en distintas áreas de la carrera, desde algoritmos y bases de datos hasta sistemas distribuidos, ingeniería de software y gestión de emprendimientos tecnológicos.
+    \item Atravesar el ciclo de vida completo de un producto de software: ideación, análisis de negocio, especificación de requerimientos, diseño, implementación, pruebas, despliegue y documentación.
+    \item Aplicar una metodología de trabajo ágil en un equipo de cuatro integrantes, con planificación iterativa, estimación, seguimiento del avance y validación periódica con los tutores.
+    \item Documentar de forma trazable las decisiones técnicas y de negocio tomadas durante el proyecto, y cumplir con los requisitos establecidos por la Resolución de Consejo Directivo 1124 de 2025 para los Trabajos Integradores Finales.
+\end{itemize}
+
+\subsubsection{Objetivos técnicos}
+
+\begin{itemize}
+    \item Construir una arquitectura de microservicios en la que cada dominio (autenticación, cocheras, reservas, pagos y notificaciones) tenga su propio servicio y su propia base de datos, con un único punto de entrada que centralice la validación de identidad, la limitación de tasa de peticiones y el enrutamiento.
+    \item Implementar la búsqueda de cocheras por proximidad geográfica sobre un mapa interactivo, con filtros por precio y distancia.
+    \item Desarrollar un motor de disponibilidad y reservas que calcule las franjas libres de cada cochera a partir de su horario publicado y de las reservas activas, que admita reservas por hora y por estadía, y que impida la sobre-reserva aun ante solicitudes concurrentes.
+    \item Integrar el cobro de reservas con una pasarela de pagos, incluyendo la confirmación asincrónica de las transacciones, los reembolsos y la liquidación de ganancias a los propietarios.
+    \item Desacoplar los procesos secundarios mediante comunicación basada en eventos, garantizando el procesamiento idempotente de cada evento para el envío de notificaciones \textit{push} y en tiempo real.
+    \item Proteger las cuentas y los datos de los usuarios mediante verificación de identidad en el registro, almacenamiento seguro de contraseñas, tokens de acceso de corta duración con renovación rotativa y gestión de sesiones por dispositivo.
+    \item Ofrecer una aplicación móvil multiplataforma con experiencias diferenciadas para conductores y propietarios, y un panel web para la operación interna de la plataforma.
+    \item Sostener la calidad del código mediante pruebas automatizadas y análisis estático ejecutados en un circuito de integración continua.
+\end{itemize}
+
+\subsubsection{Objetivos de negocio}
+
+\begin{itemize}
+    \item Construir un mercado de dos lados que atienda a conductores particulares, a propietarios de cocheras residenciales y a playas de estacionamiento comerciales, tomando a CABA como mercado inicial.
+    \item Implementar un modelo de ingresos transaccional, sin costo de publicación para los propietarios, en el que la plataforma obtiene una comisión únicamente cuando se concreta una reserva.
+    \item Incorporar mecanismos que generen confianza entre las partes de cada operación: identidad verificada, pago dentro de la plataforma, verificación presencial del ingreso, reseñas, mensajería y soporte asociados a cada reserva.
+    \item Dotar a la plataforma de las herramientas operativas necesarias para administrarla: moderación de publicaciones, gestión de liquidaciones y reembolsos, atención de soporte y configuración de la comisión.
+\end{itemize}
+
+El grado de cumplimiento de cada uno de estos objetivos se analiza en la sección de conclusiones.
+
+\subsection{Articulación con los conocimientos adquiridos en la carrera}
+
+El desarrollo de ParkLink no fue una actividad aislada, sino la aplicación práctica de contenidos trabajados a lo largo de la carrera en la Facultad de Ingeniería de la Universidad de Buenos Aires. A continuación se detallan las asignaturas cuyos contenidos tuvieron una incidencia directa en el proyecto, junto con el aspecto concreto de la plataforma en el que se aplicaron:
+
+\begin{itemize}
+    \item \textbf{Algoritmos y Estructuras de Datos y Teoría de Algoritmos:} el cálculo de la disponibilidad de una cochera se resuelve como una operación de resta de intervalos, en la que a las franjas horarias publicadas por el propietario se les sustraen las reservas activas. Los criterios de eficiencia y de elección de estructuras de datos estudiados en estas asignaturas guiaron tanto ese algoritmo como las búsquedas sobre el conjunto de cocheras publicadas.
+    \item \textbf{Base de Datos:} el modelado relacional de cada servicio, el uso de transacciones para mantener la integridad de las operaciones de reserva y pago, y el empleo de la extensión PostGIS para indexar y consultar ubicaciones geográficas se apoyan directamente en los contenidos de esta asignatura.
+    \item \textbf{Programación Concurrente:} la posibilidad de que dos conductores intenten reservar el mismo lugar al mismo tiempo es un problema clásico de condición de carrera. Se resolvió serializando la creación de reservas de cada cochera mediante bloqueos a nivel de base de datos dentro de la transacción, y reteniendo temporalmente el lugar mientras el conductor completa el pago.
+    \item \textbf{Sistemas Distribuidos I:} la descomposición del sistema en microservicios, la comunicación asincrónica mediante un intermediario de mensajes, la entrega de eventos con garantía de al menos una vez y el procesamiento idempotente necesario para que un evento duplicado no genere efectos repetidos son aplicaciones directas de los conceptos de esta materia.
+    \item \textbf{Redes:} el diseño de las interfaces HTTP entre servicios, el uso de WebSockets para las notificaciones en tiempo real y el funcionamiento de la puerta de enlace como proxy inverso requirieron los fundamentos de protocolos y arquitectura de red vistos en la carrera.
+    \item \textbf{Paradigmas de Programación y Taller de Programación:} el sistema se implementó en varios lenguajes (Python, Go y TypeScript), cada uno elegido según las necesidades de su dominio. Trabajar con soltura en distintos paradigmas y aplicar buenas prácticas de diseño, modularización y pruebas fue posible gracias a la formación recibida en estas materias.
+    \item \textbf{Ingeniería de Software I y II:} aportaron el marco para la especificación de requerimientos y casos de uso, el diseño de la arquitectura en capas de los servicios, la estrategia de pruebas, la integración continua y la aplicación de metodologías ágiles a lo largo del proyecto.
+    \item \textbf{Gestión del Desarrollo de Sistemas Informáticos:} brindó las herramientas para planificar el trabajo, estimar el esfuerzo, coordinar a un equipo de cuatro personas y gestionar los riesgos del proyecto.
+    \item \textbf{Empresas de Base Tecnológica I y II:} proporcionaron los marcos de análisis estratégico (5C y 4P), los criterios para dimensionar un mercado y la base para definir el modelo de ingresos de la plataforma.
+    \item \textbf{Probabilidad y Estadística:} sustentó la construcción de escenarios conservador, medio y optimista para las estimaciones de mercado y las proyecciones de adopción.
+\end{itemize}

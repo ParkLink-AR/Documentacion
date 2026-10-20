@@ -77,7 +77,7 @@
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
-\rhead{\footnotesize \textsc {Anteproyecto de Parklink\\ Trabajo Práctico Profesional}} % Trabajo práctico
+\rhead{\footnotesize \textsc {Informe Final ParkLink\\ Trabajo Práctico Profesional}} % Trabajo práctico
 \lhead{\includegraphics[width=2.5cm]{logo}}
 \cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
 
@@ -100,16 +100,13 @@
 \renewcommand*{\maketitle}{
 \thispagestyle{firststyle}
 \begin{center}
-    \includegraphics[width=7cm]{logo} \\[0.4cm]
-    \textsc{\Large Trabajo Práctico Profesional}\\[0.05cm] % Materia
-    \textsc{\small (TAO53) Curso Piñeiro-Perrotta}\\[0.25cm] % Subtítulo materia
-    {\huge \bfseries Anteproyecto de Parklink}\\[0.25cm]      % Título
-    \includegraphics[width=4cm]{logo-parklink} \\[0.15cm]
-    \andreasline \\[0.1cm]
-    {\large 30 de Octubre 2026}\\[0.4cm]                    % Fecha
-
-    % --- EQUIPO ---
-    {\Large \bfseries Equipo 14 (Grupo 14 Piñeiro/Perrotta)}\\[0.4cm]
+    \includegraphics[width=9cm]{logo} \\[0.5cm]
+    {\huge \bfseries Informe Final del Trabajo Profesional}\\[0.15cm] % Título
+    \textsc{\normalsize (TAO53) Curso Piñeiro-Perrotta --- Equipo 198 (Grupo 14)}\\[0.4cm] % Materia y equipo
+    \includegraphics[width=8.5cm]{logo-parklink} \\[0.35cm]
+    {\Large \itshape ``Menos vueltas, más lugar asegurado''}\\[0.2cm] % Slogan
+    {\large Sistema Integral de Mapeo, Gestión y Reserva de Cocheras Urbanas}\\[0.15cm] % Subtítulo
+    \andreasline \\[0.4cm]
 
     % --- TABLA DE INTEGRANTES ---
     {\Large \bfseries Integrantes:}\\[0.25cm]
