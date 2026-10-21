@@ -1,7 +1,7 @@
 \section{Plan Económico y Modelo de Negocio}\label{sec:plan_economico}
 
 Con el fin de validar la sostenibilidad financiera del proyecto, se desarrolló un modelo analítico segmentado en tres etapas de evolución: Corto plazo (MVP), mediano
-plazo y largo plazo. Los valores se expresan en dólares estadounidenses, tomando como tipo de cambio referencial 1 USD = 1.400 ARS.
+plazo y largo plazo. Los valores se expresan en dólares estadounidenses, tomando como tipo de cambio referencial 1 USD = 1.500 ARS.
 
 \subsection*{Estimaciones del mercado potencial}
 
@@ -49,8 +49,8 @@ Sobre la base del escenario medio de mercado potencial (216.000 búsquedas diari
 \begin{itemize}
     \item MVP (año 1): Adopción del 0,025\% del mercado potencial.
     \item Mediano plazo (año 2): Adopción del 0,28\%.
-    \item Largo plazo (año 3 en adelante): Adopción del 1,0\%. Consolidación a nivel CABA y crecimiento orgánico sostenido.
-    \item Largo plazo en el mejor caso: Adopción del 2,0\% sobre el escenario optimista de mercado (270.000 búsquedas diarias).
+    \item Largo plazo (año 3 en adelante): Adopción del 0,91\%. Consolidación a nivel CABA y crecimiento orgánico sostenido.
+    \item Largo plazo en el mejor caso: Adopción del 1,5\% sobre el escenario optimista de mercado (270.000 búsquedas diarias).
 \end{itemize}
 
 La cantidad de reservas diarias proyectadas en cada etapa es la siguiente:
@@ -66,36 +66,51 @@ La cantidad de reservas diarias proyectadas en cada etapa es la siguiente:
         \midrule
         MVP (año 1) & 0,025\% & 55 \\
         Mediano plazo (año 2) & 0,28\% & 600 \\
-        Largo plazo & 1,0\% & 2.160 \\
-        Largo plazo (mejor caso) & 2,0\% & 5.400 \\
+        Largo plazo & 0,91\% & 1.966 \\
+        Largo plazo (mejor caso) & 1,5\% & 4.050 \\
         \bottomrule
     \end{tabular}%
     }
     \label{tab:adopcion}
 \end{table}
 
-\subsection*{Estimación del precio promedio}
+\subsection*{Precios de referencia del mercado}
 
-El valor promedio de una cochera por hora en zonas urbanas de CABA suele variar entre \$2.000 y \$5.000 ARS por hora (USD 1,43 a USD 3,57) \autocite{iprofesional2026cocheras, plangobierno2026cocheras}, dependiendo de ubicación,
-horario, demanda y tipo de estacionamiento.
+Los precios del estacionamiento privado en CABA no están regulados y varían según la zona, el horario y el tipo de vehículo. De acuerdo con los relevamientos de precios más recientes, una hora de estacionamiento en una cochera o playa de la ciudad se ubica entre \$6.000 y \$10.000 ARS, con un valor promedio de aproximadamente \$8.000 ARS, y puede alcanzar los \$20.000 ARS en las zonas y horarios de mayor demanda \autocite{iprofesional2026cocheras}. Para las estadías más extensas, el precio por hora disminuye: Una estadía diaria ronda los \$39.000 ARS, por debajo de lo que costaría una jornada completa a tarifa horaria, mientras que el alquiler mensual de una cochera varía entre \$100.000 y \$350.000 ARS según el barrio \autocite{iprofesional2026cocheras, lanacion2026cocheras}.
 
-Tomando un valor promedio razonable para estadías cortas (2 a 3 horas), se establece un ticket promedio por reserva de:\\
-USD 4,29 (equivalente a \$6.000 ARS).
+Tomando como referencia una reserva típica de estadía corta de dos horas y media, el ticket promedio por reserva se establece en \$20.000 ARS (USD 13,33).
 
-ParkLink retiene una comisión del 10\% sobre el propietario de la cochera y aplica un cargo de servicio del 5\% sobre el usuario. El ingreso promedio por operación
-exitosa se compone de:
+\subsection*{Modelo de ingresos}
 
-\begin{itemize}
-    \item Comisión al propietario: 10\% × USD 4,29 = USD 0,43.
-    \item Cargo de servicio al usuario: 5\% × USD 4,29 = USD 0,21.
-\end{itemize}
+El modelo de negocio de ParkLink es transaccional y cobra únicamente al conductor. Publicar una cochera es gratuito y el propietario recibe el 100\% del precio que fija para su espacio. La plataforma obtiene sus ingresos mediante un cargo de servicio del 8\% que se suma al valor de cada reserva concretada y que abona el conductor al momento del pago. De esta forma, ParkLink solo genera ingresos cuando se concreta una reserva, y el propietario no tiene ningún costo por formar parte de la plataforma.
 
-Ingreso neto promedio por operación: USD 0,64.
+La Tabla~\ref{tab:ingreso_por_reserva} muestra el ingreso que genera cada tipo de reserva.
+
+\begin{table}[H]
+    \centering
+    \caption{Ingreso de la plataforma por tipo de reserva (cargo de servicio del 8\%).}
+    \vspace{0.2cm}
+    \small
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{l r r r r}
+        \toprule
+        \textbf{Tipo de reserva} & \textbf{Recibe el propietario} & \textbf{Paga el conductor} & \multicolumn{2}{c}{\textbf{Ingreso de ParkLink}} \\
+        \cmidrule(lr){4-5}
+         & \textbf{(ARS)} & \textbf{(ARS)} & \textbf{ARS} & \textbf{USD} \\
+        \midrule
+        Estadía corta (2,5 h) & 20.000 & 21.600 & 1.600 & 1,07 \\
+        Estadía diaria & 39.000 & 42.120 & 3.120 & 2,08 \\
+        Alquiler mensual & 100.000--350.000 & 108.000--378.000 & 8.000--28.000 & 5,33--18,67 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:ingreso_por_reserva}
+\end{table}
+
+Para las proyecciones se adoptó un criterio conservador: Todas las reservas se estiman con el ticket de la estadía corta, que es el de menor valor. Las reservas por día y por mes, que generan un ingreso mayor por operación, representan un potencial adicional que no se incluye en los cálculos.
 
 \subsection*{Estimación de ingresos anuales}
 
-Multiplicando las reservas diarias proyectadas por el ingreso neto promedio por operación (USD 0,64), los ingresos diarios, mensuales y anuales esperados por etapa son
-los siguientes:
+Multiplicando las reservas diarias proyectadas por el ingreso promedio por operación (USD 1,07), los ingresos diarios, mensuales y anuales esperados por etapa son los siguientes:
 
 \begin{table}[H]
     \centering
@@ -106,10 +121,10 @@ los siguientes:
         \toprule
         \textbf{Etapa} & \textbf{Reservas/día} & \textbf{Ingreso diario} & \textbf{Ingreso mensual} & \textbf{Ingreso anual} \\
         \midrule
-        MVP (año 1)              & 55    & 35,20    & 1.056   & 12.672 \\
-        Mediano plazo (año 2)    & 600   & 384,00   & 11.520  & 138.240 \\
-        Largo plazo              & 2.160 & 1.382,40 & 41.472  & 497.664 \\
-        Largo plazo (mejor caso) & 5.400 & 3.456,00 & 103.680 & 1.244.160 \\
+        MVP (año 1)              & 55    & 58,67    & 1.760   & 21.120 \\
+        Mediano plazo (año 2)    & 600   & 640,00   & 19.200  & 230.400 \\
+        Largo plazo              & 1.966 & 2.097,07 & 62.912  & 754.944 \\
+        Largo plazo (mejor caso) & 4.050 & 4.320,00 & 129.600 & 1.555.200 \\
         \bottomrule
     \end{tabular}%
     }
@@ -121,9 +136,10 @@ los siguientes:
 \begin{itemize}
     \item Vehículos circulantes diarios en CABA: Aproximadamente 1,8 millones, considerando residentes e ingresantes desde el conurbano.
     \item Proporción de conductores que buscan estacionamiento de manera activa: Entre 10\% y 15\% (escenario medio 12\%).
-    \item Valor promedio de cochera por hora en zonas urbanas: USD 1,43 a USD 3,57.
-    \item Ticket promedio por reserva de estadía corta (2 a 3 horas): USD 4,29.
-    \item Estructura de comisiones: 10\% al propietario de la cochera y 5\% al usuario, equivalente a un ingreso neto promedio de USD 0,64 por operación exitosa.
+    \item Valor promedio de una hora de cochera en CABA: \$8.000 ARS (rango de \$6.000 a \$10.000 ARS).
+    \item Ticket promedio por reserva de estadía corta (2,5 horas): \$20.000 ARS (USD 13,33).
+    \item Modelo de ingresos: Cargo de servicio del 8\% abonado por el conductor, sin costo para el propietario, equivalente a un ingreso promedio de USD 1,07 por operación exitosa.
+    \item Año operativo de 360 días (12 meses de 30 días) y tipo de cambio de referencia de 1 USD = 1.500 ARS.
 \end{itemize}
 
 \textbf{Costos operativos por etapa:}
@@ -153,8 +169,7 @@ La estructura de costos contempla sueldos escalonados de los cuatro fundadores, 
 \end{table}
 
 \textbf{Proyecciones de adopción y resultados:}
-La rampa de crecimiento contempla un lanzamiento focalizado en uno o dos barrios de CABA durante el primer año, expansión zonal e inicio de campañas de marketing pago en
-el segundo año, y consolidación a partir del tercer año.
+La rampa de crecimiento contempla un lanzamiento focalizado en uno o dos barrios de CABA durante el primer año, expansión zonal e inicio de campañas de marketing pago en el segundo año, y consolidación a partir del tercer año.
 
 \begin{table}[H]
     \centering
@@ -165,10 +180,10 @@ el segundo año, y consolidación a partir del tercer año.
         \toprule
         \textbf{Etapa} & \textbf{Reservas diarias} & \textbf{Ingreso anual} & \textbf{Gastos operativos anuales} & \textbf{Resultado anual} \\
         \midrule
-        MVP (año 1)               & 55    & 12.672    & 78.300  & -65.628 \\
-        Mediano plazo (año 2)     & 600   & 138.240   & 121.200 & +17.040 \\
-        Largo plazo               & 2.160 & 497.664   & 157.200 & +340.464 \\
-        Largo plazo (mejor caso)  & 5.400 & 1.244.160 & 178.800 & +1.065.360 \\
+        MVP (año 1)               & 55    & 21.120    & 78.300  & -57.180 \\
+        Mediano plazo (año 2)     & 600   & 230.400   & 121.200 & +109.200 \\
+        Largo plazo               & 1.966 & 754.944   & 157.200 & +597.744 \\
+        Largo plazo (mejor caso)  & 4.050 & 1.555.200 & 178.800 & +1.376.400 \\
         \bottomrule
     \end{tabular}%
     }
@@ -176,13 +191,7 @@ el segundo año, y consolidación a partir del tercer año.
 \end{table}
 
 \textbf{Inversión inicial requerida:}
-El déficit operativo del primer año (USD 65.628) representa el capital mínimo necesario para sostener la operación durante la etapa de validación. De los USD 78.300 de
-gastos operativos anuales del MVP, USD 72.000 (el 92\%) corresponden al pago de salarios de los cuatro fundadores. Esto significa que la inversión inicial cubre
-fundamentalmente el costo del equipo durante la etapa pre-equilibrio: Sin remuneraciones, la operación cerraría con un superávit de USD 6.372 incluso en su primer año.
-Considerando un margen de contingencia del 20\%, la inversión inicial estimada asciende a aproximadamente USD 80.000.
+El déficit operativo del primer año (USD 57.180) representa el capital mínimo necesario para sostener la operación durante la etapa de validación. De los USD 78.300 de gastos operativos anuales del MVP, USD 72.000 (el 92\%) corresponden al pago de salarios de los cuatro fundadores. Esto significa que la inversión inicial cubre fundamentalmente el costo del equipo durante la etapa previa al equilibrio: Sin remuneraciones, la operación cerraría con un superávit de USD 14.820 incluso en su primer año. Considerando un margen de contingencia del 20\%, la inversión inicial estimada asciende a aproximadamente USD 69.000.
 
-A partir del segundo año, la operación alcanza el punto de equilibrio. En el escenario consolidado se proyecta una utilidad neta anual superior a USD 340.000, suficiente
-para sostener salarios competitivos de los cuatro fundadores, cubrir obligaciones impositivas, reinversión operativa y posibles expansiones a nuevas zonas.
-
-
-
+\textbf{Punto de equilibrio y rentabilidad:}
+En el segundo año la operación alcanza el punto de equilibrio y genera ganancias, con un resultado positivo de USD 109.200 que permite recuperar en ese mismo año la totalidad de la inversión inicial. En el escenario de largo plazo se proyecta una utilidad neta anual de aproximadamente USD 600.000, suficiente para sostener salarios competitivos de los cuatro fundadores, cubrir obligaciones impositivas, reinvertir en la operación y financiar la expansión a nuevas zonas.
