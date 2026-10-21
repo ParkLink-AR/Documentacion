@@ -1,13 +1,185 @@
-\section{Cronograma de las actividades realizadas}
+\section{Cronograma de las actividades realizadas}\label{sec:cronograma}
 
-El desarrollo del proyecto se organizará de manera progresiva, siguiendo las fases habituales de un proyecto de ingeniería de software. Esta planificación permitirá establecer una secuencia de trabajo clara, asignar prioridades y realizar un seguimiento sistemático del avance durante el período lectivo.
+El proyecto se desarrolló entre el 13 de abril y fines de octubre de 2026. Durante ese período, el trabajo se organizó en trece \textit{sprints} bisemanales, agrupados en las tres fases descriptas en la Sección~\ref{sec:fases}, seguidos por un tramo final de trabajo en flujo continuo destinado al cierre del proyecto. En esta sección se detalla la secuencia de actividades, los hitos alcanzados y los mecanismos con los que se dio seguimiento al avance.
 
-La primera etapa corresponderá a la \textbf{fase de investigación y definición de requisitos}. En esta instancia se analizará el contexto del problema, se precisarán los perfiles de usuario involucrados ---principalmente conductores y propietarios de espacios de estacionamiento--- y se determinarán sus principales necesidades. Asimismo, se documentarán los requisitos funcionales y no funcionales que orientarán el diseño y la implementación de la solución.
+\subsection{Planificación en \textit{sprints}}
 
-Posteriormente, se desarrollará la \textbf{fase de diseño y arquitectura}. Esta etapa comprenderá la selección y el modelado de la estructura de datos, considerando alternativas relacionales o NoSQL según las necesidades del sistema. También se elaborarán los prototipos de las interfaces de usuario (\textit{mockups}) y se definirán los contratos de las API, con el objetivo de establecer una arquitectura coherente, escalable y mantenible.
+La Tabla~\ref{tab:sprints} presenta los trece \textit{sprints} del proyecto, con sus fechas y el objetivo principal de cada uno. Durante la primera fase, los \textit{sprints} no produjeron incrementos de software sino entregables de análisis y documentación; a partir del sexto, cada \textit{sprint} cerró con un incremento funcional del producto.
 
-En la \textbf{fase de desarrollo del producto mínimo viable (MVP)} se implementarán, de forma incremental, los componentes principales de la plataforma. Entre ellos se incluirán el módulo de autenticación, la integración del servicio de representación cartográfica, la gestión de reservas manuales y la conexión con la pasarela de pagos. Cada componente será desarrollado procurando mantener la separación de responsabilidades y la integración progresiva entre los distintos módulos.
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabularx}{\textwidth}{c c c >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Sprint} & \textbf{Fechas} & \textbf{Fase} & \textbf{Objetivo principal} \\
+\midrule
+1 & 13/04 -- 26/04 & 1 & Generación de ideas mediante \textit{brainwriting} y primera evaluación de las propuestas. \\
+2 & 27/04 -- 10/05 & 1 & Análisis de las 5C y las 4P de las propuestas finalistas y selección de ParkLink. \\
+3 & 11/05 -- 24/05 & 1 & Estudio de mercado: Relevamiento de competidores, dimensionamiento del mercado y costo de la búsqueda. \\
+4 & 25/05 -- 07/06 & 1 & Alcance del MVP, casos de uso, arquitectura preliminar, prototipos e identidad visual. \\
+5 & 08/06 -- 21/06 & 1 & Redacción y presentación del anteproyecto y firma del acta acuerdo. \\
+\midrule
+6 & 22/06 -- 05/07 & 2 & Diseño técnico: Modelo de datos, contratos de las API y diseño de las pantallas de la aplicación. \\
+7 & 06/07 -- 19/07 & 2 & Creación de los repositorios y de los servicios base; primera versión navegable de la aplicación con datos simulados. \\
+8 & 20/07 -- 02/08 & 2 & Registro e inicio de sesión, publicación de cocheras, búsqueda geoespacial y sitio web del proyecto. \\
+9 & 03/08 -- 16/08 & 2 & Integración de pagos con Mercado Pago e incorporación de la puerta de enlace. \\
+10 & 17/08 -- 30/08 & 2 & Motor de disponibilidad y reservas y conexión de la aplicación con los servicios reales. \\
+11 & 31/08 -- 13/09 & 2 & Comunicación por eventos, notificaciones \textit{push} y verificación real por SMS. \\
+12 & 14/09 -- 27/09 & 2 & Panel de administración, liquidaciones y reembolsos, integración de punta a punta y encuesta de validación. \\
+\midrule
+13 & 28/09 -- 11/10 & 3 & Ajustes derivados de la encuesta: Revisión de cocheras por un administrador y período de gracia entre reservas. \\
+\bottomrule
+\end{tabularx}
+\caption{\textit{Sprints} del proyecto y su objetivo principal.}
+\label{tab:sprints}
+\end{table}
 
-A continuación, la \textbf{fase de pruebas e implementación} estará destinada a verificar el correcto funcionamiento de la solución. Se ejecutará el plan de validación definido, se registrarán y corregirán los defectos detectados y se evaluará el comportamiento de la aplicación en escenarios representativos. Finalmente, se realizará un despliegue inicial en entornos de prueba controlados (\textit{staging}) para comprobar su funcionamiento antes de una eventual puesta en producción.
+Una vez completado el \textit{sprint} 13, el equipo pasó a trabajar en flujo continuo hasta el cierre del proyecto. En ese tramo se completaron las últimas funcionalidades surgidas de la validación, como las instrucciones de acceso privadas y la verificación del egreso con cargo por permanencia excedida, se publicaron los documentos legales, se incorporaron mejoras orientadas a la experiencia del usuario y se redactó el presente informe.
 
-Por último, la \textbf{fase de cierre y documentación} incluirá la consolidación de los resultados obtenidos y la redacción del informe final. También se prepararán las minutas correspondientes y se elaborará el manual técnico de despliegue, con el propósito de facilitar la instalación, configuración y continuidad operativa del sistema.
+\subsection{Diagrama de Gantt}
+
+La Figura~\ref{fig:gantt} representa la duración de las principales actividades del proyecto sobre el calendario. Cada barra indica el período en el que se trabajó sobre una actividad; las líneas punteadas verticales marcan el límite entre \textit{sprints}, y los rombos señalan los hitos más relevantes. Como puede observarse, las actividades de desarrollo de la segunda fase se solaparon entre sí, lo que fue posible gracias a la división del sistema en servicios independientes y al trabajo contra contratos acordados de antemano.
+
+\begin{figure}[H]
+\centering
+\begin{ganttchart}[
+    time slot format=isodate,
+    x unit=0.05cm,
+    y unit title=0.45cm,
+    y unit chart=0.42cm,
+    title height=1,
+    title label font=\scriptsize,
+    bar label font=\scriptsize,
+    group label font=\scriptsize\bfseries,
+    milestone label font=\scriptsize\itshape,
+    bar height=0.55,
+    group top shift=0.35,
+    group height=0.3,
+    group peaks height=0.15,
+    bar/.append style={fill=modernteal!75, draw=modernteal},
+    group/.append style={fill=deepnavy, draw=deepnavy},
+    milestone/.append style={fill=deepnavy, draw=deepnavy},
+    milestone left shift=-2,
+    milestone right shift=2,
+    milestone height=0.6,
+    vgrid={*6{draw=none}, *7{draw=none}, dotted},
+    hgrid=false
+  ]{2026-04-13}{2026-10-31}
+  \gantttitle{Abr}{18} \gantttitle{May}{31} \gantttitle{Jun}{30} \gantttitle{Jul}{31}
+  \gantttitle{Ago}{31} \gantttitle{Sep}{30} \gantttitle{Oct}{31} \\
+  \gantttitle{\tiny S1}{14} \gantttitle{\tiny S2}{14} \gantttitle{\tiny S3}{14} \gantttitle{\tiny S4}{14}
+  \gantttitle{\tiny S5}{14} \gantttitle{\tiny S6}{14} \gantttitle{\tiny S7}{14} \gantttitle{\tiny S8}{14}
+  \gantttitle{\tiny S9}{14} \gantttitle{\tiny S10}{14} \gantttitle{\tiny S11}{14} \gantttitle{\tiny S12}{14}
+  \gantttitle{\tiny S13}{14} \gantttitle{\tiny Kanban}{20} \\
+  \ganttgroup{Fase 1: Propuesta y viabilidad}{2026-04-13}{2026-06-21} \\
+  \ganttbar{Ideación y selección del proyecto}{2026-04-13}{2026-05-10} \\
+  \ganttbar{Estudio de mercado y negocio}{2026-04-27}{2026-05-24} \\
+  \ganttbar{Alcance, arquitectura y prototipos}{2026-05-11}{2026-06-07} \\
+  \ganttbar{Redacción del anteproyecto}{2026-05-25}{2026-06-16} \\
+  \ganttmilestone{Acta acuerdo}{2026-06-16} \\
+  \ganttgroup{Fase 2: Desarrollo del MVP}{2026-06-22}{2026-09-27} \\
+  \ganttbar{Diseño técnico y contratos de API}{2026-06-22}{2026-07-19} \\
+  \ganttbar{Aplicación móvil}{2026-07-06}{2026-10-11} \\
+  \ganttbar{Autenticación y usuarios}{2026-07-13}{2026-09-13} \\
+  \ganttbar{Cocheras y geolocalización}{2026-07-13}{2026-10-11} \\
+  \ganttbar{Pagos con Mercado Pago}{2026-07-13}{2026-09-27} \\
+  \ganttbar{Sitio web}{2026-07-20}{2026-10-16} \\
+  \ganttbar{Puerta de enlace}{2026-08-03}{2026-09-27} \\
+  \ganttbar{Reservas y disponibilidad}{2026-08-03}{2026-10-11} \\
+  \ganttbar{Eventos y notificaciones}{2026-08-17}{2026-09-27} \\
+  \ganttbar{Panel de administración}{2026-09-14}{2026-10-11} \\
+  \ganttbar{Encuesta de validación}{2026-09-14}{2026-09-27} \\
+  \ganttmilestone{MVP integrado}{2026-09-27} \\
+  \ganttgroup{Fase 3: Validación y cierre}{2026-09-28}{2026-10-31} \\
+  \ganttbar{Ajustes por la validación}{2026-09-28}{2026-10-16} \\
+  \ganttbar{Validación legal}{2026-10-01}{2026-10-15} \\
+  \ganttbar{Estabilización y correcciones}{2026-10-05}{2026-10-31} \\
+  \ganttbar{Informe final y defensa}{2026-10-05}{2026-10-31} \\
+  \ganttmilestone{Documentos legales publicados}{2026-10-15}
+\end{ganttchart}
+\caption{Diagrama de Gantt de las actividades del proyecto.}
+\label{fig:gantt}
+\end{figure}
+
+\subsection{Hitos y entregables}
+
+El avance del proyecto no se midió por la cantidad de código escrito, sino por la concreción de entregables funcionales. La Tabla~\ref{tab:hitos} reúne los hitos que marcaron su progreso; las fechas de los hitos técnicos surgen del historial de los repositorios del proyecto.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabularx}{\textwidth}{l >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Fecha} & \textbf{Hito} \\
+\midrule
+16/06/2026 & Presentación del anteproyecto y firma del acta acuerdo con los directores. \\
+13/07/2026 & Creación de los repositorios de los servicios en la organización del proyecto. \\
+Julio de 2026 & Primera versión navegable de la aplicación móvil, con todos sus flujos sobre datos simulados. \\
+31/07/2026 & Publicación del sitio web del proyecto. \\
+14/08/2026 & Incorporación de la puerta de enlace como punto único de entrada al sistema. \\
+18/08/2026 & Primera versión del motor de disponibilidad y reservas. \\
+02/09/2026 & Puesta en marcha del servicio de notificaciones \textit{push}. \\
+11/09/2026 & Habilitación de la verificación real del teléfono por SMS. \\
+14/09/2026 & Inicio del panel de administración. \\
+Septiembre de 2026 & Realización de la encuesta de validación con 180 respuestas. \\
+28/09/2026 & Revisión obligatoria de cada nueva cochera por un administrador antes de su publicación. \\
+06/10/2026 & Período de gracia entre reservas consecutivas. \\
+15/10/2026 & Publicación de los Términos y Condiciones y la Política de Privacidad; verificación del egreso con cargo por permanencia excedida. \\
+16/10/2026 & Sección de preguntas frecuentes en el sitio web. \\
+\bottomrule
+\end{tabularx}
+\caption{Hitos del proyecto.}
+\label{tab:hitos}
+\end{table}
+
+\subsection{Seguimiento del alcance y del avance}
+
+El alcance de cada \textit{sprint} se tomó de una lista priorizada de requerimientos (\textit{Product Backlog}), construida a partir de los casos de uso del MVP y refinada a medida que avanzaba el desarrollo. Durante la planificación de cada \textit{sprint}, las historias de usuario seleccionadas se estimaron en puntos de historia, lo que permitió comparar el esfuerzo comprometido con el completado al cierre de cada iteración y ajustar el compromiso de las siguientes.
+
+Como indicador objetivo del ritmo de trabajo, la Tabla~\ref{tab:commits} muestra la cantidad de cambios de código (\textit{commits}) registrados por mes en el conjunto de los repositorios del sistema, sin contar el sitio web.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{l r}
+\toprule
+\textbf{Mes} & \textbf{\textit{Commits}} \\
+\midrule
+Julio de 2026 & 30 \\
+Agosto de 2026 & 140 \\
+Septiembre de 2026 & 426 \\
+Octubre de 2026 (hasta el 15/10) & 203 \\
+\midrule
+\textbf{Total} & \textbf{799} \\
+\bottomrule
+\end{tabular}
+\caption{\textit{Commits} registrados por mes en los repositorios del sistema.}
+\label{tab:commits}
+\end{table}
+
+La evolución mensual refleja el ciclo del proyecto: Un arranque gradual en julio, mientras se definían los servicios base y se trabajaba sobre datos simulados; una aceleración en agosto, con la incorporación de la puerta de enlace y del motor de reservas; un pico en septiembre, cuando los servicios se integraron de punta a punta y se sumó el panel de administración; y un volumen todavía alto en la primera quincena de octubre, dedicado a los ajustes surgidos de la validación. A lo largo del desarrollo se integraron además 72 solicitudes de integración (\textit{pull requests}), cada una revisable de forma independiente.
+
+\subsection{Reuniones y comunicación con interesados}
+
+La comunicación del proyecto se organizó en tres niveles:
+
+\begin{itemize}
+    \item \textbf{Comunicación interna:} Cada \textit{sprint} comenzó con una reunión de planificación y cerró con una revisión y una retrospectiva. Entre ceremonias, la coordinación cotidiana se resolvió de manera asincrónica, complementada con encuentros breves para destrabar dependencias entre servicios.
+    \item \textbf{Seguimiento con los directores:} El equipo se reunió con los directores con una periodicidad no mayor a dos semanas, coincidente con el cierre de cada \textit{sprint}. En estos encuentros se presentaron los incrementos, se validaron las decisiones de alcance y se incorporaron sus observaciones a la planificación del \textit{sprint} siguiente.
+    \item \textbf{Comunicación externa:} Se establecieron contactos con potenciales usuarios para validar la propuesta, en particular mediante la encuesta difundida en Instagram durante el \textit{sprint} 12, cuyos resultados se detallan en la Sección~\ref{sec:encuesta}.
+    % TODO: Agregar la mención del contacto externo cuando se reciba la información.
+\end{itemize}
+
+\subsection{Estrategia de documentación}
+
+La documentación se trató como un entregable más del proyecto y se organizó en distintos niveles:
+
+\begin{itemize}
+    \item \textbf{Documentación técnica de cada servicio:} Cada repositorio mantuvo su propia documentación, con la descripción de sus endpoints, su modelo de datos, los eventos que publica o consume y las decisiones de diseño adoptadas. Esta documentación funcionó como contrato de referencia entre los integrantes.
+    \item \textbf{Documentos de diseño y de operación:} Se elaboraron documentos de diseño para los componentes más complejos, como la aplicación móvil y el servicio de reservas, guías de despliegue para las alternativas evaluadas y una guía de seguridad con el análisis de la arquitectura y las medidas aplicadas.
+    \item \textbf{Documentación para usuarios:} El sitio web del proyecto presenta el producto, responde las preguntas frecuentes y publica los Términos y Condiciones y la Política de Privacidad.
+    \item \textbf{Documentación académica:} El anteproyecto y el presente informe final, redactados en \LaTeX, que consolidan el recorrido completo del Trabajo Profesional.
+\end{itemize}

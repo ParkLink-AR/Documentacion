@@ -1,7 +1,109 @@
-\section{Experimentación y/o validación}
-El plan de validación funcional se centrará en asegurar la consistencia y la disponibilidad transaccional del sistema ante operaciones concurrentes. Para ello se estructurarán criterios estrictos de aceptación:
+\section{Experimentación y/o validación}\label{sec:validacion}
+
+La validación de ParkLink se abordó en dos planos complementarios. En el plano técnico, se verificó que el sistema funcionara correctamente y de forma confiable, mediante pruebas automatizadas, pruebas integradas de punta a punta y controles de calidad del código. En el plano de producto, se contrastó la propuesta con potenciales usuarios reales para confirmar que resolvía una necesidad concreta y para detectar las dudas y fricciones que podían frenar su adopción. Se completó además una validación legal de la operatoria de la plataforma.
+
+\subsection{Estrategia de validación y responsables}
+
+La estrategia de pruebas siguió el enfoque de la pirámide de pruebas: Una base amplia de pruebas unitarias automatizadas, que verifican cada regla de negocio de forma aislada; un nivel intermedio de pruebas de integración, que verifican la interacción de cada servicio con su base de datos y con los servicios de los que depende; y un nivel superior, más reducido, de pruebas de punta a punta, que recorren los flujos completos tal como los ejecuta un usuario.
+
+Cada integrante fue responsable de escribir y mantener las pruebas de los componentes a su cargo. La definición de los casos de prueba de los flujos completos, la ejecución de las pruebas exploratorias y el seguimiento de los defectos detectados estuvieron a cargo de los responsables de aseguramiento de la calidad, Santiago Domínguez y Santiago Jorge Varga.
+
+\subsection{Validación técnica automatizada}
+
+Los servicios del sistema incorporaron pruebas automatizadas con el marco de pruebas correspondiente a cada lenguaje, descripto en la Sección~\ref{sec:herramientas}. La Tabla~\ref{tab:pruebas} resume la cantidad de archivos de prueba de cada componente al cierre del desarrollo.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{l l r}
+\toprule
+\textbf{Componente} & \textbf{Marco de pruebas} & \textbf{Archivos de prueba} \\
+\midrule
+\textit{booking-service} & Paquete de pruebas de Go, \textit{testify}, \textit{gomock} & 72 \\
+\textit{notifications-service} & \textit{pytest} & 17 \\
+\textit{auth-service} & \textit{pytest} & 10 \\
+\textit{mobile} & \textit{Jest} & 9 \\
+\textit{parking-service} & \textit{Jest} & 7 \\
+\textit{payment-service} & \textit{Jest}, \textit{supertest} & 7 \\
+\textit{gateway} & \textit{pytest} & 6 \\
+\midrule
+\textbf{Total} & & \textbf{128} \\
+\bottomrule
+\end{tabular}
+\caption{Archivos de pruebas automatizadas por componente.}
+\label{tab:pruebas}
+\end{table}
+
+La distribución de las pruebas refleja dónde se concentra el riesgo del sistema: El servicio de reservas, que contiene la mayor parte de las reglas de negocio, reunió más de la mitad de los archivos de prueba. Entre los casos críticos que se verificaron de forma automatizada se encuentran los siguientes:
 
 \begin{itemize}
-    \item \textbf{Definition of Ready (DoR):} Ninguna historia de usuario entrará al \textit{Sprint Backlog} sin poseer un título unívoco, estimación explícita en puntos de historia, formato estándar de rol-funcionalidad-objetivo, y criterios de aceptación definidos bajo sintaxis Gherkin (Dado/Cuando/Entonces).
-    \item \textbf{Pruebas de código y control de calidad:} Se implementará una estrategia de pruebas unitarias y de integración sobre los módulos críticos de reserva y pagos. La validación del sistema se complementará mediante simulaciones de carga para comprobar la actualización en tiempo real de los mapas de reservas manuales.
+    \item \textbf{Cálculo de disponibilidad:} La resta de las reservas activas sobre las franjas publicadas por el propietario, incluyendo bordes de horarios, cambios de día y la conversión entre la hora local y la hora universal.
+    \item \textbf{Reservas concurrentes:} Que dos solicitudes simultáneas sobre el mismo lugar no puedan generar una sobre-reserva, y que la retención temporal del lugar expire correctamente si el pago no se completa.
+    \item \textbf{Códigos de verificación:} La generación y validación de los códigos de ingreso y de egreso, y el cálculo del cargo por permanencia excedida.
+    \item \textbf{Pagos:} La verificación de la firma de las notificaciones de Mercado Pago, la confirmación de la reserva asociada y los reintentos automáticos de los reembolsos.
+    \item \textbf{Eventos y notificaciones:} Que un mismo evento recibido más de una vez no genere notificaciones duplicadas, y que los mensajes malformados no bloqueen el procesamiento del resto.
+    \item \textbf{Puerta de enlace:} La validación de los tokens de acceso, el rechazo de solicitudes sin credenciales y la eliminación de los encabezados internos que un cliente externo intentara falsificar.
 \end{itemize}
+
+Estas pruebas se ejecutaron automáticamente ante cada cambio mediante el circuito de integración continua, junto con el análisis estático del código y la verificación de tipos, de modo que ningún cambio con errores detectables se incorporara a la rama principal.
+
+\subsection{Pruebas integradas y de punta a punta}
+
+Además de las pruebas de cada servicio, se validó el funcionamiento del sistema completo. Para ello se desarrolló un \textit{script} de prueba de punta a punta que, con todos los servicios en ejecución, recorre el flujo principal de la plataforma: Crea un propietario, publica una cochera con su horario y precio, crea un conductor, consulta la disponibilidad, genera una reserva y verifica que cada paso produzca el resultado esperado. Este \textit{script} permitió comprobar rápidamente, después de cada integración, que los servicios seguían funcionando correctamente en conjunto.
+
+Las pruebas manuales se realizaron sobre los tres entornos de ejecución descriptos en la Sección~\ref{sec:dinamica}. En particular, la posibilidad de exponer el entorno a la red local y a internet permitió probar la aplicación desde teléfonos Android e iOS reales, verificando aspectos que un emulador no reproduce con fidelidad, como la recepción de notificaciones \textit{push}, el uso de la ubicación del dispositivo y la redirección al entorno de pago de Mercado Pago y su regreso a la aplicación. Los pagos se probaron en el entorno de pruebas de Mercado Pago, con usuarios compradores de prueba, sin movimiento de dinero real. Para estas pruebas se utilizó un generador de datos de demostración con cocheras distribuidas en distintos barrios de la Ciudad de Buenos Aires, que permitió evaluar la búsqueda en el mapa y la navegación en condiciones similares a las de uso real.
+
+\subsection{Validación de mercado mediante encuesta}\label{sec:encuesta}
+
+Para validar la propuesta con potenciales usuarios, el equipo realizó una encuesta difundida a través de la red social Instagram, dirigida a personas de distintos perfiles de la Ciudad de Buenos Aires. Se obtuvieron \textbf{180 respuestas}. La mayoría de quienes respondieron fueron conductores frecuentes, aunque también participó un grupo numeroso de personas con cocheras libres interesadas en aprovecharlas, lo que permitió relevar la visión de ambos lados del mercado.
+
+\subsubsection{Aceptación de la propuesta}
+
+La propuesta tuvo una aceptación alta. La posibilidad de salir de casa con el lugar ya reservado y pagado fue el aspecto mejor valorado, con calificaciones de 4 o 5 puntos sobre 5 en la gran mayoría de las respuestas. En cuanto a la frecuencia de uso, alrededor del 70\% de los encuestados indicó que usaría la aplicación de forma regular, con frecuencias que van desde algunas veces al mes hasta todos los días.
+
+Entre los motivos para utilizar ParkLink, se destacaron tres:
+
+\begin{itemize}
+    \item \textbf{El precio:} Conocer el precio de antemano y que resulte más conveniente que el de una playa comercial fue el motivo principal. Los encuestados indicaron que estarían dispuestos a pagar entre \$4.000 y \$6.000 por hora.
+    \item \textbf{La cercanía:} Estacionar lo más cerca posible del destino final fue otro de los motivos más votados.
+    \item \textbf{El cuidado del vehículo:} Muchos encuestados prefieren dejar el auto en una cochera de barrio antes que en la calle, expuesto a rayones o robos.
+\end{itemize}
+
+\subsubsection{Fricciones detectadas y decisiones de producto}
+
+La encuesta permitió identificar las principales dudas de cada lado del mercado. Del lado del conductor, el temor más mencionado fue llegar a la cochera y encontrarla ocupada porque el conductor del turno anterior no se había retirado; le siguieron las dudas sobre cómo ingresar a una cochera privada sin control remoto y la necesidad de confiar en que el espacio publicado existiera realmente. Del lado del propietario, la duda más repetida fue de índole legal, ya que muchos reglamentos de copropiedad no permiten el ingreso de vehículos de personas ajenas al edificio; también surgieron el deseo de obtener un ingreso sin tener que estar presente para abrir el portón y la preocupación por quién se hace cargo ante un eventual daño.
+
+Cada una de estas fricciones se tradujo en una decisión concreta que se incorporó al producto, como resume la Tabla~\ref{tab:encuesta_decisiones}.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.35}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Fricción detectada} & \textbf{Decisión implementada en ParkLink} \\
+\midrule
+Encontrar la cochera ocupada por el conductor anterior & Período de gracia de 15 minutos antes y después de cada reserva, que deja al menos 30 minutos libres entre reservas consecutivas, y verificación del ingreso y del egreso mediante códigos, con un cargo por permanencia excedida. \\
+Cómo ingresar sin control remoto & Instrucciones de acceso privadas que el propietario carga en su publicación y que el conductor solo ve una vez aceptada su reserva. \\
+Desconfianza sobre la existencia del espacio & Verificación obligatoria del correo y del teléfono de todos los usuarios, reseñas entre conductores y propietarios y revisión de cada nueva cochera por un administrador antes de publicarse. \\
+Restricciones del reglamento de copropiedad & Carga obligatoria de documentación de respaldo (escritura, contrato de alquiler o expensas) revisada antes de la publicación, y declaración del propietario, en los Términos y Condiciones, de que tiene derecho a ofrecer la cochera. \\
+Obtener ingresos sin estar presente & Reservas con confirmación instantánea, sin aprobación manual del propietario, cobro dentro de la aplicación y liquidación de las ganancias por parte de la plataforma. \\
+Responsabilidad ante daños & Reglas de responsabilidad definidas en los Términos y Condiciones, denuncias y tickets de soporte asociados a cada reserva y mensajería directa entre las partes. \\
+\bottomrule
+\end{tabularx}
+\caption{Fricciones relevadas en la encuesta y decisiones de producto derivadas.}
+\label{tab:encuesta_decisiones}
+\end{table}
+
+Por último, el rango de precio que los conductores declararon estar dispuestos a pagar resultó inferior al valor promedio de mercado utilizado en el plan económico de la Sección~\ref{sec:plan_economico}. Este resultado confirma que el precio es el principal factor de decisión del conductor y refuerza la importancia de incorporar cocheras particulares que puedan competir con las playas comerciales, como se analizó en la Sección~\ref{sec:impactos}.
+
+% TODO: Subsección de validación con el contacto externo (pendiente de recibir la información).
+
+\subsection{Validación legal}\label{sec:validacion_legal}
+
+Antes de que la plataforma pudiera ser utilizada por personas reales, se validó su operatoria desde el punto de vista legal. Se redactaron los Términos y Condiciones y la Política de Privacidad de ParkLink, publicados en el sitio oficial del proyecto. Los Términos regulan el funcionamiento de las reservas, los pagos, las cancelaciones, las liquidaciones a los propietarios y las responsabilidades de cada parte, exigen que los usuarios sean mayores de edad y que el propietario declare tener derecho a ofrecer la cochera publicada, y preservan los derechos que la Ley 24.240 de Defensa del Consumidor reconoce a los usuarios. La Política de Privacidad se elaboró conforme a la Ley 25.326 de Protección de los Datos Personales, detallando qué datos se recolectan, con qué finalidad, con quién se comparten, cuánto tiempo se conservan y cómo ejercer los derechos de acceso, rectificación y supresión. La aceptación de ambos documentos se incorporó como paso obligatorio del registro en la aplicación, que además permite consultarlos en todo momento y eliminar la cuenta propia.
+
+\subsection{Resultados de la validación}
+
+La validación técnica permitió llegar al cierre del desarrollo con los flujos críticos de la plataforma cubiertos por pruebas automatizadas que se ejecutan ante cada cambio, y con el recorrido completo de búsqueda, reserva, pago y notificación verificado sobre dispositivos reales. La validación de mercado confirmó el interés de ambos lados del mercado en la propuesta y, sobre todo, permitió anticipar las fricciones que podían frenar su adopción e incorporar al producto las decisiones necesarias para resolverlas antes de su lanzamiento. Finalmente, la validación legal dejó definidas las reglas que regulan la relación entre la plataforma, los conductores y los propietarios.
