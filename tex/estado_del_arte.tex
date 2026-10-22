@@ -1,18 +1,22 @@
 \section{Estado del Arte}\label{sec:estado_arte}
 
+\subsection{Soluciones tecnológicas para la movilidad urbana}
+
 En los últimos años, el crecimiento sostenido de las grandes ciudades y el aumento del parque automotor impulsaron el desarrollo de múltiples soluciones tecnológicas orientadas a mejorar la movilidad urbana y asistir a los conductores durante sus desplazamientos. Dentro de este contexto, surgieron aplicaciones de navegación, sistemas de monitoreo de tránsito en tiempo real y plataformas de estacionamiento medido administradas por organismos municipales. Estas herramientas permiten optimizar recorridos, visualizar congestiones vehiculares y gestionar pagos asociados al uso del espacio público.
 
 Sin embargo, gran parte de las soluciones actualmente disponibles se encuentran enfocadas principalmente en la circulación sobre la vía pública y en la administración de estacionamiento urbano regulado, dejando parcialmente desatendida la problemática relacionada con la disponibilidad, reserva y utilización eficiente de espacios privados de estacionamiento. En consecuencia, continúa existiendo una fragmentación significativa entre la oferta de cocheras privadas y la demanda de conductores que necesitan acceder rápidamente a un lugar seguro y cercano para estacionar.
 
+\subsection{Economía colaborativa y oportunidad para ParkLink}
+
 A su vez, la creciente digitalización de servicios y la consolidación de modelos basados en economías colaborativas han demostrado la viabilidad de plataformas que permiten conectar usuarios con recursos ociosos mediante aplicaciones móviles y sistemas centralizados. Este paradigma abrió nuevas oportunidades para optimizar infraestructuras ya existentes sin necesidad de realizar grandes inversiones físicas adicionales.
 
-En este escenario, ParkLink busca posicionarse como una plataforma capaz de integrar y centralizar distintos tipos de espacios de estacionamiento, permitiendo a conductores acceder a información unificada, realizar reservas anticipadas y gestionar pagos de manera digital y segura. El proyecto apunta especialmente a cubrir la falta de soluciones flexibles orientadas a reservas de corta duración y disponibilidad dinámica.
+En este escenario, ParkLink se concibió como una plataforma capaz de integrar y centralizar distintos tipos de espacios de estacionamiento, permitiendo a los conductores acceder a información unificada, realizar reservas anticipadas y gestionar pagos de manera digital y segura. El proyecto se orientó especialmente a cubrir la falta de soluciones flexibles orientadas a reservas de corta duración y disponibilidad dinámica.
 
-\subsection*{Análisis de competidores}
+\subsection{Análisis de competidores}
 
 A nivel de mercado y competencia, pueden identificarse distintos actores con propuestas parcialmente superponibles a ParkLink. A continuación se describen los principales, junto con sus ventajas y limitaciones frente a la propuesta planteada.
 
-\subsubsection*{Blinkay}
+\subsubsection{Blinkay}
 
 Blinkay es la plataforma de estacionamiento medido más difundida en Argentina y el competidor directo más relevante en el contexto local \autocite{blinkay}. Permite a los conductores gestionar el pago del estacionamiento en la vía pública mediante una aplicación móvil, consultando disponibilidad y tiempo habilitado en zonas reguladas de CABA y otras ciudades.
 
@@ -32,7 +36,7 @@ Blinkay es la plataforma de estacionamiento medido más difundida en Argentina y
     \item Su modelo de negocio está atado a contratos municipales, limitando su escalabilidad al sector privado.
 \end{itemize}
 
-\subsubsection*{SpotHero y ParkWhiz (referencia internacional)}
+\subsubsection{SpotHero y ParkWhiz (referencia internacional)}
 
 SpotHero y ParkWhiz son plataformas norteamericanas líderes en la reserva de estacionamiento urbano \autocite{spothero}. Permiten a los conductores buscar, comparar precios y reservar espacios en cocheras comerciales con anticipación, con integración de pagos digitales y confirmación instantánea.
 
@@ -51,7 +55,7 @@ SpotHero y ParkWhiz son plataformas norteamericanas líderes en la reserva de es
     \item Sus costos de entrada y estructura tecnológica no son replicables en mercados emergentes sin una adaptación sustancial.
 \end{itemize}
 
-\subsubsection*{EasyPark (referencia internacional)}
+\subsubsection{EasyPark (referencia internacional)}
 
 EasyPark es una plataforma europea con presencia en más de 20 países que permite gestionar el pago del estacionamiento en zonas reguladas y, en algunos mercados, realizar reservas en garages privados \autocite{easypark}. Opera principalmente bajo acuerdos con municipios y operadores de estacionamiento.
 
@@ -69,7 +73,7 @@ EasyPark es una plataforma europea con presencia en más de 20 países que permi
     \item No contempla el segmento de propietarios particulares que deseen monetizar espacios ociosos de forma autónoma.
 \end{itemize}
 
-\subsubsection*{Aplicaciones de navegación y tráfico (Waze, Google Maps)}
+\subsubsection{Aplicaciones de navegación y tráfico (Waze, Google Maps)}
 
 Herramientas como Waze \autocite{waze} y Google Maps \autocite{googlemaps} incorporan, en distintos grados, información sobre disponibilidad aproximada de estacionamiento en determinadas zonas urbanas, integrando datos de proveedores externos o estimaciones basadas en patrones históricos.
 
@@ -87,7 +91,7 @@ Herramientas como Waze \autocite{waze} y Google Maps \autocite{googlemaps} incor
     \item La información sobre disponibilidad de estacionamiento es estimativa y no refleja la oferta real de cocheras privadas disponibles.
 \end{itemize}
 
-\subsubsection*{Clasificados digitales (MercadoLibre, OLX)}
+\subsubsection{Clasificados digitales (MercadoLibre, OLX)}
 
 Los portales de clasificados digitales como MercadoLibre \autocite{mercadolibre} son utilizados frecuentemente para publicar cocheras en alquiler mensual o por períodos fijos. Constituyen el canal más común para que propietarios privados ofrezcan sus espacios en Argentina.
 
@@ -106,8 +110,8 @@ Los portales de clasificados digitales como MercadoLibre \autocite{mercadolibre}
     \item No incluyen funcionalidades de geolocalización, mapas interactivos ni gestión de disponibilidad horaria.
 \end{itemize}
 
-\subsection*{Síntesis comparativa}
+\subsection{Síntesis comparativa}
 
-A partir del análisis anterior, se observa que ninguno de los actores existentes en el mercado argentino ofrece de forma integrada la combinación de geolocalización, reserva anticipada, gestión digital de pagos y aprovechamiento colaborativo de espacios privados subutilizados. Blinkay cubre el segmento público regulado sin reservas; los clasificados cubren el alquiler permanente sin transaccionalidad; las referencias internacionales validan el modelo pero no operan localmente. ParkLink busca cubrir precisamente ese espacio: Una plataforma transaccional, flexible y colaborativa orientada al estacionamiento de corta duración en el mercado local.
+A partir del análisis anterior, se observa que ninguno de los actores existentes en el mercado argentino ofrece de forma integrada la combinación de geolocalización, reserva anticipada, gestión digital de pagos y aprovechamiento colaborativo de espacios privados subutilizados. Blinkay cubre el segmento público regulado sin reservas; los clasificados cubren el alquiler permanente sin transaccionalidad; las referencias internacionales validan el modelo pero no operan localmente. ParkLink se construyó para cubrir precisamente ese espacio: Una plataforma transaccional, flexible y colaborativa orientada al estacionamiento de corta duración en el mercado local.
 
-Este relevamiento también permite definir criterios de comparación para la propuesta: Cobertura del mercado local, posibilidad de reservar antes de llegar, actualización de la disponibilidad, seguridad de las transacciones y facilidad para incorporar oferentes particulares. Estos criterios serán retomados durante la validación del MVP para comprobar si la solución propuesta responde al faltante identificado y no solo reproduce funcionalidades ya disponibles en aplicaciones de navegación o clasificados.
+Este relevamiento permitió además definir criterios de comparación para la propuesta: Cobertura del mercado local, posibilidad de reservar antes de llegar, actualización de la disponibilidad, seguridad de las transacciones y facilidad para incorporar oferentes particulares. Estos criterios guiaron el diseño del producto y se retomaron durante la validación del MVP, con el fin de comprobar que ParkLink respondiera al faltante identificado y no se limitara a reproducir funcionalidades ya disponibles en aplicaciones de navegación o en portales de clasificados. La forma en que la solución implementada cubre cada uno de estos criterios se describe en la Sección~\ref{sec:solucion}, y los resultados de su validación se presentan en la Sección~\ref{sec:validacion}.
