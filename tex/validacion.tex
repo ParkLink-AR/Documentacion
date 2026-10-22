@@ -1,6 +1,6 @@
 \section{Experimentación y/o validación}\label{sec:validacion}
 
-La validación de ParkLink se abordó en dos planos complementarios. En el plano técnico, se verificó que el sistema funcionara correctamente y de forma confiable, mediante pruebas automatizadas, pruebas integradas de punta a punta y controles de calidad del código. En el plano de producto, se contrastó la propuesta con potenciales usuarios reales para confirmar que resolvía una necesidad concreta y para detectar las dudas y fricciones que podían frenar su adopción. Se completó además una validación legal de la operatoria de la plataforma.
+La validación de ParkLink se abordó en dos planos complementarios. En el plano técnico, se verificó que el sistema funcionara correctamente y de forma confiable, mediante pruebas automatizadas, pruebas integradas de punta a punta y controles de calidad del código. En el plano de producto, se contrastó la propuesta con potenciales usuarios reales y con un referente del sector de los estacionamientos para confirmar que resolvía una necesidad concreta y para detectar las dudas y fricciones que podían frenar su adopción. Se completó además una validación legal de la operatoria de la plataforma.
 
 \subsection{Estrategia de validación y responsables}
 
@@ -56,7 +56,7 @@ Las pruebas manuales se realizaron sobre los tres entornos de ejecución descrip
 
 \subsection{Validación de mercado mediante encuesta}\label{sec:encuesta}
 
-Para validar la propuesta con potenciales usuarios, el equipo realizó una encuesta difundida a través de la red social Instagram, dirigida a personas de distintos perfiles de la Ciudad de Buenos Aires. Se obtuvieron \textbf{180 respuestas}. La mayoría de quienes respondieron fueron conductores frecuentes, aunque también participó un grupo numeroso de personas con cocheras libres interesadas en aprovecharlas, lo que permitió relevar la visión de ambos lados del mercado.
+Para validar la propuesta con potenciales usuarios, el equipo realizó, a principios de septiembre, una encuesta difundida a través de la red social Instagram, dirigida a personas de distintos perfiles de la Ciudad de Buenos Aires. Se obtuvieron \textbf{180 respuestas}. La mayoría de quienes respondieron fueron conductores frecuentes, aunque también participó un grupo numeroso de personas con cocheras libres interesadas en aprovecharlas, lo que permitió relevar la visión de ambos lados del mercado.
 
 \subsubsection{Aceptación de la propuesta}
 
@@ -65,40 +65,25 @@ La propuesta tuvo una aceptación alta. La posibilidad de salir de casa con el l
 Entre los motivos para utilizar ParkLink, se destacaron tres:
 
 \begin{itemize}
-    \item \textbf{El precio:} Conocer el precio de antemano y que resulte más conveniente que el de una playa comercial fue el motivo principal. Los encuestados indicaron que estarían dispuestos a pagar entre \$4.000 y \$6.000 por hora.
+    \item \textbf{El precio:} Conocer el precio de antemano y que resulte más conveniente que el de una playa comercial fue el motivo principal. Además, la posibilidad de comparar precios entre distintas cocheras y barrios fue valorada positivamente.
     \item \textbf{La cercanía:} Estacionar lo más cerca posible del destino final fue otro de los motivos más votados.
     \item \textbf{El cuidado del vehículo:} Muchos encuestados prefieren dejar el auto en una cochera de barrio antes que en la calle, expuesto a rayones o robos.
 \end{itemize}
 
-\subsubsection{Fricciones detectadas y decisiones de producto}
+El rango de precio que los conductores declararon estar dispuestos a pagar resultó inferior al valor promedio de mercado utilizado en el plan económico de la Sección~\ref{sec:plan_economico}. Este resultado confirma que el precio es el principal factor de decisión del conductor y refuerza la importancia de incorporar cocheras particulares que puedan competir con las playas comerciales, como se analizó en la Sección~\ref{sec:impactos}.
 
-La encuesta permitió identificar las principales dudas de cada lado del mercado. Del lado del conductor, el temor más mencionado fue llegar a la cochera y encontrarla ocupada porque el conductor del turno anterior no se había retirado; le siguieron las dudas sobre cómo ingresar a una cochera privada sin control remoto y la necesidad de confiar en que el espacio publicado existiera realmente. Del lado del propietario, la duda más repetida fue de índole legal, ya que muchos reglamentos de copropiedad no permiten el ingreso de vehículos de personas ajenas al edificio; también surgieron el deseo de obtener un ingreso sin tener que estar presente para abrir el portón y la preocupación por quién se hace cargo ante un eventual daño.
+\subsubsection{Fricciones detectadas}
 
-Cada una de estas fricciones se tradujo en una decisión concreta que se incorporó al producto, como resume la Tabla~\ref{tab:encuesta_decisiones}.
+La encuesta permitió identificar además las principales dudas de cada lado del mercado. Los conductores manifestaron temor a encontrar la cochera ocupada por el conductor del turno anterior, dudas sobre cómo ingresar a una cochera privada y la necesidad de confiar en que el espacio publicado existiera realmente. Los propietarios, por su parte, plantearon restricciones de los reglamentos de copropiedad, el deseo de obtener ingresos sin tener que estar presentes y la preocupación por eventuales daños. Estas fricciones, que constituían riesgos concretos para la adopción de la plataforma, se tradujeron en decisiones de producto que se analizan en la Sección~\ref{sec:riesgos}.
 
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.35}
-\small
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X}
-\toprule
-\textbf{Fricción detectada} & \textbf{Decisión implementada en ParkLink} \\
-\midrule
-Encontrar la cochera ocupada por el conductor anterior & Período de gracia de 15 minutos antes y después de cada reserva, que deja al menos 30 minutos libres entre reservas consecutivas, y verificación del ingreso y del egreso mediante códigos, con un cargo por permanencia excedida. \\
-Cómo ingresar sin control remoto & Instrucciones de acceso privadas que el propietario carga en su publicación y que el conductor solo ve una vez aceptada su reserva. \\
-Desconfianza sobre la existencia del espacio & Verificación obligatoria del correo y del teléfono de todos los usuarios, reseñas entre conductores y propietarios y revisión de cada nueva cochera por un administrador antes de publicarse. \\
-Restricciones del reglamento de copropiedad & Carga obligatoria de documentación de respaldo (escritura, contrato de alquiler o expensas) revisada antes de la publicación, y declaración del propietario, en los Términos y Condiciones, de que tiene derecho a ofrecer la cochera. \\
-Obtener ingresos sin estar presente & Reservas con confirmación instantánea, sin aprobación manual del propietario, cobro dentro de la aplicación y liquidación de las ganancias por parte de la plataforma. \\
-Responsabilidad ante daños & Reglas de responsabilidad definidas en los Términos y Condiciones, denuncias y tickets de soporte asociados a cada reserva y mensajería directa entre las partes. \\
-\bottomrule
-\end{tabularx}
-\caption{Fricciones relevadas en la encuesta y decisiones de producto derivadas.}
-\label{tab:encuesta_decisiones}
-\end{table}
+\subsection{Validación con un referente del sector}\label{sec:botbol}
 
-Por último, el rango de precio que los conductores declararon estar dispuestos a pagar resultó inferior al valor promedio de mercado utilizado en el plan económico de la Sección~\ref{sec:plan_economico}. Este resultado confirma que el precio es el principal factor de decisión del conductor y refuerza la importancia de incorporar cocheras particulares que puedan competir con las playas comerciales, como se analizó en la Sección~\ref{sec:impactos}.
+Además de la encuesta, el equipo buscó la opinión de un actor con experiencia directa en la operación de estacionamientos. En la última semana de septiembre se realizó un encuentro con Miguel Botbol, uno de los máximos referentes del rubro de los estacionamientos en la Ciudad de Buenos Aires. Botbol es dueño de Parking Work S.R.L. y de otras empresas del sector que, en conjunto, suman cerca de 70 cocheras en la Ciudad y en el conurbano bonaerense.
 
-% TODO: Subsección de validación con el contacto externo (pendiente de recibir la información).
+A diferencia de la encuesta, realizada a principios de septiembre y centrada en la propuesta, este encuentro se produjo con el MVP ya integrado, lo que permitió presentar un producto mucho más refinado. El equipo le mostró todo el trabajo realizado: La experiencia del conductor para buscar, reservar y pagar una cochera, la del propietario para publicarla y gestionarla, y el panel de administración con el que se opera la plataforma. A partir de esa demostración, Botbol compartió su opinión sobre el producto, su experiencia en la operación cotidiana de estacionamientos y consejos para su evolución.
+
+El encuentro permitió ratificar el valor real de ParkLink desde la mirada de quien conoce el negocio desde adentro. La plataforma resulta valiosa no solo para que los propietarios particulares ofrezcan sus cocheras, sino también para los operadores comerciales. Y tiene el potencial de transformar por completo la estructura del estacionamiento urbano en las grandes ciudades, al reunir en un mismo canal digital toda la oferta disponible, comercial y particular, con reserva anticipada y pago integrado.
+
 
 \subsection{Validación legal}\label{sec:validacion_legal}
 
@@ -106,4 +91,4 @@ Antes de que la plataforma pudiera ser utilizada por personas reales, se validó
 
 \subsection{Resultados de la validación}
 
-La validación técnica permitió llegar al cierre del desarrollo con los flujos críticos de la plataforma cubiertos por pruebas automatizadas que se ejecutan ante cada cambio, y con el recorrido completo de búsqueda, reserva, pago y notificación verificado sobre dispositivos reales. La validación de mercado confirmó el interés de ambos lados del mercado en la propuesta y, sobre todo, permitió anticipar las fricciones que podían frenar su adopción e incorporar al producto las decisiones necesarias para resolverlas antes de su lanzamiento. Finalmente, la validación legal dejó definidas las reglas que regulan la relación entre la plataforma, los conductores y los propietarios.
+La validación técnica permitió llegar al cierre del desarrollo con los flujos críticos de la plataforma cubiertos por pruebas automatizadas que se ejecutan ante cada cambio, y con el recorrido completo de búsqueda, reserva, pago y notificación verificado sobre dispositivos reales. La validación de mercado confirmó el interés de ambos lados del mercado en la propuesta y, sobre todo, permitió anticipar las fricciones que podían frenar su adopción e incorporar al producto las decisiones necesarias para resolverlas antes de su lanzamiento. El encuentro con un referente del sector, ya con el producto integrado, ratificó además su valor para los operadores comerciales y su potencial para transformar el estacionamiento urbano. Finalmente, la validación legal dejó definidas las reglas que regulan la relación entre la plataforma, los conductores y los propietarios.

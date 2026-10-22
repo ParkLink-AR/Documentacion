@@ -25,10 +25,10 @@ La Tabla~\ref{tab:sprints} presenta los trece \textit{sprints} del proyecto, con
 8 & 20/07 -- 02/08 & 2 & Registro e inicio de sesión, publicación de cocheras, búsqueda geoespacial y sitio web del proyecto. \\
 9 & 03/08 -- 16/08 & 2 & Integración de pagos con Mercado Pago e incorporación de la puerta de enlace. \\
 10 & 17/08 -- 30/08 & 2 & Motor de disponibilidad y reservas y conexión de la aplicación con los servicios reales. \\
-11 & 31/08 -- 13/09 & 2 & Comunicación por eventos, notificaciones \textit{push} y verificación real por SMS. \\
-12 & 14/09 -- 27/09 & 2 & Panel de administración, liquidaciones y reembolsos, integración de punta a punta y encuesta de validación. \\
+11 & 31/08 -- 13/09 & 2 & Comunicación por eventos, notificaciones \textit{push}, verificación real por SMS y encuesta de validación. \\
+12 & 14/09 -- 27/09 & 2 & Panel de administración, liquidaciones y reembolsos, integración de punta a punta. \\
 \midrule
-13 & 28/09 -- 11/10 & 3 & Ajustes derivados de la encuesta: Revisión de cocheras por un administrador y período de gracia entre reservas. \\
+13 & 28/09 -- 11/10 & 3 & Encuentro con un referente del sector y ajustes derivados de la validación: Revisión de cocheras por un administrador y período de gracia entre reservas. \\
 \bottomrule
 \end{tabularx}
 \caption{\textit{Sprints} del proyecto y su objetivo principal.}
@@ -89,9 +89,10 @@ La Figura~\ref{fig:gantt} representa la duración de las principales actividades
   \ganttbar{Reservas y disponibilidad}{2026-08-03}{2026-10-11} \\
   \ganttbar{Eventos y notificaciones}{2026-08-17}{2026-09-27} \\
   \ganttbar{Panel de administración}{2026-09-14}{2026-10-11} \\
-  \ganttbar{Encuesta de validación}{2026-09-14}{2026-09-27} \\
+  \ganttbar{Encuesta de validación}{2026-08-31}{2026-09-13} \\
   \ganttmilestone{MVP integrado}{2026-09-27} \\
   \ganttgroup{Fase 3: Validación y cierre}{2026-09-28}{2026-10-31} \\
+  \ganttmilestone{Encuentro con Miguel Botbol}{2026-09-29} \\
   \ganttbar{Ajustes por la validación}{2026-09-28}{2026-10-16} \\
   \ganttbar{Validación legal}{2026-10-01}{2026-10-15} \\
   \ganttbar{Estabilización y correcciones}{2026-10-05}{2026-10-31} \\
@@ -121,9 +122,10 @@ Julio de 2026 & Primera versión navegable de la aplicación móvil, con todos s
 14/08/2026 & Incorporación de la puerta de enlace como punto único de entrada al sistema. \\
 18/08/2026 & Primera versión del motor de disponibilidad y reservas. \\
 02/09/2026 & Puesta en marcha del servicio de notificaciones \textit{push}. \\
+Principios de septiembre de 2026 & Realización de la encuesta de validación a través de Instagram, con 180 respuestas. \\
 11/09/2026 & Habilitación de la verificación real del teléfono por SMS. \\
 14/09/2026 & Inicio del panel de administración. \\
-Septiembre de 2026 & Realización de la encuesta de validación con 180 respuestas. \\
+Última semana de septiembre de 2026 & Encuentro con Miguel Botbol, referente del sector de los estacionamientos, para presentar el MVP integrado. \\
 28/09/2026 & Revisión obligatoria de cada nueva cochera por un administrador antes de su publicación. \\
 06/10/2026 & Período de gracia entre reservas consecutivas. \\
 15/10/2026 & Publicación de los Términos y Condiciones y la Política de Privacidad; verificación del egreso con cargo por permanencia excedida. \\
@@ -168,9 +170,8 @@ La comunicación del proyecto se organizó en tres niveles:
 
 \begin{itemize}
     \item \textbf{Comunicación interna:} Cada \textit{sprint} comenzó con una reunión de planificación y cerró con una revisión y una retrospectiva. Entre ceremonias, la coordinación cotidiana se resolvió de manera asincrónica, complementada con encuentros breves para destrabar dependencias entre servicios.
-    \item \textbf{Seguimiento con los directores:} El equipo se reunió con los directores con una periodicidad no mayor a dos semanas, coincidente con el cierre de cada \textit{sprint}. En estos encuentros se presentaron los incrementos, se validaron las decisiones de alcance y se incorporaron sus observaciones a la planificación del \textit{sprint} siguiente.
-    \item \textbf{Comunicación externa:} Se establecieron contactos con potenciales usuarios para validar la propuesta, en particular mediante la encuesta difundida en Instagram durante el \textit{sprint} 12, cuyos resultados se detallan en la Sección~\ref{sec:encuesta}.
-    % TODO: Agregar la mención del contacto externo cuando se reciba la información.
+    \item \textbf{Seguimiento con los directores:} El equipo se reunió con los directores con una periodicidad semanal. En estos encuentros se presentaron los incrementos, se validaron las decisiones de alcance y se incorporaron sus observaciones a la planificación del \textit{sprint} siguiente.
+    \item \textbf{Comunicación externa:} Se establecieron contactos externos para validar la propuesta. En primer lugar, mediante la encuesta difundida en Instagram a principios de septiembre, durante el \textit{sprint} 11, cuyos resultados se detallan en la Sección~\ref{sec:encuesta}. En segundo lugar, mediante el encuentro con Miguel Botbol, referente del sector de los estacionamientos, en la última semana de septiembre, en el que se presentó el MVP ya integrado, como se describe en la Sección~\ref{sec:botbol}.
 \end{itemize}
 
 \subsection{Estrategia de documentación}

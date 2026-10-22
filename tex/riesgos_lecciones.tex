@@ -1,7 +1,88 @@
-\section{Riesgos materializados y Lecciones aprendidas}
+\section{Riesgos materializados y Lecciones aprendidas}\label{sec:riesgos}
 
-Durante el desarrollo del proyecto se materializó el riesgo asociado a la dependencia de servicios externos, debido a posibles límites de uso, modificaciones en sus condiciones o interrupciones temporales. Esta situación podría afectar la disponibilidad de los servicios de mapas y pagos, así como la continuidad de los flujos principales de la aplicación. Para reducir su impacto, se consideró necesario revisar las condiciones de uso, controlar el consumo de estos servicios y definir alternativas técnicas que permitan mantener una funcionalidad básica en caso de indisponibilidad.
+El desarrollo de ParkLink, a lo largo de trece \textit{sprints} y del tramo final de validación, no estuvo exento de obstáculos. Algunos de ellos habían sido anticipados en el anteproyecto; otros surgieron durante el desarrollo o a partir del contacto con potenciales usuarios. La identificación, la gestión y la resolución de estos desvíos constituyeron una fuente de aprendizaje técnico y metodológico para el equipo. A continuación se detallan los riesgos que se materializaron, los errores de estimación, las fricciones detectadas en la validación con usuarios y los aciertos que el equipo reconoce en el recorrido del proyecto.
 
-Asimismo, se presentaron dificultades durante la integración de los métodos de pago, principalmente relacionadas con la configuración de las credenciales, la validación de las transacciones y el tratamiento de respuestas exitosas o fallidas. Estas dificultades evidenciaron que la implementación de pagos requiere pruebas específicas de seguridad, compatibilidad y manejo de errores antes de habilitarse para los usuarios finales. Como consecuencia, fue necesario ajustar la planificación y realizar validaciones progresivas mediante prototipos y pruebas controladas.
+\subsection{Riesgos previstos que se materializaron}
 
-La principal lección aprendida es la importancia de identificar y documentar desde el inicio las dependencias externas, sus restricciones y sus posibles alternativas. También se comprobó que los flujos críticos deben validarse tempranamente, especialmente los relacionados con pagos, autenticación y disponibilidad de servicios. Finalmente, se reconoce la necesidad de mantener un registro actualizado de riesgos, responsables, medidas de mitigación y resultados obtenidos, de modo que las decisiones tomadas puedan ser revisadas y mejoradas durante las siguientes etapas del proyecto.
+\subsubsection{Dependencia de servicios externos}
+
+\begin{itemize}
+    \item \textbf{Contexto:} El anteproyecto ya identificaba que delegar capacidades críticas en servicios de terceros (pagos, mensajería, mapas y almacenamiento) exponía al sistema a sus límites de uso, condiciones comerciales y requisitos de habilitación.
+    \item \textbf{Materialización:} Varios proveedores impusieron condiciones que no se conocían al momento de planificar. La cuenta de prueba de Twilio no permitía enviar los códigos de verificación reales, por lo que fue necesario contratar una cuenta paga y obtener la aprobación de un perfil de cumplimiento normativo, un trámite que puede demorar hasta 48 horas. La recepción de notificaciones \textit{push} en iOS exigía una membresía paga del programa de desarrolladores de Apple y una computadora Mac. El servicio de geocodificación de OpenStreetMap impone una política de uso que obliga a identificar la aplicación y limitar la frecuencia de consultas.
+    \item \textbf{Mitigación y lección:} Cada servicio que depende de un proveedor externo se diseñó con un modo de desarrollo que registra la operación en lugar de ejecutarla, lo que permitió que el equipo trabajara y probara los flujos completos sin depender de credenciales reales. La lección fue que las dependencias externas deben relevarse y habilitarse desde el inicio, incluyendo sus trámites y costos, y no recién cuando la funcionalidad está lista para usarse.
+\end{itemize}
+
+\subsubsection{Complejidad de la integración de pagos}
+
+\begin{itemize}
+    \item \textbf{Contexto:} Se preveía que la integración con Mercado Pago sería uno de los puntos de mayor riesgo, por involucrar dinero real y la coordinación entre varios servicios.
+    \item \textbf{Materialización:} La confirmación de los pagos depende de notificaciones que la pasarela envía a una dirección pública, lo que impedía probarla directamente desde los equipos de desarrollo. Fue necesario recurrir a túneles temporales cuya dirección cambiaba en cada reinicio, configurar compradores de prueba en el entorno de pruebas de la pasarela y contemplar todos los estados posibles de una transacción, incluidos los pagos pendientes, los rechazados y los reembolsos.
+    \item \textbf{Mitigación y lección:} Se incorporó la verificación de la firma de cada notificación, el tratamiento idempotente de las notificaciones repetidas y un mecanismo de reintentos automáticos para los reembolsos fallidos. Los flujos de pago se validaron de manera progresiva, primero en el entorno de pruebas y con datos simulados. La lección fue que los flujos que involucran dinero requieren pruebas específicas de seguridad y de manejo de errores antes de habilitarse para los usuarios finales.
+\end{itemize}
+
+\subsection{Riesgos no previstos y errores de estimación}
+
+\subsubsection{Crecimiento del alcance del MVP}
+
+\begin{itemize}
+    \item \textbf{El error:} Los casos de uso del anteproyecto describían un MVP centrado en la búsqueda, la reserva y el pago. Durante el desarrollo se comprobó que, para que la plataforma pudiera operar con personas reales, eran indispensables funcionalidades que no se habían previsto: Un panel de administración para el personal, la gestión de liquidaciones y reembolsos, la moderación de publicaciones, el soporte asociado a cada reserva y la verificación presencial del ingreso.
+    \item \textbf{El impacto:} Estas funcionalidades concentraron una parte importante del esfuerzo de septiembre y octubre, el período de mayor actividad del proyecto.
+    \item \textbf{Lección:} La operación interna de una plataforma de dos lados es tan importante como la experiencia del usuario final, y debe contemplarse desde la definición del alcance.
+\end{itemize}
+
+\subsubsection{Requerimientos de negocio que impactaron en el diseño técnico}
+
+\begin{itemize}
+    \item \textbf{El error:} El motor de reservas se diseñó inicialmente bajo el supuesto de que cada cochera admitía una única reserva a la vez, y la imposibilidad de superponer reservas se garantizaba mediante una restricción de la base de datos.
+    \item \textbf{El impacto:} La incorporación de las playas de estacionamiento comerciales, que admiten varios vehículos en simultáneo, obligó a rediseñar ese control: La restricción se reemplazó por un recuento de las reservas activas dentro de la transacción, protegido por un bloqueo por cochera, que permite admitir tantas reservas superpuestas como lugares tenga cada espacio. De manera similar, la distinción entre conductores y propietarios, que en las primeras versiones de la aplicación compartían una misma navegación, requirió incorporar tipos de cuenta y separar las experiencias de cada rol.
+    \item \textbf{Lección:} Las variantes del modelo de negocio deben relevarse antes de fijar las reglas del dominio, ya que cambiar una regla central una vez implementada tiene un costo mucho mayor.
+\end{itemize}
+
+\subsubsection{Fragilidad del entorno de desarrollo distribuido}
+
+\begin{itemize}
+    \item \textbf{El error:} Se subestimó la complejidad de mantener un entorno local compuesto por cinco bases de datos, un intermediario de mensajes y seis servicios.
+    \item \textbf{El impacto:} Los controles de salud de las bases de datos informaban que estaban disponibles antes de que aceptaran conexiones reales, lo que provocaba que algunos servicios fallaran de manera intermitente al iniciar, según la carga de cada computadora. Además, como cada servicio recrea su esquema a partir de sus modelos, sin migraciones incrementales, los cambios en el modelo de datos obligaban a reiniciar las bases de datos locales. En la aplicación móvil, el módulo de notificaciones provocaba un cierre inesperado al ejecutarse en el entorno de pruebas rápidas de Expo, lo que exigió adaptarlo a cada entorno de ejecución.
+    \item \textbf{Lección:} El entorno de desarrollo es parte del producto. Se corrigieron los controles de salud para verificar conexiones reales y se documentó cada procedimiento de puesta en marcha, de modo que cualquier integrante pudiera reproducir el sistema completo sin depender de los demás.
+\end{itemize}
+
+\subsection{Lecciones de la validación con usuarios}
+
+La encuesta presentada en la Sección~\ref{sec:encuesta}, realizada a principios de septiembre, constituyó una de las fuentes de aprendizaje más valiosas del proyecto. Hasta ese momento, el producto se había diseñado a partir del análisis del problema y del mercado; la encuesta permitió contrastarlo con las dudas concretas de quienes iban a usarlo y reveló fricciones que el equipo no había considerado y que, sin resolverse, habrían frenado la adopción de la plataforma.
+
+Del lado del conductor, el temor más mencionado fue llegar a la cochera y encontrarla ocupada porque el conductor del turno anterior no se había retirado; le siguieron las dudas sobre cómo ingresar a una cochera privada sin control remoto y la necesidad de confiar en que el espacio publicado existiera realmente. Del lado del propietario, la duda más repetida fue de índole legal, ya que muchos reglamentos de copropiedad no permiten el ingreso de vehículos de personas ajenas al edificio; también surgieron el deseo de obtener un ingreso sin tener que estar presente para abrir el portón y la preocupación por quién se hace cargo ante un eventual daño.
+
+Cada una de estas fricciones se trató como un riesgo para la adopción del producto y se tradujo en una decisión concreta, incorporada a ParkLink durante la última etapa del desarrollo, como resume la Tabla~\ref{tab:encuesta_decisiones}.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.35}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Fricción detectada} & \textbf{Decisión implementada en ParkLink} \\
+\midrule
+Encontrar la cochera ocupada por el conductor anterior & Período de gracia de 15 minutos antes y después de cada reserva, que deja al menos 30 minutos libres entre reservas consecutivas, y verificación del ingreso y del egreso mediante códigos, con un cargo por permanencia excedida. \\
+Cómo ingresar sin control remoto & Instrucciones de acceso privadas que el propietario carga en su publicación y que el conductor solo ve una vez aceptada su reserva. \\
+Desconfianza sobre la existencia del espacio & Verificación obligatoria del correo y del teléfono de todos los usuarios, reseñas entre conductores y propietarios y revisión de cada nueva cochera por un administrador antes de publicarse. \\
+Restricciones del reglamento de copropiedad & Carga obligatoria de documentación de respaldo (escritura, contrato de alquiler o expensas) revisada antes de la publicación, y declaración del propietario, en los Términos y Condiciones, de que tiene derecho a ofrecer la cochera. \\
+Obtener ingresos sin estar presente & Reservas con confirmación instantánea, sin aprobación manual del propietario, cobro dentro de la aplicación y liquidación de las ganancias por parte de la plataforma. \\
+Responsabilidad ante daños & Reglas de responsabilidad definidas en los Términos y Condiciones, denuncias y tickets de soporte asociados a cada reserva y mensajería directa entre las partes. \\
+\bottomrule
+\end{tabularx}
+\caption{Fricciones relevadas en la encuesta y decisiones de producto derivadas.}
+\label{tab:encuesta_decisiones}
+\end{table}
+
+Las lecciones aprendidas en esta validación fueron una parte fundamental del desarrollo de ParkLink. Varias de las funcionalidades que hoy definen la confianza en la plataforma, como la revisión de cada cochera antes de publicarse, el período de gracia entre reservas o las instrucciones de acceso privadas, no existían en el diseño original y surgieron directamente de escuchar a los usuarios. La principal lección para el equipo fue que la validación con usuarios debe realizarse lo antes posible: Haberla hecho en la primera fase habría permitido incorporar estas decisiones desde el diseño, en lugar de adaptarlas sobre un producto ya construido.
+
+Esta validación se complementó con el encuentro con Miguel Botbol descripto en la Sección~\ref{sec:botbol}. Con el producto ya más maduro, la mirada de un operador con cerca de 70 cocheras confirmó que las decisiones tomadas iban en la dirección correcta y ratificó el valor de ParkLink tanto para los propietarios particulares como para los operadores comerciales. La lección fue que la validación debe combinar la voz de los usuarios finales con la de quienes conocen la operación del negocio, ya que cada una aporta una perspectiva que la otra no alcanza.
+
+\subsection{Aciertos y lecciones positivas}
+
+\begin{itemize}
+    \item \textbf{La arquitectura de microservicios:} La división del sistema en servicios independientes permitió que los cuatro integrantes avanzaran en paralelo, que cada servicio se implementara con la tecnología más adecuada y que los cambios en un componente no afectaran al resto. Los problemas de un servicio durante las pruebas nunca impidieron seguir trabajando sobre los demás.
+    \item \textbf{El trabajo contra contratos acordados:} Construir la aplicación móvil sobre datos simulados con la misma forma que la API real, y desarrollar cada servicio contra versiones simuladas de los servicios de los que dependía, evitó que el equipo quedara bloqueado por el orden de construcción y permitió conectar las piezas sin reescribirlas.
+    \item \textbf{La automatización temprana:} Las pruebas automatizadas y el circuito de integración continua detectaron errores antes de que llegaran a la rama principal, y resultaron especialmente valiosos durante el pico de actividad de septiembre, cuando la cantidad de cambios simultáneos era mayor.
+    \item \textbf{La comunicación y la distribución de responsabilidades:} Asignar a cada integrante la responsabilidad principal sobre componentes concretos, manteniendo la colaboración transversal y el seguimiento periódico con los directores, permitió tomar decisiones con rapidez y llegar al cierre con un producto completo e integrado.
+\end{itemize}
