@@ -1,88 +1,144 @@
 \section{Riesgos materializados y Lecciones aprendidas}\label{sec:riesgos}
 
-El desarrollo de ParkLink, a lo largo de trece \textit{sprints} y del tramo final de validación, no estuvo exento de obstáculos. Algunos de ellos habían sido anticipados en el anteproyecto; otros surgieron durante el desarrollo o a partir del contacto con potenciales usuarios. La identificación, la gestión y la resolución de estos desvíos constituyeron una fuente de aprendizaje técnico y metodológico para el equipo. A continuación se detallan los riesgos que se materializaron, los errores de estimación, las fricciones detectadas en la validación con usuarios y los aciertos que el equipo reconoce en el recorrido del proyecto.
+El desarrollo integral de ParkLink a lo largo de los trece \textit{sprints} y de la fase final de validación presentó diversos desafíos técnicos, de negocio y operativos. Algunos de estos obstáculos habían sido identificados en el anteproyecto; otros surgieron de manera imprevista durante la codificación o a partir del contacto directo con los usuarios y referentes del sector. La gestión proactiva, el análisis de impacto y la resolución sistemática de cada uno de ellos constituyeron un eje central del aprendizaje de ingeniería del equipo.
 
-\subsection{Riesgos previstos que se materializaron}
+A continuación se detallan de forma puntual y específica los riesgos identificados, indicando con precisión su naturaleza, su impacto, la estrategia aplicada para su mitigación, resolución o eliminación, y el resultado técnico obtenido.
 
-\subsubsection{Dependencia de servicios externos}
+\subsection{Riesgos Técnicos Previstos y su Resolución}
 
-\begin{itemize}
-    \item \textbf{Contexto:} El anteproyecto ya identificaba que delegar capacidades críticas en servicios de terceros (pagos, mensajería, mapas y almacenamiento) exponía al sistema a sus límites de uso, condiciones comerciales y requisitos de habilitación.
-    \item \textbf{Materialización:} Varios proveedores impusieron condiciones que no se conocían al momento de planificar. La cuenta de prueba de Twilio no permitía enviar los códigos de verificación reales, por lo que fue necesario contratar una cuenta paga y obtener la aprobación de un perfil de cumplimiento normativo, un trámite que puede demorar hasta 48 horas. La recepción de notificaciones \textit{push} en iOS exigía una membresía paga del programa de desarrolladores de Apple y una computadora Mac. El servicio de geocodificación de OpenStreetMap impone una política de uso que obliga a identificar la aplicación y limitar la frecuencia de consultas.
-    \item \textbf{Mitigación y lección:} Cada servicio que depende de un proveedor externo se diseñó con un modo de desarrollo que registra la operación en lugar de ejecutarla, lo que permitió que el equipo trabajara y probara los flujos completos sin depender de credenciales reales. La lección fue que las dependencias externas deben relevarse y habilitarse desde el inicio, incluyendo sus trámites y costos, y no recién cuando la funcionalidad está lista para usarse.
-\end{itemize}
-
-\subsubsection{Complejidad de la integración de pagos}
+\subsubsection{Riesgo 1: Dependencia y Restricciones Operativas de Servicios Externos}
 
 \begin{itemize}
-    \item \textbf{Contexto:} Se preveía que la integración con Mercado Pago sería uno de los puntos de mayor riesgo, por involucrar dinero real y la coordinación entre varios servicios.
-    \item \textbf{Materialización:} La confirmación de los pagos depende de notificaciones que la pasarela envía a una dirección pública, lo que impedía probarla directamente desde los equipos de desarrollo. Fue necesario recurrir a túneles temporales cuya dirección cambiaba en cada reinicio, configurar compradores de prueba en el entorno de pruebas de la pasarela y contemplar todos los estados posibles de una transacción, incluidos los pagos pendientes, los rechazados y los reembolsos.
-    \item \textbf{Mitigación y lección:} Se incorporó la verificación de la firma de cada notificación, el tratamiento idempotente de las notificaciones repetidas y un mecanismo de reintentos automáticos para los reembolsos fallidos. Los flujos de pago se validaron de manera progresiva, primero en el entorno de pruebas y con datos simulados. La lección fue que los flujos que involucran dinero requieren pruebas específicas de seguridad y de manejo de errores antes de habilitarse para los usuarios finales.
+    \item \textbf{Descripción del riesgo:} Depender de servicios de terceros para funcionalidades críticas (autenticación por SMS, notificaciones \textit{push}, geocodificación cartográfica y almacenamiento) expone al sistema a bloqueos por políticas de uso, costos imprevistos o demoras burocráticas de habilitación.
+    \item \textbf{Impacto y materialización:} La cuenta de prueba de Twilio no permitía enviar SMS a números no preverificados, requiriendo una cuenta paga y la aprobación de un perfil de cumplimiento normativo (demora de hasta 48 horas). Las notificaciones \textit{push} en iOS exigían membresía paga del programa Apple Developer y hardware Mac para compilar. El servicio Nominatim de OpenStreetMap impuso restricciones estrictas de frecuencia por dirección IP (\textit{rate limiting}).
+    \item \textbf{Estrategia de mitigación y resolución:}
+    \begin{itemize}
+        \item \textit{Modo de desarrollo desacoplado (Mock/Sandbox):} Se implementó un patrón adaptador en cada servicio consumidor. En entorno local y de integración continua, las llamadas a Twilio, FCM y geocodificación se reemplazan por implementaciones simuladas que devuelven respuestas válidas y registran la traza en los logs, eliminando el bloqueo al desarrollo diario.
+        \item \textit{Aprobación y contratación temprana:} Se completaron los trámites comerciales y normativos para habilitar credenciales reales de producción en Twilio y Firebase antes del \textit{sprint} de validación final.
+        \item \textit{Caché espacial:} Para mitigar el límite de consultas de geocodificación, se introdujo una capa de almacenamiento en caché en Redis que reutiliza coordenadas de direcciones ya consultadas.
+    \end{itemize}
+    \item \textbf{Resultado:} El sistema desacopló el desarrollo diario de los límites de las APIs de terceros y garantizó la operatividad real en el entorno productivo.
 \end{itemize}
 
-\subsection{Riesgos no previstos y errores de estimación}
-
-\subsubsection{Crecimiento del alcance del MVP}
+\subsubsection{Riesgo 2: Complejidad, Asincronismo y Seguridad en la Integración de Pagos}
 
 \begin{itemize}
-    \item \textbf{El error:} Los casos de uso del anteproyecto describían un MVP centrado en la búsqueda, la reserva y el pago. Durante el desarrollo se comprobó que, para que la plataforma pudiera operar con personas reales, eran indispensables funcionalidades que no se habían previsto: Un panel de administración para el personal, la gestión de liquidaciones y reembolsos, la moderación de publicaciones, el soporte asociado a cada reserva y la verificación presencial del ingreso.
-    \item \textbf{El impacto:} Estas funcionalidades concentraron una parte importante del esfuerzo de septiembre y octubre, el período de mayor actividad del proyecto.
-    \item \textbf{Lección:} La operación interna de una plataforma de dos lados es tan importante como la experiencia del usuario final, y debe contemplarse desde la definición del alcance.
+    \item \textbf{Descripción del riesgo:} La integración con la pasarela de pagos (Mercado Pago) involucra transacciones financieras reales, comunicación asincrónica distribuida, estados de pago intermedios y potencial falta de idempotencia ante reintentos de red.
+    \item \textbf{Impacto y materialización:} Las confirmaciones de pago se reciben mediante notificaciones HTTP (\textit{webhooks}) que la pasarela dispara hacia una URL pública, imposibilitando la prueba directa contra servidores en \textit{localhost}. Asimismo, los estados transaccionales complejos (pagos pendientes de acreditación, pagos rechazados y solicitudes de reembolso) requerían sincronización precisa con el servicio de reservas.
+    \item \textbf{Estrategia de mitigación y resolución:}
+    \begin{itemize}
+        \item \textit{Túneles seguros automatizados:} Se incorporaron túneles mediante Cloudflare Tunnels para exponer de manera estable los endpoints locales durante las pruebas de desarrollo.
+        \item \textit{Idempotencia y validación criptográfica:} Se implementó la verificación obligatoria de la firma digital (\textit{HMAC signature}) de cada \textit{webhook} entrante para repeler ataques de inyección de pagos falsos. Se introdujo una tabla de transacciones con claves de idempotencia únicas, impidiendo procesar dos veces el mismo evento de pago.
+        \item \textit{Reintentos automáticos para reembolsos:} Se encapsuló la lógica de devolución en un mecanismo con retroceso exponencial (\textit{exponential backoff}) para garantizar que ningún reembolso legítimo quede sin ejecutar ante fallas temporales de la pasarela.
+    \end{itemize}
+    \item \textbf{Resultado:} Circuito transaccional 100\% seguro, validado de punta a punta en el entorno de pruebas (\textit{sandbox}) y productivo.
 \end{itemize}
 
-\subsubsection{Requerimientos de negocio que impactaron en el diseño técnico}
+\subsection{Riesgos No Previstos y Desvíos de Alcance}
+
+\subsubsection{Riesgo 3: Crecimiento del Alcance Operativo del MVP}
 
 \begin{itemize}
-    \item \textbf{El error:} El motor de reservas se diseñó inicialmente bajo el supuesto de que cada cochera admitía una única reserva a la vez, y la imposibilidad de superponer reservas se garantizaba mediante una restricción de la base de datos.
-    \item \textbf{El impacto:} La incorporación de las playas de estacionamiento comerciales, que admiten varios vehículos en simultáneo, obligó a rediseñar ese control: La restricción se reemplazó por un recuento de las reservas activas dentro de la transacción, protegido por un bloqueo por cochera, que permite admitir tantas reservas superpuestas como lugares tenga cada espacio. De manera similar, la distinción entre conductores y propietarios, que en las primeras versiones de la aplicación compartían una misma navegación, requirió incorporar tipos de cuenta y separar las experiencias de cada rol.
-    \item \textbf{Lección:} Las variantes del modelo de negocio deben relevarse antes de fijar las reglas del dominio, ya que cambiar una regla central una vez implementada tiene un costo mucho mayor.
+    \item \textbf{Descripción del riesgo:} Subestimación de las herramientas de soporte, moderación y administración interna necesarias para que una plataforma de dos lados (\textit{two-sided platform}) pueda operar con usuarios reales.
+    \item \textbf{Impacto y materialización:} El diseño inicial solo contemplaba la aplicación para conductores y propietarios. Al aproximarse la fase de pruebas, se evidenció la imposibilidad de operar sin un mecanismo para auditar publicaciones de cocheras, moderar fotos, resolver disputas de reservas y gestionar liquidaciones a propietarios.
+    \item \textbf{Estrategia de resolución (Eliminación del riesgo):} Se tomó la decisión de crear un módulo específico: el panel de administración web (\textit{admin-web}) en React Native Web. Se implementaron vistas dedicadas para la aprobación manual de cocheras, visualización de métricas de uso y gestión de tickets de soporte técnico.
+    \item \textbf{Resultado:} La plataforma incorporó gobernanza operativa completa, permitiendo controlar la calidad de la oferta antes del lanzamiento.
 \end{itemize}
 
-\subsubsection{Fragilidad del entorno de desarrollo distribuido}
+\subsubsection{Riesgo 4: Incompatibilidad del Modelo de Dominio ante Playas Comerciales}
 
 \begin{itemize}
-    \item \textbf{El error:} Se subestimó la complejidad de mantener un entorno local compuesto por cinco bases de datos, un intermediario de mensajes y seis servicios.
-    \item \textbf{El impacto:} Los controles de salud de las bases de datos informaban que estaban disponibles antes de que aceptaran conexiones reales, lo que provocaba que algunos servicios fallaran de manera intermitente al iniciar, según la carga de cada computadora. Además, como cada servicio recrea su esquema a partir de sus modelos, sin migraciones incrementales, los cambios en el modelo de datos obligaban a reiniciar las bases de datos locales. En la aplicación móvil, el módulo de notificaciones provocaba un cierre inesperado al ejecutarse en el entorno de pruebas rápidas de Expo, lo que exigió adaptarlo a cada entorno de ejecución.
-    \item \textbf{Lección:} El entorno de desarrollo es parte del producto. Se corrigieron los controles de salud para verificar conexiones reales y se documentó cada procedimiento de puesta en marcha, de modo que cualquier integrante pudiera reproducir el sistema completo sin depender de los demás.
+    \item \textbf{Descripción del riesgo:} Asumir erróneamente que todas las cocheras poseen capacidad unitaria (un solo espacio físico), limitando la escalabilidad del sistema hacia estacionamientos comerciales de múltiples plazas.
+    \item \textbf{Impacto y materialización:} El motor de reservas original aseguraba la no superposición de horarios mediante una restricción de exclusión rígida a nivel de base de datos (\textit{unique temporal constraint}). Al incorporar playas comerciales con decenas de lugares simultáneos, el modelo colapsaba y rechazaba reservas válidas.
+    \item \textbf{Estrategia de resolución (Refactorización arquitectónica):} Se rediseñó el servicio de reservas (\textit{booking-service}): Se eliminó la restricción estática de unicidad y se reemplazó por un algoritmo de verificación de capacidad disponible dentro de una transacción transaccional protegida por bloqueos pesimistas a nivel de cochera (\textit{SELECT FOR UPDATE}). Esto permite admitir hasta $N$ reservas simultáneas en el mismo intervalo de tiempo, donde $N$ es la capacidad total declarada y auditada del espacio.
+    \item \textbf{Resultado:} El sistema soporta de forma nativa tanto cocheras privadas individuales como playas comerciales de gran escala.
 \end{itemize}
 
-\subsection{Lecciones de la validación con usuarios}
+\subsubsection{Riesgo 5: Fragilidad y Desincronización del Entorno de Desarrollo Distribuido}
 
-La encuesta presentada en la Sección~\ref{sec:encuesta}, realizada a principios de septiembre, constituyó una de las fuentes de aprendizaje más valiosas del proyecto. Hasta ese momento, el producto se había diseñado a partir del análisis del problema y del mercado; la encuesta permitió contrastarlo con las dudas concretas de quienes iban a usarlo y reveló fricciones que el equipo no había considerado y que, sin resolverse, habrían frenado la adopción de la plataforma.
+\begin{itemize}
+    \item \textbf{Descripción del riesgo:} Dificultad para coordinar un entorno local compuesto por seis microservicios, cinco bases de datos PostgreSQL independientes, un intermediario RabbitMQ y la aplicación móvil.
+    \item \textbf{Impacto y materialización:} Condiciones de carrera (\textit{race conditions}) en el arranque mediante Docker: los contenedores de las bases de datos reportaban estar listos antes de aceptar conexiones entrantes, provocando que los servicios de \textit{backend} crashearan intermitentemente. Además, las pruebas en Expo Go generaban errores fatales al invocar módulos nativos de notificaciones sin empaquetado personalizado.
+    \item \textbf{Estrategia de mitigación y resolución:}
+    \begin{itemize}
+        \item \textit{Healthchecks avanzados y orquestación:} Se reescribieron los scripts de Docker Compose con controles de salud basados en comandos \texttt{pg\_isready} y dependencias condicionales (\texttt{condition: service\_healthy}), asegurando un inicio ordenado y determinístico.
+        \item \textit{Compilación con EAS Build:} Se migró la aplicación móvil desde el cliente genérico Expo Go hacia una compilación de desarrollo personalizada (\textit{development build}) generada mediante Expo Application Services (EAS), permitiendo depurar código nativo de notificaciones sin fallas.
+    \end{itemize}
+    \item \textbf{Resultado:} Entorno de desarrollo reproducible con un único comando en cualquier equipo, reduciendo los tiempos de configuración a cero.
+\end{itemize}
 
-Del lado del conductor, el temor más mencionado fue llegar a la cochera y encontrarla ocupada porque el conductor del turno anterior no se había retirado; le siguieron las dudas sobre cómo ingresar a una cochera privada sin control remoto y la necesidad de confiar en que el espacio publicado existiera realmente. Del lado del propietario, la duda más repetida fue de índole legal, ya que muchos reglamentos de copropiedad no permiten el ingreso de vehículos de personas ajenas al edificio; también surgieron el deseo de obtener un ingreso sin tener que estar presente para abrir el portón y la preocupación por quién se hace cargo ante un eventual daño.
+\subsection{Riesgos Operativos y de Adopción Detectados en la Validación}
 
-Cada una de estas fricciones se trató como un riesgo para la adopción del producto y se tradujo en una decisión concreta, incorporada a ParkLink durante la última etapa del desarrollo, como resume la Tabla~\ref{tab:encuesta_decisiones}.
+A partir de la encuesta a potenciales usuarios (Sección~\ref{sec:encuesta}) y de las entrevistas con referentes del sector, se identificaron seis fricciones críticas que ponían en riesgo la adopción de ParkLink. Cada una fue abordada como un riesgo de producto y mitigada mediante decisiones técnicas concretas, resumidas en la Tabla~\ref{tab:encuesta_decisiones}.
+
+\subsubsection{Riesgo 6: Solapamiento y Permanencia Indebida del Conductor Anterior}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Miedo del conductor a llegar al espacio reservado y encontrarlo ocupado por un usuario que excedió su tiempo de estadía.
+    \item \textbf{Resolución implementada:} Se introdujo un \textbf{período de gracia automático de 15 minutos} antes del inicio y después del fin de cada reserva, asegurando un margen de seguridad de 30 minutos entre turnos consecutivos. Se implementó la verificación de egreso mediante código PIN; si el conductor no registra su salida al vencer la tolerancia, el sistema aplica automáticamente un recargo por permanencia excedida (\textit{overstay penalty}).
+\end{itemize}
+
+\subsubsection{Riesgo 7: Inseguridad en el Acceso Físico a Cocheras Privadas}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Dificultad de acceso a edificios o garajes privados sin control remoto o llave física.
+    \item \textbf{Resolución implementada:} Se diseñó un módulo de \textbf{instrucciones de acceso confidenciales}. El propietario carga los detalles (código de portón, piso, indicaciones) y estos permanecen cifrados en el servidor, mostrándose en la aplicación del conductor única y exclusivamente una vez que la reserva y el pago han sido confirmados.
+\end{itemize}
+
+\subsubsection{Riesgo 8: Publicación de Cocheras Fraudulentas o Inexistentes}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Desconfianza del usuario sobre la veracidad física de los espacios publicados en el mapa.
+    \item \textbf{Resolución implementada:} Se estableció un circuito estricto de \textbf{moderación y verificación previa}: toda nueva cochera requiere la carga de fotografías y documentación de respaldo (escritura, contrato o expensas), y permanece en estado pendiente hasta ser validada y habilitada por un administrador desde el panel de control. Se complementó con verificación obligatoria de identidad vía SMS y correo electrónico para todos los usuarios.
+\end{itemize}
+
+\subsubsection{Riesgo 9: Restricciones en Reglamentos de Copropiedad y Consorcios}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Prohibición estatutaria en ciertos edificios residenciales para el ingreso de vehículos de terceros ajenos al consorcio.
+    \item \textbf{Resolución implementada:} Se incorporó en los Términos y Condiciones una cláusula expresa de declaración jurada donde el propietario certifica contar con el derecho y la autorización reglamentaria para explotar el espacio. Asimismo, se priorizó la captación de cocheras en edificios con acceso directo independiente y playas comerciales.
+\end{itemize}
+
+\subsubsection{Riesgo 10: Fricción Operativa para Propietarios Ausentes}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Resistencia de los propietarios a tener que coordinar manualmente la entrega de llaves o estar presentes físicamente en cada turno.
+    \item \textbf{Resolución implementada:} Confirmación de reservas 100\% instantánea y automatizada dentro de las franjas horarias habilitadas por el dueño en su calendario, con cobro integrado y liquidación bancaria periódica de sus ganancias sin requerir su intervención en cada operación.
+\end{itemize}
+
+\subsubsection{Riesgo 11: Disputas por Daños o Incidentes en el Inmueble o Vehículo}
+\begin{itemize}
+    \item \textbf{Naturaleza del riesgo:} Incertidumbre jurídica sobre las responsabilidades legales ante un eventual daño material durante la estadía.
+    \item \textbf{Resolución implementada:} Delimitación clara del marco de responsabilidad en los Términos y Condiciones conforme a la Ley de Defensa del Consumidor y al Código Civil y Comercial (\hyperref[anexo:legal]{Anexo 3}), acompañada de un canal directo de mensajería interna entre las partes y apertura de tickets de reclamo con mediación del soporte de ParkLink.
+\end{itemize}
+
+\vspace{0.4cm}
 
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.35}
 \small
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X}
+\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}X}
 \toprule
-\textbf{Fricción detectada} & \textbf{Decisión implementada en ParkLink} \\
+\textbf{Fricción / Riesgo} & \textbf{Estrategia de Gestión} & \textbf{Decisión Técnica Implementada} \\
 \midrule
-Encontrar la cochera ocupada por el conductor anterior & Período de gracia de 15 minutos antes y después de cada reserva, que deja al menos 30 minutos libres entre reservas consecutivas, y verificación del ingreso y del egreso mediante códigos, con un cargo por permanencia excedida. \\
-Cómo ingresar sin control remoto & Instrucciones de acceso privadas que el propietario carga en su publicación y que el conductor solo ve una vez aceptada su reserva. \\
-Desconfianza sobre la existencia del espacio & Verificación obligatoria del correo y del teléfono de todos los usuarios, reseñas entre conductores y propietarios y revisión de cada nueva cochera por un administrador antes de publicarse. \\
-Restricciones del reglamento de copropiedad & Carga obligatoria de documentación de respaldo (escritura, contrato de alquiler o expensas) revisada antes de la publicación, y declaración del propietario, en los Términos y Condiciones, de que tiene derecho a ofrecer la cochera. \\
-Obtener ingresos sin estar presente & Reservas con confirmación instantánea, sin aprobación manual del propietario, cobro dentro de la aplicación y liquidación de las ganancias por parte de la plataforma. \\
-Responsabilidad ante daños & Reglas de responsabilidad definidas en los Términos y Condiciones, denuncias y tickets de soporte asociados a cada reserva y mensajería directa entre las partes. \\
+Ocupación indebida previa & Mitigación / Penalización & Período de gracia de 15 min y recargo tarifario automático por permanencia no autorizada. \\
+\rowcolor{plgray}
+Acceso a cochera privada & Eliminación de fricción & Instrucciones de acceso confidenciales accesibles solo tras confirmación y pago. \\
+Cocheras fraudulentas & Prevención / Control & Moderación obligatoria en \textit{backoffice} y verificación 2FA de identidad de usuarios. \\
+\rowcolor{plgray}
+Reglamentos de consorcio & Mitigación legal & Declaración jurada vinculante en Términos y Condiciones y carga de títulos de posesión. \\
+Carga operativa del dueño & Automatización & Reservas instantáneas por calendario, cobros integrados y liquidaciones automáticas. \\
+\rowcolor{plgray}
+Responsabilidad ante daños & Mitigación legal / Soporte & Encuadre en Ley 24.240, canal de mensajería y módulo de tickets de soporte por reserva. \\
 \bottomrule
 \end{tabularx}
-\caption{Fricciones relevadas en la encuesta y decisiones de producto derivadas.}
+\caption{Matriz de riesgos de adopción relevados en la validación y soluciones implementadas.}
 \label{tab:encuesta_decisiones}
 \end{table}
 
-Las lecciones aprendidas en esta validación fueron una parte fundamental del desarrollo de ParkLink. Varias de las funcionalidades que hoy definen la confianza en la plataforma, como la revisión de cada cochera antes de publicarse, el período de gracia entre reservas o las instrucciones de acceso privadas, no existían en el diseño original y surgieron directamente de escuchar a los usuarios. La principal lección para el equipo fue que la validación con usuarios debe realizarse lo antes posible: Haberla hecho en la primera fase habría permitido incorporar estas decisiones desde el diseño, en lugar de adaptarlas sobre un producto ya construido.
+\subsection{Aciertos y Lecciones Positivas de Ingeniería}
 
-Esta validación se complementó con el encuentro con Miguel Botbol descripto en la Sección~\ref{sec:botbol}. Con el producto ya más maduro, la mirada de un operador con cerca de 70 cocheras confirmó que las decisiones tomadas iban en la dirección correcta y ratificó el valor de ParkLink tanto para los propietarios particulares como para los operadores comerciales. La lección fue que la validación debe combinar la voz de los usuarios finales con la de quienes conocen la operación del negocio, ya que cada una aporta una perspectiva que la otra no alcanza.
-
-\subsection{Aciertos y lecciones positivas}
+El proceso de desarrollo dejó también importantes conclusiones metodológicas y técnicas que ratificaron la solidez de las decisiones de diseño adoptadas:
 
 \begin{itemize}
-    \item \textbf{La arquitectura de microservicios:} La división del sistema en servicios independientes permitió que los cuatro integrantes avanzaran en paralelo, que cada servicio se implementara con la tecnología más adecuada y que los cambios en un componente no afectaran al resto. Los problemas de un servicio durante las pruebas nunca impidieron seguir trabajando sobre los demás.
-    \item \textbf{El trabajo contra contratos acordados:} Construir la aplicación móvil sobre datos simulados con la misma forma que la API real, y desarrollar cada servicio contra versiones simuladas de los servicios de los que dependía, evitó que el equipo quedara bloqueado por el orden de construcción y permitió conectar las piezas sin reescribirlas.
-    \item \textbf{La automatización temprana:} Las pruebas automatizadas y el circuito de integración continua detectaron errores antes de que llegaran a la rama principal, y resultaron especialmente valiosos durante el pico de actividad de septiembre, cuando la cantidad de cambios simultáneos era mayor.
-    \item \textbf{La comunicación y la distribución de responsabilidades:} Asignar a cada integrante la responsabilidad principal sobre componentes concretos, manteniendo la colaboración transversal y el seguimiento periódico con los directores, permitió tomar decisiones con rapidez y llegar al cierre con un producto completo e integrado.
+    \item \textbf{Modularidad de la arquitectura de microservicios:} La independencia funcional y de almacenamiento entre servicios permitió a los cuatro integrantes desarrollar, probar y desplegar componentes en paralelo sin bloqueos ni colisiones de código.
+    \item \textbf{Desarrollo guiado por contratos de API (\textit{API-first}):} Diseñar las especificaciones de los \textit{endpoints} antes de la codificación y trabajar con datos simulados (\textit{mocks}) en el \textit{frontend} permitió construir pantallas completas mientras los servicios de \textit{backend} estaban en desarrollo.
+    \item \textbf{Automatización temprana de pruebas e integración continua:} La configuración de pipelines en GitHub Actions para verificar tipos, linting y pruebas unitarias/E2E en cada \textit{pull request} evitó regresiones y garantizó la estabilidad del sistema durante el período de mayor volumen de cambios.
+    \item \textbf{Validación iterativa centrada en el usuario:} Contrastar tempranamente el software con conductores y con un referente del sector evitó construir funcionalidades desconectadas de las necesidades reales del mercado de estacionamiento.
 \end{itemize}

@@ -1,11 +1,47 @@
-\section{Aportes individuales}
+\section{Aportes individuales}\label{sec:aportes}
 
-En esta sección se detallan las contribuciones individuales de cada integrante del equipo durante el desarrollo del proyecto. Cada miembro aportó conocimientos y habilidades específicas que resultaron fundamentales para la construcción de una solución modular, segura y orientada a las necesidades de los usuarios.
+En esta sección se detallan las contribuciones individuales y la asignación de responsabilidades de cada integrante del equipo a lo largo de las distintas fases del Trabajo Profesional. El desarrollo integral de ParkLink demandó un esfuerzo acumulado de aproximadamente 1.600 horas de ingeniería, distribuidas de manera equitativa entre los cuatro integrantes (aproximadamente 400 horas por alumno), abarcando desde la investigación inicial y el diseño de la arquitectura hasta la codificación, aseguramiento de la calidad, validación con usuarios y elaboración de la documentación técnica.
 
-\textbf{Thiago Baez} estuvo a cargo del diseño de la arquitectura del sistema. Su trabajo se enfocó en definir una estructura modular y escalable, procurando una adecuada separación de responsabilidades entre los distintos componentes y facilitando su mantenimiento y evolución. Además, participó en la integración de servicios externos y en la implementación de pruebas unitarias, asegurando la calidad y confiabilidad del sistema. Su enfoque en la documentación y el seguimiento de buenas prácticas contribuyó a un desarrollo más organizado y eficiente.
+\subsection{Detalle de Contribuciones por Integrante}
 
-\textbf{Santiago Dominguez} implementó la integración con la pasarela de pagos Mercado Pago, incluyendo el consumo de su API y la gestión de las transacciones. Asimismo, desarrolló la lógica de validación de pagos y el manejo de errores, contribuyendo a una experiencia de usuario segura y confiable. También participó en el diseño del almacenamiento de datos y en la implementación de pruebas unitarias, fortaleciendo la estabilidad y la calidad del sistema.
+\begin{itemize}
+    \item \textbf{Thiago Fernando Baez (aprox. 400 hs):}
+    Tuvo a su cargo el diseño y desarrollo de la experiencia e interfaz de usuario (UX/UI), la arquitectura del \textit{frontend} y la administración centralizada del sistema. Diseñó e implementó el microservicio de autenticación e identidad (\textit{auth-service}), gestionando el ciclo de vida de usuarios, credenciales y perfiles mediante tokens JWT. Desarrolló el panel web de administración interna (\textit{admin-web}), utilizado para la moderación de publicaciones, auditoría de transacciones y gestión de soporte. Asimismo, colaboró en el diseño de la puerta de enlace perimetral (\textit{gateway}) y en los flujos principales de navegación de la aplicación móvil.
 
-\textbf{Facundo Luzzi} se encargó de la configuración y el desarrollo de la interfaz de usuario (UX/UI) del frontend, con el objetivo de lograr una experiencia intuitiva, accesible y consistente. Entre sus responsabilidades se incluyeron la elaboración de prototipos, la realización de pruebas de usabilidad y la implementación de mejoras a partir de los resultados obtenidos. Además, integró los servicios de mapas y optimizó el rendimiento del frontend para reducir los tiempos de carga y favorecer una navegación fluida.
+    \item \textbf{Santiago Domínguez (aprox. 400 hs):}
+    Fue el responsable principal de la integración con la pasarela de pagos Mercado Pago (\textit{payment-service}) y del aseguramiento de la calidad del software (QA). Desarrolló los flujos completos de cobro, confirmación asincrónica mediante \textit{webhooks}, tratamiento de estados transaccionales y mecanismos de reembolso automático idempotente. En el área de QA, diseñó la estrategia de pruebas, configuró los entornos de integración continua con GitHub Actions y desarrolló las suites de pruebas integradas de punta a punta (\textit{E2E}). Participó además en la redacción y revisión de la documentación técnica del proyecto y en el módulo de geolocalización.
 
-\textbf{Santiago Varga} fue responsable de la implementación del backend, incluyendo el desarrollo de APIs RESTful y la gestión de las bases de datos. Su trabajo permitió garantizar un almacenamiento y una recuperación eficientes de la información, así como operaciones seguras y confiables. También integró servicios externos e implementó medidas de seguridad para proteger los datos sensibles. Finalmente, diseñó el sistema de autenticación y autorización, asegurando que únicamente los usuarios habilitados pudieran acceder a determinadas funcionalidades y datos.
+    \item \textbf{Facundo Luzzi (aprox. 400 hs):}
+    Estuvo a cargo del núcleo transaccional del sistema, desarrollando el motor de disponibilidad y reservas (\textit{booking-service}) en lenguaje Go, garantizando alta concurrencia y consistencia transaccional en la asignación de cocheras. Diseñó e implementó el servicio de mensajería y notificaciones (\textit{notifications-service}) con RabbitMQ y Firebase Cloud Messaging, permitiendo alertas \textit{push} e internas en tiempo real. Fue el responsable principal del desarrollo de la aplicación móvil multiplataforma (\textit{mobile}) en React Native / Expo para conductores y propietarios, asegurando la compatibilidad y fluidez en dispositivos Android e iOS.
+
+    \item \textbf{Santiago Jorge Varga (aprox. 400 hs):}
+    Tuvo a su cargo el desarrollo del microservicio de publicación, geolocalización y administración de cocheras (\textit{parking-service}) empleando NestJS y consultas espaciales con PostGIS. Lideró el relevamiento y formalización del modelo de negocio, el análisis de las 5Cs y 4Ps, y la coordinación de las instancias de validación con actores de la industria (entrevista con el referente del sector). Diseñó la identidad visual corporativa de la marca y el informe de colorimetría (\hyperref[anexo:colorimetria]{Anexo 2}). Participó además activamente en la ejecución de pruebas de calidad (QA) y en la redacción integral de los informes de avance y entrega final.
+\end{itemize}
+
+\subsection{Tabla Resumen de Dedicación y Aportes}
+
+La Tabla~\ref{tab:aportes_individuales} consolida la distribución de responsabilidades, componentes principales construidos y la carga horaria estimada dedicada por cada miembro del equipo.
+
+\vspace{0.3cm}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.45}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.9cm}}
+\toprule
+\textbf{Integrante} & \textbf{Área y Roles Principales} & \textbf{Componentes y Entregables} & \textbf{Dedicación Estimada} \\
+\midrule
+Thiago Fernando Baez & Frontend, UX/UI, Autenticación y Panel de Administración & \textit{auth-service}, \textit{admin-web}, \textit{gateway}, diseño de pantallas e interfaces móviles & $\sim$400 hs \\
+\rowcolor{plgray}
+Santiago Domínguez & Pasarela de Pagos, QA, Integración Continua y Testing E2E & \textit{payment-service}, pipelines CI/CD, scripts de prueba E2E, documentación de calidad & $\sim$400 hs \\
+Facundo Luzzi & Motor de Reservas, Notificaciones y Desarrollo Mobile & \textit{booking-service}, \textit{notifications-service}, aplicación móvil \textit{mobile} (iOS/Android) & $\sim$400 hs \\
+\rowcolor{plgray}
+Santiago Jorge Varga & Gestión de Cocheras, PostGIS, Modelo de Negocio e Identidad & \textit{parking-service}, modelo de negocio, identidad de marca, validación y QA & $\sim$400 hs \\
+\midrule
+\textbf{Total del Proyecto} & \multicolumn{2}{>{\raggedright\arraybackslash}X}{\textbf{Desarrollo integral, validación y documentación de ParkLink}} & \textbf{$\sim$1.600 hs} \\
+\bottomrule
+\end{tabularx}
+\caption{Resumen de aportes individuales, áreas de responsabilidad y dedicación horaria.}
+\label{tab:aportes_individuales}
+\end{table}

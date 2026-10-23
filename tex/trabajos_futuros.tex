@@ -1,11 +1,41 @@
 \section{Trabajos futuros}
 
-Como líneas de trabajo futuro, se propone ampliar ParkLink mediante la incorporación de sensores IoT para detectar la ocupación de las cocheras, modelos de predicción de la demanda y mecanismos de integración con operadores de estacionamientos. Asimismo, se busca desarrollar una solución escalable que permita su implementación en ciudades densamente pobladas de Latinoamérica y de los Estados Unidos, considerando las particularidades de movilidad, infraestructura y regulación de cada contexto.
+Como proyección de mediano y largo plazo para ParkLink, se identifican líneas de evolución estratégica orientadas a la incorporación de tecnologías de hardware inteligente, el desarrollo de alianzas con grandes operadores del sector comercial y la expansión geográfica hacia mercados internacionales de alta densidad vehicular.
 
-La incorporación de sensores permitiría obtener información en tiempo real sobre la disponibilidad de los espacios y mejorar la precisión de los datos mostrados a los usuarios. A partir de esta información, podrían desarrollarse modelos capaces de analizar patrones de uso, anticipar los momentos de mayor demanda y recomendar alternativas de estacionamiento de acuerdo con la ubicación, el horario y las preferencias de cada persona. También sería conveniente evaluar distintos mecanismos de actualización y comunicación para garantizar que la información se mantenga confiable y oportuna.
+\subsection{Integración con Sistemas Complejos de Detección mediante IoT y Cámaras con Inteligencia Artificial}
 
-Otra línea de trabajo consiste en establecer acuerdos con operadores de estacionamientos, comercios y organismos públicos para ampliar la cobertura de la plataforma. Estas integraciones podrían facilitar la incorporación de nuevas cocheras, la gestión de reservas y la implementación de métodos de pago digitales. Además, permitirían explorar indicadores de desempeño relacionados con la disponibilidad, el tiempo de búsqueda, la rotación de los espacios y el impacto de la solución sobre la congestión vehicular.
+La primera línea técnica de trabajo comprende la transición desde un modelo de disponibilidad basado en reservas de franjas horarias declaradas hacia un ecosistema automatizado de sensado en tiempo real:
 
-Estas funcionalidades y objetivos de expansión no forman parte del MVP propuesto, dado que requieren infraestructura tecnológica, disponibilidad de datos históricos, análisis de viabilidad y procesos de validación adicionales que exceden el alcance inicial del proyecto.
+\begin{itemize}
+    \item \textbf{Cámaras de Visión Computacional con Inteligencia Artificial:} Despliegue de modelos de aprendizaje profundo (\textit{Deep Learning}) para la detección y segmentación de vehículos en plazas de estacionamiento a partir de transmisiones de video. Estos sistemas permiten monitorear de forma continua el estado de ocupación de múltiples cocheras en simultáneo sin necesidad de intervención humana.
+    \item \textbf{Reconocimiento Automático de Matrículas (LPR / ALPR):} Integración de algoritmos de lectura de patentes en los puntos de acceso y egreso. Esto permitirá la validación automática de ingresos, el cómputo exacto de permanencia en tiempo real y la apertura automatizada de accesos para conductores con reserva confirmada, eliminando por completo la fricción de códigos PIN manuales.
+    \item \textbf{Redes de Sensores Físicos IoT:} Incorporación de sensores de suelo ultrasónicos y geomagnéticos de bajo consumo en cocheras individuales o subterráneas de difícil cobertura visual. Los dispositivos se comunicarán mediante protocolos de telemetría ligera (MQTT / LoRaWAN) con el \textit{backend} de ParkLink, actualizando el mapa de disponibilidad en milisegundos.
+    \item \textbf{Modelos Predictivos de Demanda y Tarifación Dinámica:} Procesamiento de datos históricos de ocupación, eventos locales y patrones climáticos para anticipar la saturación de zonas críticas y sugerir rutas o tarifas óptimas tanto a conductores como a propietarios.
+\end{itemize}
 
-En etapas posteriores también será necesario realizar pruebas piloto en diferentes zonas y comparar los resultados obtenidos en contextos urbanos diversos. La evaluación deberá contemplar aspectos técnicos, económicos y de experiencia de usuario, así como cuestiones vinculadas con la privacidad, la seguridad de la información y el cumplimiento de la normativa vigente. De este modo, ParkLink podrá evolucionar de manera gradual, priorizando las funcionalidades con mayor impacto y asegurando que su crecimiento sea sostenible y adaptable a las necesidades de cada ciudad.
+\subsection{Contacto Directo y Adaptación a las Necesidades de Grandes Playas de Estacionamiento}
+
+A partir de las validaciones realizadas con referentes de la industria, se plantea una línea de desarrollo orientada a profundizar el contacto comercial directo con dueños y cadenas de grandes playas de estacionamiento comerciales:
+
+\begin{itemize}
+    \item \textbf{Ajuste del Sistema a Dinámicas Operativas Complejas:} Adaptación del \textit{backoffice} y de los motores transaccionales para responder a las necesidades específicas de grandes playas: gestión de cupos mixtos (vehículos rotativos por hora frente a abonados mensuales fijos), asignación inteligente de pisos y sectores, y reportes financieros avanzados para auditoría contable.
+    \item \textbf{Integración con Infraestructura y Barreras Electromecánicas:} Desarrollo de interfaces de comunicación e integración con los sistemas de control de acceso físico (\textit{parking barrier gates}) y expendedores de tickets tradicionales, unificando la operatoria digital de ParkLink con el hardware existente en las playas.
+    \item \textbf{Esquemas de Tarifación Flexible y Convenios Corporativos:} Implementación de herramientas para que los grandes operadores configuren reglas complejas de precios (descuentos por estadías prolongadas, tarifas nocturnas, promociones en convenio con comercios zonales y centros comerciales).
+\end{itemize}
+
+\subsection{Extensión y Escalabilidad a Grandes Ciudades de Latinoamérica y Estados Unidos}
+
+Con el objetivo de validar el modelo de negocio en diversos contextos urbanos, la plataforma proyecta una estrategia de internacionalización y escalabilidad territorial:
+
+\begin{itemize}
+    \item \textbf{Expansión Regional en Latinoamérica:} Despliegue en metrópolis con problemáticas críticas de saturación vial similares o superiores a las de Buenos Aires, tales como San Pablo, Ciudad de México, Bogotá, Santiago de Chile y Lima, adaptando la plataforma a las particularidades locales de movilidad, seguridad y hábitos de pago.
+    \item \textbf{Llegada a Ciudades de Estados Unidos:} Extensión a grandes centros urbanos norteamericanos de alta demanda de estacionamiento (como Miami, Los Ángeles, Nueva York y Chicago), donde los conductores ya poseen familiaridad con aplicaciones transaccionales y el valor promedio del ticket por hora optimiza la rentabilidad operativa.
+    \item \textbf{Adaptaciones Técnicas y Regulatorias de Internacionalización:}
+    \begin{itemize}
+        \item \textit{Soporte Multimoneda y Pasarelas de Pago Globales:} Integración con procesadores internacionales como Stripe y PayPal, junto con la gestión impositiva y cambiaria multijurisdiccional.
+        \item \textit{Localización e Internacionalización (i18n):} Soporte multiidioma en la aplicación móvil y portal web (español, inglés y portugués), junto con la adaptación de formatos cartográficos y estándares de direcciones locales.
+        \item \textit{Cumplimiento Regulatorio Internacional:} Adecuación de las políticas de privacidad y protección de datos a estándares internacionales exigentes, tales como el RGPD europeo y la CCPA/CPRA de California.
+    \end{itemize}
+\end{itemize}
+
+Estas líneas de trabajo futuro consolidan la visión de ParkLink como una plataforma tecnológica integral de escala regional y global, capaz de evolucionar de un sistema de reservas colaborativas hacia una infraestructura inteligente de movilidad urbana.

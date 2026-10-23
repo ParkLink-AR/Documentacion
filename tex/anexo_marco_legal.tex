@@ -1,0 +1,78 @@
+\newpage
+\section{Anexo 3: Marco Legal, Defensa del Consumidor y Protección de Datos}\label{anexo:legal}
+
+El presente anexo detalla y fundamenta el marco jurídico adoptado durante el diseño, desarrollo y validación de ParkLink. Al tratarse de una plataforma digital bilateral (\textit{two-sided marketplace}) que procesa transacciones monetarias, coordina el acceso físico a inmuebles privados y gestiona información sensible de usuarios y vehículos en tiempo real, el cumplimiento estricto del ordenamiento legal argentino constituyó un requerimiento no funcional de primer orden desde las etapas iniciales de la ingeniería del sistema.
+
+\subsection{Encuadre Jurídico de la Plataforma}
+
+ParkLink opera como una plataforma tecnológica de intermediación digital que vincula a dos tipos de usuarios:
+\begin{enumerate}
+    \item \textbf{Conductores (Demandantes):} Personas humanas que buscan, reservan y abonan una plaza de estacionamiento temporal.
+    \item \textbf{Propietarios y Operadores (Oferentes):} Particulares o titulares comerciales que publican la disponibilidad de cocheras y reciben una liquidación neta por el tiempo de uso efectivo.
+\end{enumerate}
+
+Desde la perspectiva del derecho privado, el vínculo jurídico entre las partes se encuadra en el \textbf{Código Civil y Comercial de la Nación (CCyC)} \autocite{cicc_argentina} bajo la figura del contrato de locación de cosas (Arts. 1187 y concordantes) para estadías temporarias, complementado por contratos de intermediación y servicios digitales celebrados por medios electrónicos (Arts. 1105 a 1116).
+
+\subsection{Aplicación de la Ley 24.240 de Defensa del Consumidor}
+
+La relación establecida entre ParkLink y los conductores particulares califica jurídicamente como una \textbf{relación de consumo} en los términos del Artículo 3 de la Ley Nacional N.º 24.240 \autocite{ley24240} y del Artículo 1092 del CCyC. La plataforma no es considerada un simple clasificado pasivo, sino un prestador activo de servicios digitales de intermediación, reserva, cobro y soporte. 
+
+Por este motivo, se adoptaron de manera obligatoria las siguientes premisas y directrices de protección al consumidor:
+
+\begin{itemize}
+    \item \textbf{Deber de Información Previa y Veraz (Art. 4, Ley 24.240):} Antes de confirmar cualquier reserva, la aplicación exhibe de forma discriminada y transparente el desglose del costo total: precio base fijado por el propietario según el tiempo seleccionado, cargo por servicio de la plataforma e impuestos aplicables. No existen cargos ocultos ni tarifas dinámicas no informadas antes del pago.
+    \item \textbf{Transparencia en Términos y Contratos de Adhesión (Arts. 37 y 38, Ley 24.240):} Las condiciones de uso fueron redactadas en lenguaje claro, accesible y sin cláusulas abusivas ni deslindes irrazonables de responsabilidad. Los Términos y Condiciones son de aceptación previa obligatoria y permanecen accesibles en todo momento desde el perfil del usuario y el sitio web institucional.
+    \item \textbf{Régimen de Cancelación y Reembolsos Automáticos:} Conforme a los principios de buena fe y revocación en contrataciones electrónicas (Art. 34 de la Ley 24.240 y Art. 1110 del CCyC), el sistema implementa una política transparente de cancelación:
+    \begin{itemize}
+        \item Cancelaciones anticipadas por parte del conductor (con más de 2 horas de anticipación) procesan un reembolso íntegro automático vía pasarela de pagos.
+        \item Cancelaciones o incumplimientos atribuibles al propietario (ej. cochera inaccesible o bloqueada) generan la devolución total inmediata del importe al conductor y habilitan sanciones automáticas sobre la reputación del oferente.
+    \end{itemize}
+    \item \textbf{Canales de Soporte y Resolución de Controversias:} La plataforma integra un módulo nativo de reporte de incidentes y apertura de tickets de soporte técnico por cada reserva, garantizando la atención y trazabilidad de los reclamos.
+\end{itemize}
+
+\subsection{Aplicación de la Ley 25.326 de Protección de los Datos Personales}
+
+El funcionamiento operativo de ParkLink requiere la recolección y tratamiento de datos identificatorios, de geolocalización, de vehículos y de hábitos de movilidad. Para resguardar el derecho constitucional al honor, a la intimidad y a la autodeterminación informativa (\textit{Habeas Data}), la arquitectura del sistema y la Política de Privacidad fueron diseñadas bajo las prescripciones de la Ley Nacional N.º 25.326 \autocite{ley25326}, su Decreto Reglamentario 1558/2001 y las directrices de la Agencia de Acceso a la Información Pública (AAIP) \autocite{aaip_normativa}.
+
+Los pilares de privacidad implementados en el software comprenden:
+
+\begin{itemize}
+    \item \textbf{Consentimiento Previo, Expreso e Informado (Art. 5, Ley 25.326):} Durante el proceso de registro (\textit{onboarding}), ningún dato es almacenado ni procesado sin la aceptación activa mediante casilla de verificación no premarcada (\textit{opt-in}) de la Política de Privacidad.
+    \item \textbf{Principio de Finalidad y Minimización (Art. 4, Ley 25.326):} ParkLink recolecta exclusivamente los datos indispensables para concretar el servicio (nombre, teléfono para verificación en dos pasos, correo electrónico, patente del vehículo y coordenadas geográficas para el radio de búsqueda). No se comercializan datos con terceros ni se efectúa perfilamiento invasivo con fines publicitarios ajenos a la plataforma.
+    \item \textbf{Protección y Cifrado de Datos de Pago (PCI-DSS):} La plataforma delega el procesamiento de tarjetas de crédito/débito en Mercado Pago. ParkLink no almacena números de tarjeta ni códigos de seguridad en sus bases de datos, operando únicamente con identificadores de transacción (\textit{tokens}) cifrados.
+    \item \textbf{Ejercicio Pleno de Derechos ARCO (Arts. 14 a 16, Ley 25.326):} El sistema garantiza los derechos de:
+    \begin{itemize}
+        \item \textbf{Acceso y Rectificación:} Los usuarios pueden consultar y modificar sus datos personales en cualquier momento desde la configuración de su perfil.
+        \item \textbf{Cancelación y Supresión (\textit{Derecho al Olvido}):} La aplicación cuenta con una opción explícita de «Eliminar cuenta», que anonimiza y da de baja la información personal de las bases de datos activas, conservando únicamente los registros contables y transaccionales legalmente exigibles.
+    \end{itemize}
+    \item \textbf{Seguridad de la Información (Art. 9, Ley 25.326):} Se aplican estándares de ingeniería de seguridad: almacenamiento de credenciales mediante algoritmos de derivación de claves (\textit{bcrypt}), autenticación perimetral mediante tokens web JSON (JWT) con ciclo de vida acotado, y comunicaciones cifradas de extremo a extremo mediante el protocolo TLS 1.3 / HTTPS.
+\end{itemize}
+
+\subsection{Matriz de Cumplimiento Normativo}
+
+La Tabla~\ref{tab:matriz_legal} sintetiza las obligaciones jurídicas aplicables a ParkLink, la normativa fuente y el mecanismo técnico implementado en el sistema para darles cumplimiento efectivo.
+
+\vspace{0.3cm}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Obligación legal} & \textbf{Normativa aplicable} & \textbf{Mecanismo implementado en ParkLink} \\
+\midrule
+Transparencia y desglose de precios & Art. 4, Ley 24.240 \autocite{ley24240} & Desglose en pantalla antes de confirmar reserva (tarifa base, comisión, costo final). \\
+\rowcolor{plgray}
+Aceptación informada de condiciones & Arts. 37 y 38, Ley 24.240 \autocite{ley24240} & Bloqueo de registro hasta aceptación explícita de Términos y Condiciones. \\
+Reembolso ante cancelación justificada & Art. 34, Ley 24.240; Art. 1110, CCyC \autocite{cicc_argentina} & Integración con API de Mercado Pago para devoluciones automáticas e idempotentes. \\
+\rowcolor{plgray}
+Tratamiento lícito y consentimiento & Art. 5, Ley 25.326 \autocite{ley25326} & Política de Privacidad obligatoria y registro auditado del consentimiento del usuario. \\
+Derecho al olvido y supresión & Art. 16, Ley 25.326 \autocite{ley25326} & Endpoint nativo de eliminación de cuenta y anonimización de registros sensibles. \\
+\rowcolor{plgray}
+Seguridad e integridad de datos & Art. 9, Ley 25.326 \autocite{ley25326} & Hash de contraseñas (\textit{bcrypt}), tokens JWT, HTTPS/TLS 1.3 y bases de datos aisladas. \\
+\bottomrule
+\end{tabularx}
+\caption{Matriz de cumplimiento normativo y mecanismos de ingeniería implementados.}
+\label{tab:matriz_legal}
+\end{table}
