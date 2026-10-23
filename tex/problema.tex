@@ -2,26 +2,37 @@
 
 La creciente densidad vehicular en los grandes centros urbanos ha evidenciado múltiples limitaciones en la manera en que actualmente se gestionan y utilizan los espacios de estacionamiento. A pesar de la existencia de cocheras privadas, estacionamientos comerciales y sistemas de estacionamiento medido, persiste una importante falta de integración tecnológica que permita conectar de manera eficiente la oferta disponible con la demanda de los conductores.
 
-En ciudades de alta circulación como la Ciudad Autónoma de Buenos Aires, la búsqueda de estacionamiento representa una problemática cotidiana que impacta tanto en la movilidad urbana como en la experiencia de los usuarios. La ausencia de herramientas centralizadas y accesibles genera pérdidas de tiempo, circulación innecesaria y una utilización ineficiente de recursos urbanos ya existentes.
+En ciudades de alta circulación como la Ciudad Autónoma de Buenos Aires, la búsqueda de estacionamiento representa una problemática cotidiana que impacta tanto en la movilidad urbana como en la experiencia de los usuarios. El problema no radica en la falta de opciones, sino en la falta de información: La oferta existe, pero el conductor no puede verla ni compararla en el momento en que debe decidir. Esta situación genera pérdidas de tiempo, circulación innecesaria y una utilización ineficiente de recursos urbanos ya existentes.
 
-A partir del análisis realizado, se identificaron los siguientes puntos críticos dentro del problema:
+\subsection{Puntos críticos del problema}
+
+A partir del análisis realizado, se identificaron los siguientes puntos críticos:
 
 \begin{enumerate}
 \item \textbf{Pérdida de tiempo y falta de previsibilidad:} Los conductores particulares no cuentan con mecanismos confiables que les permitan asegurar un espacio de estacionamiento antes de llegar a destino. Como consecuencia, gran parte del tiempo de circulación en zonas urbanas se destina a la búsqueda manual de lugares disponibles, generando demoras frecuentes, congestión vehicular y aumento en los costos operativos asociados al traslado.
 
 \item \textbf{Subutilización de espacios privados:} Existe una cantidad considerable de cocheras residenciales, estacionamientos comerciales y espacios pertenecientes a empresas que permanecen desocupados durante determinados períodos del día. Sin embargo, muchos propietarios no disponen de una plataforma segura, simple y masiva que les permita ofrecer temporalmente dichos espacios a potenciales usuarios interesados.
 
-\item \textbf{Fragmentación de la información disponible:} La oferta de estacionamiento se encuentra distribuida entre múltiples actores y canales independientes, dificultando el acceso a información centralizada y actualizada sobre disponibilidad, ubicación y costos. Esta fragmentación limita la capacidad de los conductores para tomar decisiones rápidas y eficientes.
+\item \textbf{Fragmentación y falta de visibilidad de la oferta:} La oferta de estacionamiento se encuentra distribuida entre múltiples actores y canales independientes, sin un medio que permita conocer de antemano su disponibilidad, ubicación y precio. El conductor solo descubre cada opción cuando pasa frente a ella, por lo que no puede compararlas y termina decidiendo con información incompleta.
 
 \item \textbf{Complejidad transaccional y falta de confianza:} La inexistencia de un sistema integrado que combine geolocalización, reservas digitales, validación de identidad y procesamiento seguro de pagos dificulta la adopción de modelos colaborativos de estacionamiento. Tanto conductores como propietarios suelen percibir incertidumbre respecto a la seguridad, confiabilidad y formalidad de este tipo de intercambios.
 
 \item \textbf{Impacto urbano y ambiental:} La circulación innecesaria derivada de la búsqueda de estacionamiento incrementa la congestión vehicular, el consumo de combustible y la emisión de gases contaminantes. Esto no solo afecta la experiencia individual de los conductores, sino también la eficiencia general del sistema de movilidad urbana.
-
 \end{enumerate}
 
-\subsection*{Cuantificación del costo de la insatisfacción}
+\subsection{La búsqueda de estacionamiento como problema de parada óptima}
 
-Más allá de la incomodidad, buscar estacionamiento en Buenos Aires tiene un costo económico concreto y medible. Cada vez que un conductor sale sin saber dónde va a estacionar, está asumiendo una pérdida que pocas veces se percibe como tal porque aparece repartida en tiempo, combustible, riesgo y decisiones apresuradas.
+La dificultad de fondo que enfrenta el conductor tiene una formulación matemática precisa: Se trata de un \textbf{problema de parada óptima} (\textit{optimal stopping}). Esta familia de problemas, estudiada por la teoría de la probabilidad y la investigación operativa, describe situaciones en las que una persona evalúa opciones de a una por vez, en un orden que no controla, y debe decidir en cada momento si acepta la opción que tiene delante o la descarta para seguir buscando, sabiendo que una opción descartada no puede recuperarse. Su ejemplo más conocido es el llamado problema de la secretaria, en el que se debe elegir al mejor candidato de una serie de entrevistas sin poder volver a convocar a los rechazados \autocite{ferguson1989}. Su solución dio origen a la conocida regla del 37\%: Observar sin decidir durante aproximadamente el primer 37\% de la búsqueda y luego aceptar la primera opción que supere a todas las anteriores. Aun aplicando esta estrategia óptima, la probabilidad de elegir la mejor opción es de apenas un 37\% \autocite{christian2016}.
+
+El estacionamiento cuenta con su propia versión de este problema, formulada por MacQueen y Miller \autocite{macqueen1960} y conocida como el \textbf{problema del estacionamiento} (\textit{parking problem}). En ella, un conductor avanza por una calle hacia su destino y quiere estacionar lo más cerca posible de él. A medida que avanza solo puede ver el lugar que tiene enfrente, sin saber si más adelante habrá uno libre, y una vez que deja pasar un lugar no puede volver a él. La estrategia óptima para este problema es de umbral: Ignorar los lugares disponibles hasta cierta distancia del destino y, a partir de allí, tomar el primero que esté libre. Esa distancia depende de cuán ocupada esté la calle; por ejemplo, si nueve de cada diez lugares están ocupados, conviene empezar a buscar seis lugares antes del destino \autocite{fergusonstopping}. Las variantes posteriores del problema, como la que permite dar la vuelta para regresar a un lugar ya visto a cambio de un costo adicional, confirman que la falta de información sobre lo que hay más adelante es la que obliga al conductor a decidir sin certezas \autocite{tamaki1988}.
+
+Este marco permite entender por qué, en la mayoría de los casos, el conductor termina eligiendo mal, aun cuando existen buenas opciones disponibles. Lo mismo que ocurre con los lugares en la calle ocurre con las cocheras y las playas de estacionamiento: El conductor las descubre de a una, a medida que circula, sin conocer su precio ni su disponibilidad hasta llegar a cada una, y sin saber si a dos cuadras hay una alternativa más cercana o más económica. Ante la incertidumbre y el apuro, la decisión racional suele ser aceptar la primera opción aceptable. El problema, por lo tanto, no son las cocheras ni las playas comerciales, que constituyen una oferta valiosa y necesaria, sino la escasa visibilidad y la imposibilidad de comparar, que convierten cada búsqueda en una apuesta.
+
+ParkLink ataca el problema en su raíz: En lugar de ayudar al conductor a elegir mejor dentro de una búsqueda secuencial, elimina la búsqueda secuencial. Al mostrar sobre un mismo mapa todas las opciones cercanas al destino, con su precio y su disponibilidad real, y permitir reservarlas antes de salir, transforma un problema de parada óptima con información incompleta en una elección simultánea con información completa, en la que el conductor puede comparar todas las alternativas y quedarse con la que mejor se ajusta a lo que necesita.
+
+\subsection{Cuantificación del costo de la búsqueda}
+
+Más allá de la incomodidad, buscar estacionamiento en Buenos Aires tiene un costo económico concreto y medible. Cada vez que un conductor sale sin saber dónde va a estacionar, está asumiendo una pérdida que pocas veces se percibe como tal porque aparece repartida en tiempo, combustible, riesgo y decisiones tomadas sin información.
 
 \textbf{Tiempo perdido.} Se estima que un conductor urbano en CABA dedica aproximadamente 15 minutos por salida a dar vueltas buscando un lugar libre. Tomando como referencia el salario promedio de la Ciudad de Buenos Aires en 2026 --- aproximadamente \$2.216.804 ARS mensuales \autocite{infobae_salarios_2026} ---, esos 15 minutos equivalen a unos \$3.464 ARS en tiempo que simplemente no se recupera.
 
@@ -29,7 +40,7 @@ Más allá de la incomodidad, buscar estacionamiento en Buenos Aires tiene un co
 
 \textbf{Riesgo de multa.} Cuando la búsqueda no termina bien y el conductor decide estacionar en un lugar indebido, el costo puede ser alto: La multa por estacionamiento indebido en CABA asciende a \$94.999 ARS \autocite{infobae_multas_2026}. Considerando que un conductor urbano promedio acumula una infracción de este tipo aproximadamente cada seis meses --- unas 120 salidas ---, el valor esperado de ese riesgo es de \$792 ARS por cada vez que se estaciona.
 
-\textbf{El plan B también sale caro.} Cuando no se encuentra lugar libre y la situación apremia, la salida habitual es entrar a la primera playa comercial disponible sin haber comparado precios. En CABA, una hora en una playa comercial cuesta entre \$6.000 y \$10.000 ARS \autocite{iprofesional2026cocheras}, por lo que una estadía de dos horas ronda los \$12.000 a \$20.000 ARS, con un valor promedio de \$16.000 ARS. Si esto ocurre una vez cada diez salidas, el costo esperado por búsqueda se incrementa en unos \$1.600 ARS adicionales.
+\textbf{Elegir sin poder comparar.} Cuando el tiempo apremia, el conductor termina aceptando la primera cochera o playa disponible, sin haber podido comparar precios con las alternativas cercanas, tal como predice el problema de parada óptima. En CABA, el precio de una hora de estacionamiento varía entre \$6.000 y \$10.000 ARS según la zona y el horario, y puede alcanzar los \$20.000 ARS en las zonas de mayor demanda \autocite{iprofesional2026cocheras}. Elegir a ciegas implica, por lo tanto, quedar expuesto a pagar el extremo alto de ese rango cuando a pocas cuadras había una opción más conveniente: En una estadía de dos horas, la diferencia entre ambos extremos alcanza los \$8.000 ARS. Si esto ocurre una vez cada diez salidas, el sobrecosto esperado por búsqueda es de unos \$800 ARS.
 
 \begin{table}[H]
 \centering
@@ -42,9 +53,9 @@ Más allá de la incomodidad, buscar estacionamiento en Buenos Aires tiene un co
 Tiempo perdido (\textasciitilde15 min) & \$3.464 ARS \\
 Combustible (\textasciitilde0,25 L) & \$556 ARS \\
 Riesgo de multa (1 cada 6 meses) & \$792 ARS \\
-Playa comercial de emergencia (1 cada 10 salidas) & \$1.600 ARS \\
+Sobrecosto por elegir sin comparar (1 cada 10 salidas) & \$800 ARS \\
 \hline
-\textbf{Total estimado} & \textbf{\$6.412 ARS} \\
+\textbf{Total estimado} & \textbf{\$5.612 ARS} \\
 \hline
 \end{tabular}%
 }
@@ -54,7 +65,6 @@ Playa comercial de emergencia (1 cada 10 salidas) & \$1.600 ARS \\
 
 A estos valores se suman costos intangibles pero igualmente significativos: El impacto en la puntualidad, el estrés de la incertidumbre y la productividad perdida por quienes dependen de una llegada a tiempo. La suma de todos estos factores define el costo real de no tener garantizado un espacio de estacionamiento antes de salir.
 
-Incluso, algunas grandes ciudades de América Latina implementaron medidas regulatorias para limitar la circulación vehicular debido a los altos niveles de congestión urbana. Un ejemplo de ello es el sistema conocido como “Pico y Placa”, utilizado en ciudades como Bogotá y Medellín, en Colombia, donde la circulación de vehículos se restringe determinados días y horarios según el número final de la patente. Este tipo de políticas refleja la magnitud del problema asociado a la movilidad urbana y evidencia la necesidad de desarrollar soluciones tecnológicas complementarias que permitan optimizar el uso de la infraestructura existente, reducir la circulación innecesaria y mejorar la experiencia de los conductores.
+Incluso, algunas grandes ciudades de América Latina implementaron medidas regulatorias para limitar la circulación vehicular debido a los altos niveles de congestión urbana. Un ejemplo de ello es el sistema conocido como ``Pico y Placa'', utilizado en ciudades como Bogotá y Medellín, en Colombia, donde la circulación de vehículos se restringe determinados días y horarios según el número final de la patente. Este tipo de políticas refleja la magnitud del problema asociado a la movilidad urbana y evidencia la necesidad de desarrollar soluciones tecnológicas complementarias que permitan optimizar el uso de la infraestructura existente, reducir la circulación innecesaria y mejorar la experiencia de los conductores.
 
-
-En función de estas problemáticas, surge la necesidad de desarrollar una solución tecnológica que permita centralizar la información, optimizar el uso de espacios disponibles y simplificar la interacción entre conductores y propietarios. ParkLink busca responder a esta necesidad mediante una plataforma digital que facilite la reserva anticipada de estacionamiento, reduzca la incertidumbre operativa y promueva una utilización más eficiente de la infraestructura urbana existente.
+En función de estas problemáticas, surgió la necesidad de desarrollar una solución tecnológica que permitiera centralizar la información, hacer visible toda la oferta disponible y simplificar la interacción entre conductores y propietarios. ParkLink se desarrolló para responder a esta necesidad mediante una plataforma digital que permite comparar y reservar estacionamiento antes de salir, reduce la incertidumbre del conductor y promueve una utilización más eficiente de la infraestructura urbana existente.
