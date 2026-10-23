@@ -1,59 +1,49 @@
 \section{Plan Económico y Modelo de Negocio}\label{sec:plan_economico}
 
-Con el fin de validar la sostenibilidad financiera del proyecto, se desarrolló un modelo analítico segmentado en tres etapas de evolución: Corto plazo (MVP), mediano
-plazo y largo plazo. Los valores se expresan en dólares estadounidenses, tomando como tipo de cambio referencial 1 USD = 1.500 ARS.
+Con el fin de validar la sostenibilidad financiera del proyecto, se desarrolló un modelo analítico segmentado en tres etapas de evolución: Corto plazo (MVP), mediano plazo y largo plazo. Los valores se expresan en dólares estadounidenses, tomando como tipo de cambio referencial 1 USD = 1.500 ARS.
 
-\subsection*{Estimaciones del mercado potencial}
+\subsection{Estimación del mercado potencial (TAM, SAM, SOM)}
 
-El orden de autos que circulan a diario en una ciudad del tamaño de Buenos Aires (CABA) es de aproximadamente 1,8 millones de vehículos diarios \autocite{superauto2024, aboy2025movilidad}, considerando tanto
-residentes como personas que ingresan desde el conurbano. Sin embargo, no todos representan clientes potenciales directos para ParkLink, ya que existen distintos
-perfiles de conductores y diferentes necesidades de estacionamiento.
+El orden de autos que circulan a diario en una ciudad del tamaño de Buenos Aires (CABA) es de aproximadamente 1,8 millones de vehículos diarios \autocite{superauto2024, aboy2025movilidad}, considerando tanto residentes como personas que ingresan desde el conurbano. Sin embargo, no todos representan clientes potenciales directos para ParkLink, ya que existen distintos perfiles de conductores y diferentes necesidades de estacionamiento.
 
-Tomando como referencia patrones urbanos comunes en ciudades densamente pobladas, puede estimarse que entre un 10\% y un 15\% de los conductores diarios efectivamente
-necesitan buscar estacionamiento de manera activa. Esta estimación contempla:
+Tomando como referencia patrones urbanos comunes en ciudades densamente pobladas, puede estimarse que entre un 10\% y un 15\% de los conductores diarios efectivamente necesitan buscar estacionamiento de manera activa. Esta estimación contempla:
+
 \begin{itemize}
-    \item Conductores que trabajan en oficinas.
-    \item Personas que realizan trámites.
-    \item Usuarios ocasionales.
-    \item Visitantes.
-    \item Personas que no cuentan con cochera propia.
+    \item Conductores que trabajan en oficinas y centros comerciales.
+    \item Personas que realizan trámites médicos o administrativos.
+    \item Usuarios ocasionales y visitantes de otras jurisdicciones.
+    \item Personas que no cuentan con cochera fija en su destino.
 \end{itemize}
 
 En contrapartida, quedan excluidos perfiles con estacionamiento asegurado o sin necesidad de búsqueda activa:
 \begin{itemize}
-    \item Taxis y remises.
-    \item Aplicaciones de transporte.
-    \item Personas con cochera fija.
-    \item Usuarios de corta permanencia.
+    \item Taxis, remises y vehículos de transporte público.
+    \item Aplicaciones de movilidad de pasajeros (Uber, Cabify, Didi).
+    \item Personas con cochera fija propia o alquilada mensualmente.
+    \item Usuarios de parada muy breve (\textit{drop-off}).
 \end{itemize}
 
-Bajo esta hipótesis, el mercado objetivo potencial diario dentro de CABA sería:
-
+Bajo esta hipótesis, el mercado objetivo potencial diario dentro de CABA se clasifica en tres escenarios:
 \begin{itemize}
-    \item Escenario conservador (10\%):\\
-    180.000 búsquedas diarias de estacionamiento.
-    \item Escenario medio (12\%):\\
-    216.000 búsquedas diarias.
-    \item Escenario optimista (15\%):\\
-    270.000 búsquedas diarias.
+    \item \textbf{Escenario conservador (10\%):} 180.000 búsquedas diarias de estacionamiento.
+    \item \textbf{Escenario medio (12\%):} 216.000 búsquedas diarias.
+    \item \textbf{Escenario optimista (15\%):} 270.000 búsquedas diarias.
 \end{itemize}
 
-Naturalmente, ParkLink no captaría todo ese mercado desde el primer momento. La adopción real se desarrolla en una rampa progresiva a lo largo de varios años de
-operación, partiendo de niveles bajos durante la etapa de validación y creciendo a medida que se consolida la marca, se amplía la cobertura geográfica y se incrementa la
-oferta de cocheras disponibles.
+Naturalmente, ParkLink no captaría todo ese mercado desde el primer momento. La adopción real se desarrolla en una rampa progresiva a lo largo de varios años de operación, partiendo de niveles bajos durante la etapa de validación y creciendo a medida que se consolida la marca, se amplía la cobertura geográfica y se incrementa la oferta de cocheras disponibles.
 
-\subsection*{Rampa de adopción por etapa}
+\subsection{Rampa y curva de adopción por etapa}
 
 Sobre la base del escenario medio de mercado potencial (216.000 búsquedas diarias), se proyecta el siguiente patrón de adopción:
 
 \begin{itemize}
-    \item MVP (año 1): Adopción del 0,025\% del mercado potencial.
-    \item Mediano plazo (año 2): Adopción del 0,28\%.
-    \item Largo plazo (año 3 en adelante): Adopción del 0,91\%. Consolidación a nivel CABA y crecimiento orgánico sostenido.
-    \item Largo plazo en el mejor caso: Adopción del 1,5\% sobre el escenario optimista de mercado (270.000 búsquedas diarias).
+    \item \textbf{MVP (año 1):} Adopción del 0,025\% del mercado potencial (55 reservas diarias).
+    \item \textbf{Mediano plazo (año 2):} Adopción del 0,28\% (600 reservas diarias).
+    \item \textbf{Largo plazo (año 3 en adelante):} Adopción del 0,91\% (1.966 reservas diarias), consolidando CABA.
+    \item \textbf{Largo plazo en el mejor caso:} Adopción del 1,5\% sobre el escenario optimista (4.050 reservas diarias).
 \end{itemize}
 
-La cantidad de reservas diarias proyectadas en cada etapa es la siguiente:
+La cantidad de reservas diarias proyectadas en cada etapa se resume en la Tabla~\ref{tab:adopcion}.
 
 \begin{table}[H]
     \centering
@@ -74,13 +64,13 @@ La cantidad de reservas diarias proyectadas en cada etapa es la siguiente:
     \label{tab:adopcion}
 \end{table}
 
-\subsection*{Precios de referencia del mercado}
+\subsection{Precios de referencia del mercado en CABA}
 
 Los precios del estacionamiento privado en CABA no están regulados y varían según la zona, el horario y el tipo de vehículo. De acuerdo con los relevamientos de precios más recientes, una hora de estacionamiento en una cochera o playa de la ciudad se ubica entre \$6.000 y \$10.000 ARS, con un valor promedio de aproximadamente \$8.000 ARS, y puede alcanzar los \$20.000 ARS en las zonas y horarios de mayor demanda \autocite{iprofesional2026cocheras}. Para las estadías más extensas, el precio por hora disminuye: Una estadía diaria ronda los \$39.000 ARS, por debajo de lo que costaría una jornada completa a tarifa horaria, mientras que el alquiler mensual de una cochera varía entre \$100.000 y \$350.000 ARS según el barrio \autocite{iprofesional2026cocheras, lanacion2026cocheras}.
 
 Tomando como referencia una reserva típica de estadía corta de dos horas y media, el ticket promedio por reserva se establece en \$20.000 ARS (USD 13,33).
 
-\subsection*{Modelo de ingresos}
+\subsection{Estructura y modelo de ingresos}
 
 El modelo de negocio de ParkLink es transaccional y cobra únicamente al conductor. Publicar una cochera es gratuito y el propietario recibe el 100\% del precio que fija para su espacio. La plataforma obtiene sus ingresos mediante un cargo de servicio del 8\% que se suma al valor de cada reserva concretada y que abona el conductor al momento del pago. De esta forma, ParkLink solo genera ingresos cuando se concreta una reserva, y el propietario no tiene ningún costo por formar parte de la plataforma.
 
@@ -108,7 +98,7 @@ La Tabla~\ref{tab:ingreso_por_reserva} muestra el ingreso que genera cada tipo d
 
 Para las proyecciones se adoptó un criterio conservador: Todas las reservas se estiman con el ticket de la estadía corta, que es el de menor valor. Las reservas por día y por mes, que generan un ingreso mayor por operación, representan un potencial adicional que no se incluye en los cálculos.
 
-\subsection*{Estimación de ingresos anuales}
+\subsection{Estimación de ingresos y resultados financieros}
 
 Multiplicando las reservas diarias proyectadas por el ingreso promedio por operación (USD 1,07), los ingresos diarios, mensuales y anuales esperados por etapa son los siguientes:
 
@@ -131,18 +121,21 @@ Multiplicando las reservas diarias proyectadas por el ingreso promedio por opera
     \label{tab:ingresos_etapas}
 \end{table}
 
-\subsection*{Premisas del modelo económico}
+\subsection{Estructura de costos, inversión y punto de equilibrio}
+
+\subsubsection{Premisas operativas}
 
 \begin{itemize}
-    \item Vehículos circulantes diarios en CABA: Aproximadamente 1,8 millones, considerando residentes e ingresantes desde el conurbano.
-    \item Proporción de conductores que buscan estacionamiento de manera activa: Entre 10\% y 15\% (escenario medio 12\%).
+    \item Vehículos circulantes diarios en CABA: Aproximadamente 1,8 millones de vehículos.
+    \item Proporción de conductores que buscan estacionamiento de manera activa: 12\% en escenario medio.
     \item Valor promedio de una hora de cochera en CABA: \$8.000 ARS (rango de \$6.000 a \$10.000 ARS).
     \item Ticket promedio por reserva de estadía corta (2,5 horas): \$20.000 ARS (USD 13,33).
-    \item Modelo de ingresos: Cargo de servicio del 8\% abonado por el conductor, sin costo para el propietario, equivalente a un ingreso promedio de USD 1,07 por operación exitosa.
+    \item Modelo de ingresos: Cargo de servicio del 8\% abonado por el conductor, equivalente a USD 1,07 por operación exitosa.
     \item Año operativo de 360 días (12 meses de 30 días) y tipo de cambio de referencia de 1 USD = 1.500 ARS.
 \end{itemize}
 
-\textbf{Costos operativos por etapa:}
+\subsubsection{Gastos operativos por etapa}
+
 La estructura de costos contempla sueldos escalonados de los cuatro fundadores, infraestructura tecnológica, marketing, gastos legales y soporte al usuario.
 
 \begin{table}[H]
@@ -168,8 +161,9 @@ La estructura de costos contempla sueldos escalonados de los cuatro fundadores, 
     \label{tab:gastos_operativos_etapas}
 \end{table}
 
-\textbf{Proyecciones de adopción y resultados:}
-La rampa de crecimiento contempla un lanzamiento focalizado en uno o dos barrios de CABA durante el primer año, expansión zonal e inicio de campañas de marketing pago en el segundo año, y consolidación a partir del tercer año.
+\subsubsection{Proyecciones financieras y rentabilidad}
+
+La rampa de crecimiento contempla un lanzamiento focalizado en barrios de alta demanda durante el primer año, expansión zonal en el segundo año y consolidación a partir del tercer año.
 
 \begin{table}[H]
     \centering
@@ -190,8 +184,8 @@ La rampa de crecimiento contempla un lanzamiento focalizado en uno o dos barrios
     \label{tab:resultados_etapas}
 \end{table}
 
-\textbf{Inversión inicial requerida:}
+\paragraph{Inversión inicial requerida:}
 El déficit operativo del primer año (USD 57.180) representa el capital mínimo necesario para sostener la operación durante la etapa de validación. De los USD 78.300 de gastos operativos anuales del MVP, USD 72.000 (el 92\%) corresponden al pago de salarios de los cuatro fundadores. Esto significa que la inversión inicial cubre fundamentalmente el costo del equipo durante la etapa previa al equilibrio: Sin remuneraciones, la operación cerraría con un superávit de USD 14.820 incluso en su primer año. Considerando un margen de contingencia del 20\%, la inversión inicial estimada asciende a aproximadamente USD 69.000.
 
-\textbf{Punto de equilibrio y rentabilidad:}
+\paragraph{Punto de equilibrio y rentabilidad a escala:}
 En el segundo año la operación alcanza el punto de equilibrio y genera ganancias, con un resultado positivo de USD 109.200 que permite recuperar en ese mismo año la totalidad de la inversión inicial. En el escenario de largo plazo se proyecta una utilidad neta anual de aproximadamente USD 600.000, suficiente para sostener salarios competitivos de los cuatro fundadores, cubrir obligaciones impositivas, reinvertir en la operación y financiar la expansión a nuevas zonas.

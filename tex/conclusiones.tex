@@ -1,3 +1,31 @@
-\section{Conclusiones}
+\section{Conclusiones}\label{sec:conclusiones}
 
-De manera preliminar, el análisis realizado indica que existe una oportunidad para conectar la demanda de estacionamiento de corta duración con espacios privados subutilizados. El MVP de ParkLink permitirá evaluar esta hipótesis mediante una solución acotada de geolocalización, publicación y reserva. Las conclusiones definitivas, incluyendo resultados de implementación y validación, deberán completarse cuando finalice el desarrollo.
+El desarrollo integral de ParkLink como Trabajo Profesional de la carrera de Ingeniería en Informática de la Universidad de Buenos Aires permitió abordar un problema urbano complejo mediante la aplicación rigurosa de metodologías ágiles, arquitectura distribuida de microservicios y validación temprana con usuarios del mundo real.
+
+\subsection{Cumplimiento de Objetivos Técnicos y de Ingeniería}
+
+A lo largo de trece \textit{sprints} de desarrollo, el equipo cumplió satisfactoriamente con la totalidad de los objetivos fijados en el anteproyecto:
+
+\begin{itemize}
+    \item Se diseñó e implementó un ecosistema modular compuesto por seis microservicios independientes, una aplicación móvil multiplataforma (React Native / Expo) y un panel web de administración (\textit{backoffice}), respetando el principio de responsabilidad única y aislamiento de bases de datos.
+    \item Se implementó un motor transaccional de disponibilidad y reservas en Go con alta tolerancia a la concurrencia, complementado por un sistema de mensajería asincrónica (RabbitMQ) y notificaciones en tiempo real (FCM y WebSockets).
+    \item Se logró una integración robusta con la pasarela de pagos Mercado Pago, incorporando verificación criptográfica de firmas, tratamiento idempotente de \textit{webhooks} y reembolsos automatizados.
+    \item Se alcanzó una cobertura de calidad respaldada por 128 archivos de pruebas automatizadas y pipelines de integración continua (CI/CD) con GitHub Actions.
+\end{itemize}
+
+\subsection{Validación de Hipótesis y Aportes a la Movilidad Urbana}
+
+Las instancias de experimentación y validación confirmaron las hipótesis centrales que motivaron la creación de ParkLink:
+
+\begin{itemize}
+    \item \textbf{Transformación del paradigma de búsqueda:} Se demostró la viabilidad de transformar un problema clásico de parada óptima (\textit{optimal stopping}) de búsqueda secuencial a ciegas en una decisión simultánea e informada, permitiendo al conductor reservar y abonar antes de salir.
+    \item \textbf{Aceptación de mercado:} La encuesta a 180 conductores y propietarios reveló una intención de uso regular superior al 70\%, validando el atractivo de contar con precios predecibles, cercanía y seguridad para el vehículo.
+    \item \textbf{Alineación con la industria:} La validación con un operador comercial referente de CABA ratificó el valor de ParkLink como un canal digital unificado capaz de articular tanto la oferta de cocheras particulares ociosas como de grandes playas comerciales.
+    \item \textbf{Encuadre jurídico y de privacidad:} Se formalizó el marco legal del servicio bajo las Leyes 24.240 de Defensa del Consumidor y 25.326 de Protección de Datos Personales, garantizando la transparencia contractual y el respeto irrestricto de los derechos de los usuarios.
+\end{itemize}
+
+\subsection{Lecciones de Ingeniería y Balance Final}
+
+El proyecto demandó un esfuerzo acumulado de aproximadamente 1.600 horas de trabajo en equipo. Entre las principales lecciones aprendidas se destacan la importancia del desarrollo guiado por contratos de API (\textit{API-first}), la necesidad de contemplar tempranamente las herramientas operativas de administración y moderación en plataformas de dos lados, y el valor de los entornos de prueba reproducibles.
+
+En conclusión, ParkLink no solo constituye un sistema de software funcional, escalable y validado, sino también una solución concreta con impacto positivo en la reducción de la congestión vial, la disminución de emisiones contaminantes y el aprovechamiento inteligente de la infraestructura urbana existente.

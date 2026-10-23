@@ -10,6 +10,8 @@ Cada integrante fue responsable de escribir y mantener las pruebas de los compon
 
 \subsection{Validación técnica automatizada}
 
+\subsubsection{Pruebas unitarias y cobertura por microservicio}
+
 Los servicios del sistema incorporaron pruebas automatizadas con el marco de pruebas correspondiente a cada lenguaje, descripto en la Sección~\ref{sec:herramientas}. La Tabla~\ref{tab:pruebas} resume la cantidad de archivos de prueba de cada componente al cierre del desarrollo.
 
 \begin{table}[H]
@@ -46,7 +48,9 @@ La distribución de las pruebas refleja dónde se concentra el riesgo del sistem
     \item \textbf{Puerta de enlace:} La validación de los tokens de acceso, el rechazo de solicitudes sin credenciales y la eliminación de los encabezados internos que un cliente externo intentara falsificar.
 \end{itemize}
 
-Estas pruebas se ejecutaron automáticamente ante cada cambio mediante el circuito de integración continua, junto con el análisis estático del código y la verificación de tipos, de modo que ningún cambio con errores detectables se incorporara a la rama principal.
+\subsubsection{Integración continua (CI) y análisis estático}
+
+Estas pruebas se ejecutaron automáticamente ante cada cambio mediante el circuito de integración continua configurado con GitHub Actions, junto con el análisis estático del código, linters específicos y la verificación estricta de tipos en tiempo de compilación, de modo que ningún cambio con errores detectables se incorporara a la rama principal.
 
 \subsection{Pruebas integradas y de punta a punta}
 
@@ -84,11 +88,20 @@ A diferencia de la encuesta, realizada a principios de septiembre y centrada en 
 
 El encuentro permitió ratificar el valor real de ParkLink desde la mirada de quien conoce el negocio desde adentro. La plataforma resulta valiosa no solo para que los propietarios particulares ofrezcan sus cocheras, sino también para los operadores comerciales. Y tiene el potencial de transformar por completo la estructura del estacionamiento urbano en las grandes ciudades, al reunir en un mismo canal digital toda la oferta disponible, comercial y particular, con reserva anticipada y pago integrado.
 
-
 \subsection{Validación legal}\label{sec:validacion_legal}
 
 Antes de que la plataforma pudiera ser utilizada por personas reales, se validó su operatoria desde el punto de vista legal. Se redactaron los Términos y Condiciones y la Política de Privacidad de ParkLink, publicados en el sitio oficial del proyecto. Los Términos regulan el funcionamiento de las reservas, los pagos, las cancelaciones, las liquidaciones a los propietarios y las responsabilidades de cada parte, exigen que los usuarios sean mayores de edad y que el propietario declare tener derecho a ofrecer la cochera publicada, y preservan los derechos que la Ley 24.240 de Defensa del Consumidor \autocite{ley24240} reconoce a los usuarios. La Política de Privacidad se elaboró conforme a la Ley 25.326 de Protección de los Datos Personales \autocite{ley25326}, detallando qué datos se recolectan, con qué finalidad, con quién se comparten, cuánto tiempo se conservan y cómo ejercer los derechos de acceso, rectificación y supresión. La fundamentación técnica y jurídica completa de estas decisiones y la matriz de cumplimiento normativo se detallan en el \hyperref[anexo:legal]{Anexo 3}. La aceptación de ambos documentos se incorporó como paso obligatorio del registro en la aplicación, que además permite consultarlos en todo momento y eliminar la cuenta propia.
 
-\subsection{Resultados de la validación}
+\subsection{Resultados consolidados de la validación}
 
-La validación técnica permitió llegar al cierre del desarrollo con los flujos críticos de la plataforma cubiertos por pruebas automatizadas que se ejecutan ante cada cambio, y con el recorrido completo de búsqueda, reserva, pago y notificación verificado sobre dispositivos reales. La validación de mercado confirmó el interés de ambos lados del mercado en la propuesta y, sobre todo, permitió anticipar las fricciones que podían frenar su adopción e incorporar al producto las decisiones necesarias para resolverlas antes de su lanzamiento. El encuentro con un referente del sector, ya con el producto integrado, ratificó además su valor para los operadores comerciales y su potencial para transformar el estacionamiento urbano. Finalmente, la validación legal dejó definidas las reglas que regulan la relación entre la plataforma, los conductores y los propietarios.
+\subsubsection{Resultados de la validación técnica}
+
+La validación técnica permitió llegar al cierre del desarrollo con los flujos críticos de la plataforma cubiertos por 128 archivos de pruebas automatizadas que se ejecutan ante cada cambio, y con el recorrido completo de búsqueda, reserva, pago y notificación verificado sobre dispositivos reales y redes distribuidas sin fallas de concurrencia.
+
+\subsubsection{Resultados de la validación de mercado y referentes}
+
+La validación de mercado confirmó el alto interés de ambos lados de la plataforma en la propuesta (70\% de intención de uso regular) y, sobre todo, permitió anticipar las fricciones que podían frenar su adopción e incorporar al producto las decisiones necesarias para resolverlas antes de su lanzamiento. El encuentro con un referente del sector, ya con el producto integrado, ratificó además su valor para los operadores comerciales y su potencial para transformar el estacionamiento urbano.
+
+\subsubsection{Conformidad legal y operativa}
+
+Finalmente, la validación legal dejó formalizadas y publicadas las reglas que regulan la relación entre la plataforma, los conductores y los propietarios, garantizando el pleno cumplimiento de las normativas de defensa del consumidor y protección de datos personales vigentes.
