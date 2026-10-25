@@ -72,27 +72,7 @@ Portales como MercadoLibre~\cite{mercadolibre} son el principal canal mediante e
 
 \subsection{Síntesis y brecha de investigación}
 
-La Tabla~\ref{tab:comparison} resume la cobertura de las soluciones existentes frente a los cinco criterios que guiaron el diseño de ParkLink: presencia en el mercado local, reserva anticipada, disponibilidad confirmada en tiempo real, pago integrado y acceso a propietarios privados.
-
-\begin{table}[H]
-\centering
-\caption{Comparación de las soluciones de estacionamiento existentes según criterios clave.}
-\label{tab:comparison}
-\renewcommand{\arraystretch}{1.3}
-\small
-\begin{tabular}{lccccc}
-\toprule
-\textbf{Solución} & \textbf{Local} & \textbf{Reserva} & \textbf{Disp. real} & \textbf{Pago} & \textbf{Privada} \\
-\midrule
-Blinkay         & \checkmark & $\times$ & parcial & \checkmark & $\times$ \\
-SpotHero/ParkWhiz & $\times$ & \checkmark & \checkmark & \checkmark & $\times$ \\
-EasyPark        & $\times$ & parcial & parcial & \checkmark & parcial \\
-Google Maps/Waze& \checkmark & $\times$ & estimada & $\times$ & $\times$ \\
-Avisos clasificados & \checkmark & $\times$ & $\times$ & $\times$ & \checkmark \\
-\textbf{ParkLink}& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
-\bottomrule
-\end{tabular}
-\end{table}
+Las soluciones existentes se analizaron según cinco criterios: presencia en el mercado local, reserva anticipada, disponibilidad confirmada en tiempo real, pago integrado y acceso a propietarios privados. Blinkay cubre el mercado local y el pago, pero no ofrece reservas ni acceso a espacios privados. SpotHero, ParkWhiz y EasyPark ofrecen reservas y pagos, aunque no operan en el mercado argentino y presentan una cobertura limitada de espacios privados. Google Maps y Waze brindan información estimada, sin reservas ni pagos, mientras que los portales de avisos clasificados permiten acceder a propietarios privados, pero sin disponibilidad en tiempo real ni transacciones integradas. ParkLink reúne los cinco criterios en una única plataforma.
 
 Ningún actor existente del mercado argentino ofrece simultáneamente búsqueda geolocalizada, reserva anticipada, disponibilidad confirmada en tiempo real, pago integrado y acceso a espacios de propiedad privada. ParkLink fue construida precisamente para ocupar esta brecha.
 
@@ -104,7 +84,7 @@ Ningún actor existente del mercado argentino ofrece simultáneamente búsqueda 
 
 ParkLink sigue una arquitectura de microservicios independientes en la que cada dominio de negocio se implementa como un servicio autónomo con su propia base de datos, repositorio y canalización de despliegue. Una única puerta de enlace de API constituye el punto de entrada público, centralizando la autenticación JWT, la limitación de frecuencia, las cabeceras de seguridad HTTP y las conexiones WebSocket en tiempo real. Este enfoque permite escalar de forma independiente, aislar fallas y utilizar tecnologías heterogéneas entre los servicios.
 
-Figure~\ref{fig:architecture} illustrates the component topology.
+La Figura~\ref{fig:architecture} ilustra la topología de componentes.
 
 \begin{figure}[H]
 \centering
@@ -115,13 +95,11 @@ Figure~\ref{fig:architecture} illustrates the component topology.
     $\downarrow$ HTTP / WebSocket\\[0.2cm]
     \textbf{Puerta de enlace de API} (Python / FastAPI) --- validación JWT, limitación de frecuencia, núcleo WebSocket\\[0.2cm]
     $\downarrow$ REST (credencial interna) \hfill $\leftrightarrow$ \hfill \textbf{RabbitMQ} (eventos asíncronos)\\[0.1cm]
-    \begin{tabular}{@{}lllll@{}}
-      \hline
-      \textit{auth} & \textit{parking} & \textit{booking} & \textit{payment} & \textit{notifications} \\
-      FastAPI & NestJS & Go & Express & FastAPI \\
-      PostgreSQL & PostGIS & PostgreSQL & PostgreSQL & PostgreSQL \\
-      \hline
-    \end{tabular}
+    \textit{auth} --- FastAPI / PostgreSQL \qquad
+    \textit{parking} --- NestJS / PostGIS\\
+    \textit{booking} --- Go / PostgreSQL \qquad
+    \textit{payment} --- Express / PostgreSQL\\
+    \textit{notifications} --- FastAPI / PostgreSQL
     \vspace{0.5cm}
   }%
 }
@@ -194,25 +172,7 @@ Con el MVP integrado, esta fase abordó el cumplimiento legal, la validación de
 
 \subsection{Organización del equipo y herramientas}
 
-El equipo de cuatro integrantes asignó un responsable principal a cada servicio, lo que permitió el desarrollo paralelo. La Tabla~\ref{tab:team} resume las responsabilidades.
-
-\begin{table}[H]
-\centering
-\caption{Responsabilidades de los componentes por integrante del equipo.}
-\label{tab:team}
-\renewcommand{\arraystretch}{1.3}
-\small
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.5cm} X}
-\toprule
-\textbf{Integrante} & \textbf{Responsabilidades principales} \\
-\midrule
-Thiago F. Baez & Interfaz (móvil + web administrativa), diseño UX/UI, puerta de enlace de API, gestión de usuarios \\
-Santiago Domínguez & Responsable de calidad, servicio de pagos, geolocalización, documentación \\
-Facundo Luzzi & Motor de reservas, servicio de notificaciones, integración móvil \\
-Santiago J. Varga & Servicio de estacionamiento, calidad, documentación de negocio, marca \\
-\bottomrule
-\end{tabularx}
-\end{table}
+El equipo de cuatro integrantes asignó un responsable principal a cada servicio, lo que permitió el desarrollo paralelo. Thiago F. Baez estuvo a cargo de la interfaz móvil y web administrativa, el diseño UX/UI, la puerta de enlace de API y la gestión de usuarios. Santiago Domínguez lideró la calidad, el servicio de pagos, la geolocalización y la documentación. Facundo Luzzi desarrolló el motor de reservas, el servicio de notificaciones y la integración móvil. Santiago J. Varga estuvo a cargo del servicio de estacionamiento, la calidad, la documentación de negocio y la marca.
 
 El código fuente se organizó en una organización de GitHub con un repositorio por servicio, un repositorio independiente para la aplicación móvil y un repositorio raíz que los agregaba mediante submódulos Git. Las solicitudes de incorporación de cambios activaban canalizaciones de GitHub Actions que ejecutaban analizadores de estilo, análisis estático, verificaciones de tipos y pruebas automatizadas. Cada repositorio mantenía su propia documentación de contratos, con la descripción de puntos de acceso, modelos de datos y decisiones de diseño, que servía como especificación de interfaz compartida por el equipo.
 
@@ -226,30 +186,7 @@ La validación se realizó en dos planos complementarios: corrección técnica y
 
 \subsection{Pruebas automatizadas e integración continua}
 
-La estrategia de pruebas siguió el modelo de pirámide de pruebas: una base amplia de pruebas unitarias que verifican reglas de negocio aisladas, una capa intermedia de pruebas de integración que verifica cada servicio contra su base de datos y sus dependencias, y un vértice estrecho de pruebas de extremo a extremo que ejercita flujos completos de usuario. La Tabla~\ref{tab:tests} muestra la cantidad de archivos de pruebas automatizadas por componente al cierre del desarrollo.
-
-\begin{table}[H]
-\centering
-\caption{Archivos de pruebas automatizadas por componente.}
-\label{tab:tests}
-\renewcommand{\arraystretch}{1.3}
-\small
-\begin{tabular}{llr}
-\toprule
-\textbf{Componente} & \textbf{Marco} & \textbf{Archivos de pruebas} \\
-\midrule
-booking-service      & Go testing, testify, gomock & 72 \\
-notifications-service& pytest                       & 17 \\
-auth-service         & pytest                       & 10 \\
-mobile               & Jest                         & 9  \\
-parking-service      & Jest                         & 7  \\
-payment-service      & Jest, supertest              & 7  \\
-gateway              & pytest                       & 6  \\
-\midrule
-\textbf{Total}       &                              & \textbf{128} \\
-\bottomrule
-\end{tabular}
-\end{table}
+La estrategia de pruebas siguió el modelo de pirámide de pruebas: una base amplia de pruebas unitarias que verifican reglas de negocio aisladas, una capa intermedia de pruebas de integración que verifica cada servicio contra su base de datos y sus dependencias, y un vértice estrecho de pruebas de extremo a extremo que ejercita flujos completos de usuario. Al cierre del desarrollo se ejecutaron 128 archivos de pruebas automatizadas: 72 del servicio de reservas, 17 del servicio de notificaciones, 10 del servicio de autenticación, 9 de la aplicación móvil, 7 del servicio de estacionamiento, 7 del servicio de pagos y 6 de la puerta de enlace.
 
 La distribución refleja la concentración del riesgo: el servicio de reservas, que encapsula la mayoría de las reglas de negocio, representa el 56\% de todos los archivos de pruebas. Entre los escenarios críticos verificados automáticamente se encuentran:
 
