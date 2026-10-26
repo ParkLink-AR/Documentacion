@@ -109,29 +109,6 @@ Ningún actor existente del mercado argentino ofrece simultáneamente búsqueda 
 
 ParkLink sigue una arquitectura de microservicios independientes en la que cada dominio de negocio se implementa como un servicio autónomo con su propia base de datos, repositorio y canalización de despliegue. Una única puerta de enlace de API constituye el punto de entrada público, centralizando la autenticación JWT, la limitación de frecuencia, las cabeceras de seguridad HTTP y las conexiones WebSocket en tiempo real. Este enfoque permite escalar de forma independiente, aislar fallas y utilizar tecnologías heterogéneas entre los servicios.
 
-La Figura~\ref{fig:architecture} ilustra la topología de componentes.
-
-\begin{figure}[H]
-\centering
-\small
-\fbox{%
-  \parbox{0.95\textwidth}{\centering\vspace{0.5cm}
-    \textit{Aplicación móvil (React Native / Expo)} \quad|\quad \textit{Web administrativa (React Native Web)}\\[0.2cm]
-    $\downarrow$ HTTP / WebSocket\\[0.2cm]
-    \textbf{Puerta de enlace de API} (Python / FastAPI) --- validación JWT, limitación de frecuencia, núcleo WebSocket\\[0.2cm]
-    $\downarrow$ REST (credencial interna) \hfill $\leftrightarrow$ \hfill \textbf{RabbitMQ} (eventos asíncronos)\\[0.1cm]
-    \textit{auth} --- FastAPI / PostgreSQL \qquad
-    \textit{parking} --- NestJS / PostGIS\\
-    \textit{booking} --- Go / PostgreSQL \qquad
-    \textit{payment} --- Express / PostgreSQL\\
-    \textit{notifications} --- FastAPI / PostgreSQL
-    \vspace{0.5cm}
-  }%
-}
-\caption{Arquitectura de ParkLink: cinco microservicios independientes detrás de una única puerta de enlace; RabbitMQ desacopla los eventos asíncronos.}
-\label{fig:architecture}
-\end{figure}
-
 \subsection{Servicios del servidor}
 
 \paragraph{Puerta de enlace de API (Python / FastAPI).}
