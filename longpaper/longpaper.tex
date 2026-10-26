@@ -1,327 +1,502 @@
-\documentclass[11pt,twocolumn]{article}
+\documentclass[conference,a4paper]{IEEEtran}
 
 \usepackage[T1]{fontenc}
-\usepackage[spanish, es-nodecimaldot]{babel}
-\usepackage[a4paper,left=1.7cm,right=1.7cm,top=30mm,bottom=30mm,columnsep=0.7cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot,es-noshorthands]{babel}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{tabularx}
+\usepackage{array}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{hyperref}
 \usepackage{cite}
-\usepackage{float}
+\usepackage{xurl}
 \usepackage[table]{xcolor}
-\usepackage{multirow}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
 
-\graphicspath{{../}}
-\pagestyle{fancy}
-\setlength{\headheight}{30pt}
-\renewcommand{\headrulewidth}{1pt}
-\renewcommand{\footrulewidth}{1pt}
-\lhead{\includegraphics[width=2.5cm]{logo}}
-\rhead{\footnotesize \textsc{Long Paper - ParkLink\\ Trabajo Práctico Profesional}}
-\cfoot{\small \textsc{Página \thepage\ de \pageref*{LastPage}}}
-\fancypagestyle{plain}{%
-  \fancyhf{}%
-  \renewcommand{\headrulewidth}{1pt}%
-  \renewcommand{\footrulewidth}{1pt}%
-  \lhead{\includegraphics[width=2.5cm]{logo}}%
-  \rhead{\footnotesize \textsc{Long Paper - ParkLink\\ Trabajo Práctico Profesional}}%
-  \cfoot{\small \textsc{Página \thepage\ de \pageref*{LastPage}}}%
-}
+\graphicspath{{img/}}
+
+\definecolor{deepnavy}{HTML}{042347}
+\definecolor{modernteal}{HTML}{168B8D}
+\definecolor{plgray}{HTML}{F5F5F5}
+\definecolor{midgray}{HTML}{CCCCCC}
+
+\renewcommand{\IEEEkeywordsname}{Palabras clave}
+
+% Celdas de la tabla comparativa
+\newcommand{\si}{\checkmark}
+\newcommand{\pa}{$\sim$}
+\newcommand{\no}{--}
 
 \begin{document}
 
-\title{\bfseries ParkLink: una plataforma basada en microservicios para la reserva de estacionamiento urbano y el uso colaborativo de espacios}
+\title{ParkLink: Plataforma de microservicios para la reserva anticipada de estacionamiento urbano y el uso colaborativo de cocheras}
 
-\author{%
-  \renewcommand{\arraystretch}{1.4}%
-  \setlength{\tabcolsep}{1.2em}%
-  \begin{tabular}[t]{|c|c|}
-    \hline
-    Thiago Fernando Baez & Santiago Domínguez \\
-    \hline
-    Facundo Luzzi & Santiago Jorge Varga \\
-    \hline
-  \end{tabular}\\
-  \small \rule{0pt}{2.2em}Facultad de Ingeniería, Universidad de Buenos Aires (UBA)\\
-  \small Buenos Aires, Argentina\\[0.3em]
-  \small \texttt{\{tbaez, sdominguez, fluzzi, svarga\}@fi.uba.ar}
-}
+\author{\IEEEauthorblockN{Thiago Fernando Baez, Santiago Domínguez, Facundo Luzzi, Santiago Jorge Varga}
+\IEEEauthorblockA{\textit{Facultad de Ingeniería}\\
+\textit{Universidad de Buenos Aires (FIUBA)}\\
+Buenos Aires, Argentina\\
+\{tbaez, sadominguez, fluzzi, svarga\}@fi.uba.ar}}
 
 \maketitle
 
-%----------------------------------------------------------------
+%================================================================
 \begin{abstract}
-Encontrar un lugar para estacionar es un problema persistente y costoso en las ciudades densamente pobladas. En Buenos Aires, los conductores dedican en promedio 15~minutos por viaje a buscar un espacio, con pérdidas estimadas de \$5.612~ARS por búsqueda en tiempo, combustible, multas y precios desfavorables. Al mismo tiempo, una gran proporción de cocheras privadas permanece ociosa por la ausencia de un canal digital confiable que conecte oferta y demanda. Este trabajo presenta ParkLink, un mercado digital bilateral que permite a los conductores buscar, reservar y pagar el estacionamiento antes de salir, y a los propietarios publicar y administrar sus espacios. El sistema se construye sobre una arquitectura de microservicios independientes (Python/FastAPI, Go, NestJS/TypeScript, Node.js/Express), una aplicación móvil multiplataforma en React Native y una base de datos espacial PostgreSQL/PostGIS. La comunicación asíncrona entre servicios se gestiona mediante RabbitMQ y el procesamiento de pagos se integra con Mercado Pago mediante notificaciones verificadas criptográficamente. Una metodología híbrida Scrum--Kanban organizó trece sprints de dos semanas a lo largo de un ciclo de desarrollo de seis meses. La validación incluyó 128 archivos de pruebas automatizadas ejecutados en una canalización de integración continua, pruebas de extremo a extremo en dispositivos físicos, una encuesta de mercado a 180 participantes que produjo una intención de uso habitual del 70\% y una entrevista con un referente de la operación comercial de estacionamientos. El MVP resultante demuestra la viabilidad técnica y comercial de transformar la búsqueda de estacionamiento de un problema secuencial de detención óptima en una elección simultánea e informada, reduciendo la circulación innecesaria y favoreciendo un uso más eficiente de la infraestructura urbana existente.
-
-\noindent\textbf{Palabras clave:} estacionamiento urbano; microservicios; mercado bilateral; aplicación móvil; búsqueda geoespacial; economía colaborativa
+El siguiente trabajo presenta ParkLink, un mercado digital de dos lados que conecta a conductores que necesitan estacionar en la Ciudad Autónoma de Buenos Aires con propietarios de cocheras particulares y playas comerciales. La plataforma reformula la búsqueda de estacionamiento, un problema de parada óptima con información incompleta, como una elección simultánea entre opciones visibles, comparables y reservables antes de salir. Se describen la arquitectura de microservicios políglota que la sostiene, las decisiones de diseño que garantizan la consistencia de las reservas ante solicitudes concurrentes, el procesamiento idempotente de pagos y eventos, y la metodología ágil híbrida con la que un equipo de cuatro integrantes la construyó en trece \textit{sprints}. Se reportan los resultados de su validación técnica, con 128 archivos de pruebas automatizadas, y de su validación de producto, mediante una encuesta a 180 potenciales usuarios que arrojó un 70\% de intención de uso regular, un encuentro con un operador comercial del sector y la adecuación a la normativa argentina de defensa del consumidor y protección de datos.
 \end{abstract}
 
-%================================================================
-\section{Introducción y contexto}\label{sec:intro}
-%================================================================
-
-La movilidad urbana es uno de los desafíos centrales de las ciudades contemporáneas, y el estacionamiento ocupa un lugar particular: constituye el tramo final de casi todo viaje en automóvil y, simultáneamente, el segmento que ha recibido menor atención tecnológica. En Buenos Aires, esta brecha es especialmente visible. La ciudad registra aproximadamente 1,2~millones de ingresos vehiculares diarios~\cite{superauto2024}, pero su oferta de estacionamiento continúa fragmentada en tres canales desconectados: zonas públicas reguladas con parquímetro, playas comerciales sin reserva anticipada y portales de avisos clasificados enfocados casi exclusivamente en alquileres mensuales.
-
-Desde la perspectiva de la teoría de decisiones, un conductor que busca estacionamiento enfrenta un \textbf{problema clásico de detención óptima}~\cite{ferguson1989}. La formulación canónica ---conocida como el problema de estacionamiento de MacQueen y Miller~\cite{macqueen1960}--- modela a un conductor que avanza hacia un destino, solo puede observar el espacio que tiene inmediatamente delante, no puede regresar a una opción vista previamente y debe decidir en cada momento si toma el espacio actual o continúa. Bajo la estrategia de umbral óptimo, incluso en el mejor caso la probabilidad de elegir la mejor opción disponible es de apenas 37\%~\cite{christian2016}. La causa subyacente no es la escasez de espacios, sino la escasez de información: la oferta existe, pero el conductor no puede verla, compararla ni comprometerse con ella antes de iniciar el viaje.
-
-En paralelo a esta ineficiencia del lado de la demanda, persiste otra del lado de la oferta: una gran proporción de cocheras residenciales y playas comerciales permanece subutilizada durante buena parte del día, sin un canal accesible para que sus propietarios las ofrezcan por períodos cortos. El costo económico de esta doble ineficiencia puede cuantificarse. Nuestro análisis de datos de Buenos Aires correspondientes a 2026 estima \textbf{\$5.612~ARS por búsqueda} ---compuestos por tiempo perdido (\$3.464 ARS), combustible (\$556 ARS), riesgo estadístico de multa (\$792 ARS) y exposición a precios desfavorables (\$800 ARS)--- en un contexto de 180.000--270.000 búsquedas activas de estacionamiento por día en la ciudad.
-
-ParkLink fue diseñada para cerrar esta brecha transformando la búsqueda de estacionamiento, de un proceso secuencial y ciego, en una elección simultánea y completamente informada. La plataforma permite a los conductores visualizar en un mapa georreferenciado todos los espacios disponibles cerca de su destino, consultar disponibilidad y precios en tiempo real, realizar reservas anticipadas por hora o por estadías prolongadas y pagar digitalmente antes de salir. Los propietarios publican sus espacios, definen capacidad, horarios y precios, aprueban solicitudes entrantes y reciben el 100\% de la tarifa publicada. La plataforma cobra al conductor una comisión de servicio del 8\% por cada reserva completada, financiando la operación sin imponer costos del lado de la oferta.
-
-El resto de este trabajo se organiza de la siguiente manera. La Sección~\ref{sec:related} revisa las soluciones existentes y los trabajos relacionados. La Sección~\ref{sec:proposal} describe la arquitectura y el diseño técnico del sistema. La Sección~\ref{sec:methodology} presenta la metodología de desarrollo. La Sección~\ref{sec:results} informa los resultados de validación y los hallazgos principales. La Sección~\ref{sec:conclusions} expone las conclusiones y las líneas de trabajo futuro.
+\begin{IEEEkeywords}
+Estacionamiento urbano, microservicios, mercado de dos lados, parada óptima, búsqueda geoespacial, economía colaborativa.
+\end{IEEEkeywords}
 
 %================================================================
-\section{Trabajos relacionados}\label{sec:related}
+\section{Introducción}\label{sec:intro}
 %================================================================
 
-\subsection{Sistemas de información y navegación para estacionamiento}
+\subsection{Contexto y motivación}
 
-Las plataformas de navegación como Google Maps~\cite{googlemaps} y Waze~\cite{waze} incorporan disponibilidad estimada de estacionamiento a partir de patrones agregados, pero ninguna ofrece reservas confirmadas, inventario en tiempo real de propietarios privados ni pagos integrados. Su información de estacionamiento es indicativa, no transaccional.
+La movilidad urbana es uno de los desafíos centrales de las grandes ciudades, y el estacionamiento ocupa en ella un lugar particular: Es el último tramo de casi cualquier viaje en automóvil y, al mismo tiempo, el que menos herramientas tecnológicas ha recibido. Mientras que el transporte de pasajeros o el alojamiento temporario se resolvieron con plataformas que conectan a quien ofrece un recurso con quien lo necesita, en la Ciudad Autónoma de Buenos Aires (CABA), donde circulan a diario alrededor de 1,8~millones de vehículos~\cite{superauto2024,aboy2025movilidad}, el estacionamiento sigue repartido entre canales que no dialogan entre sí: El estacionamiento medido en la vía pública, las playas comerciales a las que se accede sin reserva y los avisos clasificados de cocheras orientados casi exclusivamente al alquiler mensual.
 
-\subsection{Gestión del estacionamiento medido}
+En esa brecha conviven dos ineficiencias. Del lado de la demanda, el conductor no puede saber antes de salir si va a tener dónde estacionar ni cuánto le va a costar. Del lado de la oferta, muchas cocheras residenciales y playas comerciales permanecen ociosas durante buena parte del día porque sus propietarios no disponen de un medio seguro y simple para ofrecerlas por períodos cortos. El problema, por lo tanto, no es la falta de lugares, sino la falta de información y de un canal transaccional confiable que conecte ambos lados.
 
-Blinkay~\cite{blinkay} es la aplicación dominante de estacionamiento medido en Argentina y permite pagar mediante el teléfono las zonas reguladas en la vía pública de Buenos Aires y otras ciudades. Su arquitectura está estrechamente vinculada a contratos municipales, cubre únicamente espacios públicos en la vía pública y no ofrece ningún mecanismo de reserva. El conductor todavía debe llegar y esperar encontrar disponibilidad.
+\subsection{La búsqueda de estacionamiento como problema de parada óptima}
 
-\subsection{Plataformas internacionales de reservas}
+La dificultad que enfrenta el conductor tiene una formulación precisa: Es un problema de parada óptima (\textit{optimal stopping}). En esta familia de problemas, una persona evalúa opciones de a una, en un orden que no controla, y debe decidir en cada momento si acepta la que tiene delante o la descarta, sin posibilidad de recuperarla. En el caso más conocido, el problema de la secretaria, la estrategia óptima elige la mejor opción con una probabilidad de apenas el 37\%~\cite{ferguson1989,christian2016}.
 
-SpotHero y ParkWhiz~\cite{spothero} representan el estado del arte de la reserva anticipada de estacionamiento en Estados Unidos, al ofrecer inventario en tiempo real, comparación de precios y confirmación instantánea de reservas en cocheras comerciales. EasyPark~\cite{easypark} cubre un alcance similar en más de 20 países europeos, combinando el pago de zonas municipales con la reserva en algunas cocheras privadas. Ambas validan el modelo técnico y comercial; sin embargo, ninguna opera en Argentina o Latinoamérica ni aborda la dimensión de economía colaborativa de las cocheras residenciales privadas.
+El estacionamiento tiene su propia versión, formulada por MacQueen y Miller~\cite{macqueen1960}: Un conductor avanza hacia su destino, solo ve el lugar que tiene enfrente y no puede volver a uno que dejó pasar. La estrategia óptima es de umbral, es decir, ignorar los lugares libres hasta cierta distancia del destino y tomar el primero disponible a partir de allí; si nueve de cada diez lugares están ocupados, conviene empezar a buscar seis lugares antes~\cite{fergusonstopping}. Las variantes que permiten regresar a un lugar ya visto a cambio de un costo~\cite{tamaki1988} confirman que es la falta de información sobre lo que hay más adelante la que obliga a decidir sin certezas. Lo mismo ocurre con las cocheras y las playas: El conductor las descubre de a una, sin conocer su precio ni su disponibilidad hasta llegar, y ante el apuro termina aceptando la primera opción aceptable.
 
-\subsection{Portales de avisos clasificados}
+\subsection{Costo de la búsqueda}
 
-Portales como MercadoLibre~\cite{mercadolibre} son el principal canal mediante el cual los propietarios privados de Argentina publican espacios de estacionamiento, aunque exclusivamente para alquileres mensuales de plazo fijo. No existe disponibilidad en tiempo real, pago transaccional dentro de la plataforma ni coordinación automática entre conductor y propietario.
+La búsqueda tiene además un costo económico concreto. Con datos de CABA de 2026, se estimó el costo de cada salida sin un lugar asegurado en cuatro componentes (Tabla~\ref{tab:costo}): El tiempo perdido, tomando unos 15~minutos de búsqueda valorizados al salario promedio de la Ciudad~\cite{infobae_salarios_2026}; el combustible consumido en 2 a 3~km de marcha lenta~\cite{economista_nafta_2026}; el valor esperado de una multa por estacionamiento indebido, de \$94.999~ARS, asumiendo una infracción cada 120 salidas~\cite{infobae_multas_2026}; y el sobrecosto de aceptar una cochera sin comparar, dado que la hora varía entre \$6.000 y \$10.000~ARS según la zona y llega a \$20.000~ARS en las de mayor demanda~\cite{iprofesional2026cocheras}.
 
-\subsection{Síntesis y brecha de investigación}
+\begin{table}[!t]
+\centering
+\caption{Costo estimado por búsqueda de estacionamiento en CABA (2026)}
+\label{tab:costo}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l r}
+\toprule
+\textbf{Concepto} & \textbf{Costo (ARS)} \\
+\midrule
+Tiempo perdido (${\sim}$15 min) & \$3.464 \\
+Combustible (${\sim}$0,25 L) & \$556 \\
+Riesgo de multa (1 cada 120 salidas) & \$792 \\
+Sobrecosto por no comparar (1 cada 10 salidas) & \$800 \\
+\midrule
+\textbf{Total por búsqueda} & \textbf{\$5.612} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Las soluciones existentes se analizaron según cinco criterios: presencia en el mercado local, reserva anticipada, disponibilidad confirmada en tiempo real, pago integrado y acceso a propietarios privados. Blinkay cubre el mercado local y el pago, pero no ofrece reservas ni acceso a espacios privados. SpotHero, ParkWhiz y EasyPark ofrecen reservas y pagos, aunque no operan en el mercado argentino y presentan una cobertura limitada de espacios privados. Google Maps y Waze brindan información estimada, sin reservas ni pagos, mientras que los portales de avisos clasificados permiten acceder a propietarios privados, pero sin disponibilidad en tiempo real ni transacciones integradas. ParkLink reúne los cinco criterios en una única plataforma.
+\subsection{Objetivos y contribuciones}
 
-Ningún actor existente del mercado argentino ofrece simultáneamente búsqueda geolocalizada, reserva anticipada, disponibilidad confirmada en tiempo real, pago integrado y acceso a espacios de propiedad privada. ParkLink fue construida precisamente para ocupar esta brecha.
-
-%================================================================
-\section{Diseño y arquitectura del sistema}\label{sec:proposal}
-%================================================================
-
-\subsection{Descripción general de la arquitectura}
-
-ParkLink sigue una arquitectura de microservicios independientes en la que cada dominio de negocio se implementa como un servicio autónomo con su propia base de datos, repositorio y canalización de despliegue. Una única puerta de enlace de API constituye el punto de entrada público, centralizando la autenticación JWT, la limitación de frecuencia, las cabeceras de seguridad HTTP y las conexiones WebSocket en tiempo real. Este enfoque permite escalar de forma independiente, aislar fallas y utilizar tecnologías heterogéneas entre los servicios.
-
-\subsection{Servicios del servidor}
-
-\paragraph{Puerta de enlace de API (Python / FastAPI).}
-El único punto de entrada perimetral valida los tokens de acceso, agrega una credencial interna confiable para los servicios posteriores, aplica límites de frecuencia por cliente y mantiene el canal WebSocket mediante el cual la aplicación móvil recibe notificaciones en tiempo real. Centralizar la autenticación en la puerta de enlace evita que cada servicio deba implementar su propia lógica perimetral.
-
-\paragraph{Servicio de autenticación e identidad (Python / FastAPI).}
-Administra el ciclo de vida completo de la cuenta: registro guiado con códigos de verificación de seis dígitos para correo electrónico y teléfono, inicio de sesión, renovación rotativa de tokens, gestión de sesiones por dispositivo, recuperación de contraseñas y eliminación de cuentas. Las contraseñas se almacenan mediante derivación de claves bcrypt y los tokens de acceso son JWT de corta duración. El servicio constituye la única fuente de verdad para la identidad de los usuarios y expone datos de los vehículos de los conductores, cuentas bancarias de los propietarios para las liquidaciones e información de perfil.
-
-\paragraph{Servicio de espacios de estacionamiento y geolocalización (TypeScript / NestJS / PostGIS).}
-Gestiona el ciclo de publicación de los espacios de estacionamiento: coordenadas espaciales, fotografías, precios por hora y por estadía, horarios semanales, fechas bloqueadas, capacidad, documentos de verificación y estado de moderación. Las búsquedas por proximidad se resuelven mediante índices espaciales en una base de datos PostgreSQL con la extensión PostGIS, que permite consultas eficientes por radio y geocodificación de direcciones. Este servicio es propietario de la configuración que consulta el servicio de reservas para validar horarios y calcular precios de estadía.
-
-\paragraph{Motor de reservas y disponibilidad (Go).}
-Es el núcleo transaccional de la plataforma. La disponibilidad se calcula como la diferencia de conjuntos entre los intervalos del horario publicado de un espacio y sus reservas activas ---un problema estructurado de aritmética de intervalos---. La seguridad ante concurrencia se garantiza mediante bloqueos de filas a nivel de base de datos dentro de la transacción de reserva, combinados con una retención temporal del espacio mientras el conductor completa el pago, lo que evita reservas duplicadas ante solicitudes simultáneas. El servicio también gestiona la aprobación de reservas, el ingreso y egreso presenciales mediante códigos PIN, extensiones, cancelaciones, cargos pendientes, reseñas de usuarios, mensajería por reserva, solicitudes de soporte y liquidaciones de ganancias a propietarios. Se eligió Go para este servicio por su modelo nativo de concurrencia y su rendimiento predecible bajo carga.
-
-\paragraph{Servicio de pasarela de pagos (Node.js / Express).}
-Se integra con Mercado Pago: genera preferencias de pago, recibe notificaciones webhook y verifica su firma criptográfica HMAC, confirma la reserva asociada y procesa reembolsos con reintentos automáticos ante fallas transitorias. Aislar la lógica de pagos en su propio servicio garantiza que la latencia o las fallas de la pasarela nunca afecten la búsqueda de espacios ni otras funciones de la plataforma. Cada operación es idempotente para gestionar entregas duplicadas de webhooks.
-
-\paragraph{Servicio de notificaciones (Python / FastAPI / RabbitMQ).}
-Consume eventos de dominio publicados por los servicios de reservas y pagos en un intermediario RabbitMQ. Para cada evento, registra la notificación en la bandeja de entrada del usuario, envía una notificación mediante Firebase Cloud Messaging y señala al WebSocket de la puerta de enlace que actualice inmediatamente la aplicación abierta. Los eventos duplicados se detectan y descartan para evitar notificaciones repetidas. Como este servicio no expone una interfaz pública, su desarrollo puede avanzar de manera independiente del resto.
-
-\subsection{Aplicaciones de interfaz}
-
-\paragraph{Aplicación móvil (React Native / Expo).}
-Una aplicación multiplataforma para Android e iOS que ofrece experiencias de navegación diferenciadas: el flujo del conductor, centrado en búsqueda, reserva y pago; y el flujo del propietario, centrado en la gestión de espacios, aprobación de solicitudes e informes financieros. El mapa utiliza Google Maps Platform con geocodificación de Google Places. La aplicación admite varios idiomas y modo oscuro.
-
-\paragraph{Panel web administrativo (React Native Web / Expo).}
-Una aplicación web interna mediante la cual el personal de ParkLink busca usuarios, modera publicaciones y reseñas de espacios, gestiona liquidaciones y reembolsos, atiende solicitudes de soporte, consulta métricas de uso y configura la comisión de servicio de la plataforma.
-
-\subsection{Decisiones clave de diseño técnico}
-
-\subsubsection{Diseño de contratos API.}
-Como los servicios de interfaz y del servidor se desarrollaron en paralelo, el contrato de API de cada servicio se acordó y fijó antes de comenzar la implementación. La capa de acceso a datos de la aplicación móvil se diseñó con las mismas firmas de métodos que los puntos de acceso reales, de modo que reemplazar datos simulados por llamadas al servidor en vivo no requiriera cambios en las pantallas.
-
-\subsubsection{Persistencia políglota.}
-Cada servicio es propietario de su propio esquema PostgreSQL; ningún servicio lee directamente la base de datos de otro. Las necesidades de datos entre servicios se resuelven mediante llamadas REST síncronas a través de la puerta de enlace o mediante el consumo de eventos de dominio. Este límite refuerza el aislamiento de dominios y permite la evolución independiente de los esquemas.
-
-\subsubsection{Asincronía orientada a eventos.}
-Los procesos secundarios ---notificaciones, disparadores de liquidaciones y enlaces de analítica--- se desacoplan de las transacciones principales mediante RabbitMQ. La garantía de entrega al menos una vez, combinada con el procesamiento idempotente de eventos, asegura un comportamiento correcto ante reintentos sin bloquear el camino crítico de las reservas.
-
-\subsubsection{Infraestructura y observabilidad.}
-Todos los componentes se empaquetan en contenedores Docker y se orquestan mediante un repositorio raíz que utiliza submódulos Git para componer todos los servicios. El sistema completo puede iniciarse localmente con un único comando. Sentry está integrado en los servicios para el seguimiento de errores y Cloudflare R2 almacena las fotografías de los espacios.
-
-%================================================================
-\section{Metodología de desarrollo}\label{sec:methodology}
-%================================================================
-
-\subsection{Marco ágil híbrido}
-
-El desarrollo se gestionó mediante una metodología híbrida que combinó prácticas de Scrum y Kanban, elegida para adaptarse a la construcción iterativa de un sistema distribuido de ocho servicios cuyos requisitos evolucionaron a medida que maduró el producto. La metodología no se aplicó de manera uniforme, sino que se adaptó a la naturaleza específica de cada fase del proyecto.
-
-\subsection{Fases del proyecto y organización de los sprints}
-
-El proyecto se desarrolló de abril a octubre de 2026, durante trece sprints de dos semanas agrupados en tres fases.
-
-\paragraph{Fase 1 --- Propuesta y factibilidad (sprints 1--5).}
-Se enfocó en definir qué construir y validar su viabilidad. Los entregables fueron artefactos de investigación y análisis: estudio de mercado, análisis competitivo, alcance del MVP, arquitectura preliminar e identidad de marca. La fase concluyó con la presentación de la propuesta de proyecto y la firma del acuerdo con los tutores.
-
-\paragraph{Fase 2 --- Desarrollo del MVP bajo Scrum (sprints 6--12).}
-Se concentró en la construcción del producto. Cada sprint concluyó con un incremento funcional de software. Primero se construyó la aplicación móvil con una capa completa de datos simulados y luego se conectó progresivamente con los servicios reales. Cada integrante trabajó contra contratos simulados para los servicios aún no disponibles, evitando bloqueos causados por dependencias. Cada revisión de sprint se realizó ante los tutores del proyecto, quienes validaron el incremento y proporcionaron retroalimentación.
-
-\paragraph{Fase 3 --- Validación y cierre (sprint 13 y cierre progresivo).}
-Con el MVP integrado, esta fase abordó el cumplimiento legal, la validación de mercado y la incorporación de los comentarios de los usuarios al producto. Después del sprint 13, las iteraciones de duración fija se reemplazaron por un flujo Kanban para corregir errores, preparar la documentación y elaborar el informe final.
-
-\subsection{Organización del equipo y herramientas}
-
-El equipo de cuatro integrantes asignó un responsable principal a cada servicio, lo que permitió el desarrollo paralelo. Thiago F. Baez estuvo a cargo de la interfaz móvil y web administrativa, el diseño UX/UI, la puerta de enlace de API y la gestión de usuarios. Santiago Domínguez lideró la calidad, el servicio de pagos, la geolocalización y la documentación. Facundo Luzzi desarrolló el motor de reservas, el servicio de notificaciones y la integración móvil. Santiago J. Varga estuvo a cargo del servicio de estacionamiento, la calidad, la documentación de negocio y la marca.
-
-El código fuente se organizó en una organización de GitHub con un repositorio por servicio, un repositorio independiente para la aplicación móvil y un repositorio raíz que los agregaba mediante submódulos Git. Las solicitudes de incorporación de cambios activaban canalizaciones de GitHub Actions que ejecutaban analizadores de estilo, análisis estático, verificaciones de tipos y pruebas automatizadas. Cada repositorio mantenía su propia documentación de contratos, con la descripción de puntos de acceso, modelos de datos y decisiones de diseño, que servía como especificación de interfaz compartida por el equipo.
-
-La planificación de los sprints utilizó Planning Poker con estimación de puntos de historia de Fibonacci, priorizando la complejidad por sobre el tiempo para permitir la comparación entre tareas diferentes. Las retrospectivas posteriores a cada sprint ajustaron las prácticas de trabajo a partir de la reflexión del equipo.
-
-%================================================================
-\section{Resultados y validación}\label{sec:results}
-%================================================================
-
-La validación se realizó en dos planos complementarios: corrección técnica y adecuación al mercado.
-
-\subsection{Pruebas automatizadas e integración continua}
-
-La estrategia de pruebas siguió el modelo de pirámide de pruebas: una base amplia de pruebas unitarias que verifican reglas de negocio aisladas, una capa intermedia de pruebas de integración que verifica cada servicio contra su base de datos y sus dependencias, y un vértice estrecho de pruebas de extremo a extremo que ejercita flujos completos de usuario. Al cierre del desarrollo se ejecutaron 128 archivos de pruebas automatizadas: 72 del servicio de reservas, 17 del servicio de notificaciones, 10 del servicio de autenticación, 9 de la aplicación móvil, 7 del servicio de estacionamiento, 7 del servicio de pagos y 6 de la puerta de enlace.
-
-La distribución refleja la concentración del riesgo: el servicio de reservas, que encapsula la mayoría de las reglas de negocio, representa el 56\% de todos los archivos de pruebas. Entre los escenarios críticos verificados automáticamente se encuentran:
+El objetivo del trabajo fue diseñar, desarrollar y validar una plataforma que permita a los conductores de CABA buscar, reservar y pagar un lugar con disponibilidad confirmada antes de llegar a destino, y a los propietarios publicar y administrar sus espacios con la confianza de un cobro y una identidad verificados. Las contribuciones de este artículo son las siguientes:
 
 \begin{itemize}
-  \item \textbf{Cálculo de disponibilidad}: Resta de reservas activas a los horarios publicados, incluida la conversión de zonas horarias y los casos límite de los horarios.
-  \item \textbf{Seguridad de reservas concurrentes}: Dos solicitudes simultáneas para el mismo espacio no pueden producir una reserva duplicada; la retención temporal vence correctamente si el pago no se completa dentro del intervalo.
-  \item \textbf{Códigos de ingreso y egreso}: Generación, validación y cálculo correctos del cargo por permanencia excedida.
-  \item \textbf{Integridad de webhooks de pago}: Verificación de firma HMAC, confirmación idempotente de reservas y reintentos automáticos de reembolsos.
-  \item \textbf{Deduplicación de notificaciones}: Un evento duplicado no debe generar dos notificaciones; los mensajes malformados no deben detener la cola.
-  \item \textbf{Perímetro de la puerta de enlace}: Validación de tokens, rechazo de solicitudes no autenticadas y eliminación de cabeceras internas inyectadas por clientes externos.
+    \item La reformulación de la búsqueda de estacionamiento, de una búsqueda secuencial con información incompleta a una elección simultánea entre opciones visibles y reservables, materializada en un producto funcional.
+    \item El diseño de una arquitectura de microservicios políglota con un motor de reservas que admite cocheras de capacidad múltiple sin sobre-reserva ante solicitudes concurrentes, y con procesamiento idempotente de pagos y eventos.
+    \item La descripción de una metodología ágil híbrida adaptada a cada fase del proyecto, que permitió el desarrollo en paralelo de ocho componentes a partir de contratos acordados de antemano.
+    \item Una validación en tres planos (técnico, de mercado y legal), cuyas fricciones detectadas se tradujeron en decisiones de producto implementadas.
 \end{itemize}
 
-Todas las pruebas se ejecutaron automáticamente en cada envío mediante canalizaciones de GitHub Actions que también ejecutaban analizadores de estilo, análisis estático y verificadores estrictos de tipos, asegurando que ningún error detectable llegara a la rama principal.
+El resto del artículo se organiza de la siguiente manera. La Sección~\ref{sec:estado} revisa la literatura y las soluciones existentes. La Sección~\ref{sec:propuesta} presenta la propuesta: El producto, su arquitectura, las decisiones de diseño, la metodología de desarrollo y la estrategia de validación. La Sección~\ref{sec:resultados} informa los resultados obtenidos, y la Sección~\ref{sec:conclusiones} expone las conclusiones y las líneas de trabajo futuro.
 
-\subsection{Pruebas de integración de extremo a extremo}
+%================================================================
+\section{Estado del Arte}\label{sec:estado}
+%================================================================
 
-Además de las pruebas por servicio, un script específico de extremo a extremo se ejecutó contra el sistema completamente integrado: creó una cuenta de propietario, publicó un espacio con horario y precio, creó una cuenta de conductor, consultó la disponibilidad, inició una reserva y verificó el resultado de cada paso. Este script proporcionó una confirmación rápida de ausencia de regresiones después de cada evento de integración. Se realizaron pruebas manuales en dispositivos físicos Android e iOS, validando la entrega de notificaciones, la ubicación GPS y el flujo de redirección y retorno de pagos de Mercado Pago ---aspectos que los emuladores no reproducen fielmente---. Los pagos se ejercitaron en el entorno de pruebas de Mercado Pago con cuentas de compradores de prueba y sin movimiento de dinero real.
+\subsection{El costo de la circulación en busca de estacionamiento}
 
-\subsection{Encuesta de validación de mercado}\label{sec:survey}
+La circulación en busca de estacionamiento (\textit{cruising for parking}) fue estudiada como un fenómeno con efectos agregados sobre el tránsito. Shoup~\cite{shoup2005,shoup2006} relevó estudios realizados en distintas ciudades y estimó que, en las zonas céntricas, en promedio cerca del 30\% del tránsito corresponde a vehículos que buscan dónde estacionar, con el consiguiente aumento de la congestión, el consumo de combustible y las emisiones. Su análisis atribuye el fenómeno a la diferencia de precio entre el estacionamiento en la calle y el de las playas, y propone corregirla mediante la tarificación del espacio público. La perspectiva de la parada óptima~\cite{macqueen1960,tamaki1988}, presentada en la Sección~\ref{sec:intro}, complementa esa explicación desde el lado de la información: Aun con precios correctos, un conductor que solo ve las opciones de a una decide mal. ParkLink actúa sobre esa segunda causa, haciendo visible y reservable la oferta privada que hoy permanece oculta.
 
-A comienzos de septiembre de 2026, el equipo realizó una encuesta de validación de mercado distribuida mediante Instagram y dirigida a adultos de Buenos Aires con al menos experiencia ocasional de conducción. Se recopilaron \textbf{180 respuestas}, que abarcaron tanto a conductores como a propietarios.
+\subsection{Soluciones existentes}
 
-Hallazgos principales:
+\textit{Estacionamiento medido.} Blinkay~\cite{blinkay} es la plataforma de estacionamiento medido más difundida en Argentina y el competidor local más relevante. Permite pagar desde el teléfono el estacionamiento en las zonas reguladas de CABA y de otras ciudades, con una marca consolidada y un flujo de pago validado en el mercado. Sin embargo, opera exclusivamente sobre la vía pública, no ofrece reservas anticipadas y su modelo está atado a contratos municipales, por lo que no contempla cocheras privadas ni playas comerciales.
+
+\textit{Aplicaciones de navegación.} Waze~\cite{waze} y Google Maps~\cite{googlemaps} tienen una penetración altísima e incorporan, en algunos mercados, información aproximada sobre el estacionamiento en determinadas zonas a partir de proveedores externos o de patrones históricos. Esa información es estimativa: No permite reservar, no confirma la disponibilidad real antes de llegar ni integra el pago o la relación con quien ofrece el espacio.
+
+\textit{Clasificados digitales.} Portales como Mercado Libre~\cite{mercadolibre} son el canal más usado por los propietarios particulares para ofrecer cocheras en Argentina. Ofrecen alta visibilidad y bajo costo de publicación, pero están orientados al alquiler mensual, carecen de disponibilidad por horas y de pago dentro de la operación, y dejan la coordinación entre las partes completamente en manos de ellas, con la consiguiente falta de confianza.
+
+\textit{Plataformas internacionales de reserva.} SpotHero y ParkWhiz~\cite{spothero} en Estados Unidos, y EasyPark~\cite{easypark} en más de 20 países europeos, representan el estado del arte de la reserva anticipada: Inventario actualizado, comparación de precios, pago integrado y reseñas. Validan el modelo técnico y comercial a gran escala, pero no operan en Argentina ni en América Latina, se orientan casi exclusivamente a garajes comerciales o a acuerdos con municipios, y no contemplan a los propietarios particulares que quieren aprovechar un espacio ocioso.
+
+\subsection{Síntesis y faltante}
+
+A partir de este relevamiento se definieron cinco criterios de comparación: Presencia en el mercado local, reserva anticipada, disponibilidad real, pago integrado y acceso a la oferta de propietarios particulares. La Tabla~\ref{tab:comparativa} resume cómo los cubre cada actor. Ninguno de los existentes en el mercado argentino los reúne: Blinkay cubre el segmento público regulado sin reservas, los clasificados cubren el alquiler permanente sin transaccionalidad y las referencias internacionales validan el modelo sin operar localmente. ParkLink se construyó para ocupar precisamente ese espacio: Una plataforma transaccional y colaborativa, orientada al estacionamiento de corta y mediana duración en el mercado local.
+
+\begin{table}[!t]
+\centering
+\caption{Cobertura de los criterios de comparación por actor}
+\label{tab:comparativa}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c c c}
+\toprule
+\textbf{Actor} & \textbf{Local} & \textbf{Reserva} & \textbf{Disp. real} & \textbf{Pago} & \textbf{Particulares} \\
+\midrule
+Blinkay & \si & \no & \pa & \si & \no \\
+Waze / Google Maps & \si & \no & \pa & \no & \no \\
+Clasificados & \si & \no & \no & \no & \si \\
+SpotHero / ParkWhiz & \no & \si & \si & \si & \no \\
+EasyPark & \no & \pa & \si & \si & \no \\
+\midrule
+\textbf{ParkLink} & \si & \si & \si & \si & \si \\
+\bottomrule
+\multicolumn{6}{l}{\footnotesize \si: Cubre el criterio; \pa: Lo cubre parcialmente; \no: No lo cubre.}
+\end{tabular}
+\end{table}
+
+%================================================================
+\section{Propuesta Metodológica}\label{sec:propuesta}
+%================================================================
+
+\subsection{Visión general de la propuesta}
+
+ParkLink se concibió como un mercado de dos lados sostenido por cuatro piezas: Una aplicación móvil para Android e iOS, un panel web de administración para el personal de la plataforma, un sitio web público y un conjunto de microservicios que resuelven la lógica de negocio. Una decisión central fue que conductores y propietarios no necesiten cuentas separadas: Una misma cuenta puede usarse en modo conductor, para buscar, reservar y pagar, o en modo propietario, para publicar cocheras, aprobar solicitudes y cobrar, y el modo puede cambiarse en cualquier momento.
+
+El modelo de ingresos se derivó de la naturaleza de dos lados del negocio. Publicar una cochera es gratuito y el propietario recibe el 100\% de la tarifa que fija; la plataforma cobra al conductor un cargo de servicio del 8\% sobre cada reserva concretada, de modo que solo genera ingresos cuando la operación se completa. La desconfianza entre personas que no se conocen se abordó con un conjunto de mecanismos que atraviesan todo el diseño: Verificación del correo electrónico y del teléfono antes de crear la cuenta, cobro dentro de la plataforma, moderación previa de cada publicación, verificación presencial del ingreso, reseñas mutuas, y mensajería y soporte asociados a cada reserva.
+
+\subsection{Arquitectura de microservicios}
+
+El \textit{backend} se construyó sobre una arquitectura de microservicios en la que cada dominio funcional tiene su propio servicio, repositorio, base de datos PostgreSQL y ciclo de despliegue, implementado con la tecnología más adecuada para su problema. La Fig.~\ref{fig:arquitectura} presenta la vista de contenedores del sistema, inspirada en el nivel~2 del modelo C4. Sus componentes son los siguientes:
+
 \begin{itemize}
-  \item \textbf{Alta tasa de aceptación}: La posibilidad de salir de casa con un espacio de estacionamiento reservado y pagado recibió calificaciones de 4 o 5 sobre 5 por parte de la gran mayoría de los participantes.
-  \item \textbf{Intención de uso habitual}: Aproximadamente el \textbf{70\%} de los participantes indicó que utilizaría la aplicación habitualmente, con frecuencias desde varias veces al mes hasta diariamente.
-  \item \textbf{Principales motivadores}: Precios previsibles (incluida la posibilidad de comparar opciones antes de comprometerse), cercanía al destino y seguridad del vehículo (preferencia por espacios privados cerrados frente al estacionamiento en la calle).
-  \item \textbf{Disposición a pagar}: El rango de precios que los conductores declararon estar dispuestos a pagar fue ligeramente inferior al promedio de mercado utilizado en nuestras proyecciones de ingresos, lo que refuerza el valor estratégico de incorporar propietarios privados capaces de ofrecer precios inferiores a los de las playas comerciales.
+    \item \textbf{Puerta de enlace} (Python, FastAPI): Único punto de entrada para los clientes. Valida el token de acceso, elimina los encabezados internos que un cliente intente falsificar y reenvía la solicitud con la identidad verificada y una credencial interna que los servicios exigen. Centraliza la limitación de solicitudes, los encabezados de seguridad HTTP y la conexión WebSocket de notificaciones.
+    \item \textbf{Autenticación} (Python, FastAPI): Registro con verificación previa del correo y del teléfono mediante códigos de seis dígitos, sesiones por dispositivo, recuperación de contraseña, perfil, vehículos y datos bancarios para las liquidaciones.
+    \item \textbf{Cocheras} (TypeScript, NestJS, PostGIS): Ubicación, fotos, precios por hora y por estadía, horarios semanales, fechas bloqueadas, capacidad, documentación y estado de moderación. Resuelve la búsqueda por proximidad con índices espaciales y la geocodificación de direcciones.
+    \item \textbf{Reservas} (Go): Núcleo transaccional. Calcula la disponibilidad, crea reservas por hora y por estadía, y gestiona la aprobación del propietario, los códigos de ingreso y egreso, las extensiones, cancelaciones, reseñas, mensajes, tickets de soporte y liquidaciones.
+    \item \textbf{Pagos} (Node.js, Express): Integración con Mercado Pago~\cite{mercadopago}, confirmación de cobros y reembolsos.
+    \item \textbf{Notificaciones} (Python, FastAPI): Consume eventos de dominio, registra la bandeja de cada usuario y envía notificaciones \textit{push} mediante Firebase Cloud Messaging~\cite{firebase}.
+    \item \textbf{Clientes} (React Native, Expo~\cite{reactnative,expo}): La aplicación móvil, con experiencias diferenciadas para cada modo, y el panel de administración, construido con React Native Web.
 \end{itemize}
 
-Los puntos de fricción identificados por la encuesta se incorporaron como decisiones de producto: la llegada con el automóvil del ocupante anterior todavía presente (abordada mediante códigos de egreso confirmados), la incertidumbre sobre cómo ingresar a un espacio privado (abordada mediante instrucciones de acceso en la aplicación vinculadas a cada reserva) y la duda sobre la existencia física del espacio publicado (abordada mediante verificación de identidad del propietario y moderación previa a la publicación).
+Los proveedores externos se aislaron en el servicio que los necesita: Brevo y Twilio para la verificación por correo y SMS~\cite{brevo,twilio}, Nominatim para la geocodificación~\cite{nominatim}, Cloudflare R2 para las imágenes y comprobantes~\cite{cloudflarer2} y Sentry para el seguimiento de errores en todos los componentes~\cite{sentry}. Todos los componentes se empaquetaron en contenedores Docker~\cite{docker}.
 
-\subsection{Validación con un referente de la industria}
+\begin{figure*}[!t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\scriptsize, >=stealth,
+  cli/.style={draw=deepnavy, fill=deepnavy, text=white, rounded corners=3pt, align=center, minimum height=0.95cm, text width=4.6cm},
+  gw/.style={draw=modernteal, fill=modernteal, text=white, rounded corners=3pt, align=center, minimum height=0.85cm, minimum width=15.6cm},
+  svc/.style={draw=deepnavy, fill=white, line width=0.7pt, rounded corners=3pt, align=center, text width=2.62cm, minimum height=2.05cm},
+  bus/.style={draw=modernteal, fill=modernteal!12, rounded corners=3pt, align=center, minimum height=0.6cm, minimum width=15.6cm},
+  ext/.style={draw=midgray, fill=plgray, rounded corners=3pt, align=center, text width=2.62cm, minimum height=0.9cm},
+  sync/.style={<->, draw=deepnavy, line width=0.6pt},
+  async/.style={<->, draw=modernteal, line width=0.6pt, dashed},
+  extl/.style={-, draw=midgray!70!black, line width=0.5pt, dotted}
+]
+\node[cli] (app) at (-3.6,0) {\textbf{Aplicación móvil}\\React Native + Expo\\Conductores y propietarios};
+\node[cli] (adm) at (3.6,0) {\textbf{Panel de administración}\\React Native Web + Expo\\Personal de ParkLink};
+\node[gw] (gw) at (0,-1.6) {\textbf{Puerta de enlace (API Gateway)} --- Python + FastAPI\\Autenticación JWT $\cdot$ Límite de solicitudes $\cdot$ Enrutamiento $\cdot$ WebSocket de notificaciones};
+\draw[sync] (app) -- node[right, font=\tiny]{HTTPS / WSS} (app |- gw.north);
+\draw[sync] (adm) -- node[right, font=\tiny]{HTTPS} (adm |- gw.north);
+\foreach \n/\x/\t in {
+  auth/-6.24/{\textbf{auth-service}\\Python + FastAPI\\[2pt]\textit{PostgreSQL}},
+  park/-3.12/{\textbf{parking-service}\\NestJS + TypeScript\\[2pt]\textit{PostgreSQL + PostGIS}},
+  book/0/{\textbf{booking-service}\\Go\\[2pt]\textit{PostgreSQL}},
+  pay/3.12/{\textbf{payment-service}\\Node.js + Express\\[2pt]\textit{PostgreSQL}},
+  noti/6.24/{\textbf{notifications-}\\[-1pt]\textbf{service}\\Python + FastAPI\\[2pt]\textit{PostgreSQL}}}{
+  \node[svc] (\n) at (\x,-3.75) {\t};
+  \draw[sync] (\n.north |- gw.south) -- (\n.north);
+}
+\node[bus] (bus) at (0,-5.55) {\textbf{RabbitMQ} --- Bus de eventos de dominio (reservas, pagos, notificaciones)};
+\foreach \n in {park,book,pay,noti}{ \draw[async] (\n.south) -- (\n.south |- bus.north); }
+\draw[async] (gw.west) -- ++(-0.35,0) |- (bus.west);
+\foreach \n/\x/\t in {
+  e1/-6.24/{Brevo (correo)\\Twilio (SMS)\\Cloudflare R2},
+  e2/-3.12/{Nominatim\\(geocodificación)\\Cloudflare R2},
+  e3/0/{Cloudflare R2\\(comprobantes)},
+  e4/3.12/{Mercado Pago\\(cobros y\\reembolsos)},
+  e5/6.24/{Firebase Cloud\\Messaging $\cdot$ Brevo}}{
+  \node[ext] (\n) at (\x,-7.05) {\t};
+}
+\foreach \s/\e in {auth/e1,park/e2,book/e3,pay/e4,noti/e5}{
+  \draw[extl] ([xshift=-0.9cm]\s.south) -- ([xshift=-0.9cm]\e.north);
+}
+\node[font=\tiny, anchor=west] at (-7.8,-8.0) {\tikz\draw[sync](0,0)--(0.5,0); HTTP sincrónico \quad \tikz\draw[async](0,0)--(0.5,0); Eventos asincrónicos \quad \tikz\draw[extl](0,0)--(0.5,0); Integración con proveedor externo};
+\end{tikzpicture}}
+\caption{Vista de contenedores de la arquitectura de ParkLink: Clientes, puerta de enlace, microservicios con sus bases de datos, bus de eventos y proveedores externos.}
+\label{fig:arquitectura}
+\end{figure*}
 
-En la última semana de septiembre de 2026, el equipo realizó una entrevista con Miguel Botbol, un referente de la operación comercial de estacionamientos en Buenos Aires, con aproximadamente 70 playas en la ciudad y sus alrededores. La reunión se realizó con el MVP completamente integrado, lo que permitió una demostración en vivo de la experiencia completa del conductor (buscar, reservar y pagar), la experiencia del propietario (publicar, administrar y recibir ganancias) y el panel administrativo.
+\subsection{Decisiones de diseño}
 
-Botbol validó el valor de la plataforma para los operadores comerciales, no solo para los propietarios privados, y confirmó que un canal digital unificado que integre toda la oferta ---privada y comercial, pequeña y grande--- con reserva anticipada y pago integrado representa una necesidad real aún no satisfecha en el mercado. También aportó conocimientos operativos que orientaron la hoja de ruta de trabajo futuro descrita en la Sección~\ref{sec:conclusions}.
+\subsubsection{Disponibilidad y control de concurrencia}
+La disponibilidad de una cochera se calcula como una resta de intervalos: A las franjas publicadas por el propietario, convertidas entre la hora local y la universal, se les sustraen las reservas activas y las fechas bloqueadas. El riesgo principal de esta operación es la condición de carrera entre dos conductores que intentan reservar el mismo lugar al mismo tiempo. Se resolvió serializando la creación de reservas de cada cochera mediante un bloqueo pesimista a nivel de fila (\texttt{SELECT ... FOR UPDATE}) dentro de la transacción de reserva, en la que se verifica que la cantidad de reservas superpuestas sea menor que la capacidad declarada de la cochera. De este modo, una misma cochera admite hasta $N$ reservas simultáneas, donde $N$ es su capacidad, lo que permite incorporar playas comerciales de muchas plazas con el mismo motor que una cochera particular. Mientras el conductor paga, el lugar queda retenido temporalmente, y la retención expira si el pago no se completa.
+
+\subsubsection{Ciclo de vida de una reserva}
+La reserva no se confirma en el momento del pago. Una vez acreditado el cobro, la solicitud pasa al propietario, que debe aceptarla dentro de un plazo; si la rechaza o no responde a tiempo, el dinero se le devuelve automáticamente al conductor. Al confirmarse, el conductor recibe un código de llegada que le comunica al propietario para registrar su ingreso, y recién entonces puede ver las instrucciones privadas de acceso a la cochera. Cada reserva incluye un período de gracia de 15~minutos antes de su inicio y después de su fin, y si el conductor no registra su egreso al vencer la tolerancia se aplica un recargo por permanencia excedida. Las reservas pagas que finalizan sin que el propietario registre el código de llegada retienen el pago al propietario hasta que el personal de la plataforma resuelve el caso desde el panel de administración.
+
+\subsubsection{Pagos asincrónicos e idempotencia}
+Mercado Pago informa cada cambio en el estado de un cobro mediante una notificación HTTP (\textit{webhook}) cuya firma HMAC el servicio de pagos verifica antes de procesarla. Como la aplicación también consulta el estado del pago mientras el conductor espera, un mismo cobro puede informarse por ambas vías; por eso la confirmación de la reserva se diseñó de forma idempotente, de manera que nunca se procese dos veces. Los reembolsos que fallan por causas transitorias se reintentan automáticamente, y los que no pueden completarse quedan a la vista del personal para su resolución manual. El aislamiento de los pagos en un servicio propio evita que las demoras o fallas de la pasarela afecten la búsqueda o el resto de las funciones.
+
+\subsubsection{Comunicación por eventos}
+La comunicación combina HTTP sincrónico, a través de la puerta de enlace y entre servicios cuando se necesita una respuesta inmediata (por ejemplo, el servicio de reservas consulta los horarios y precios vigentes al de cocheras antes de cotizar), con eventos asincrónicos sobre RabbitMQ~\cite{rabbitmq}. Los cambios de estado relevantes de reservas y pagos se publican en un \textit{exchange} compartido; el servicio de notificaciones los consume, descarta los duplicados, genera los avisos y publica a su vez un evento por cada notificación creada, que la puerta de enlace reenvía en tiempo real a la aplicación abierta. Así, una falla en el envío de notificaciones nunca bloquea la operación de reservar o pagar.
+
+\subsubsection{Seguridad e identidad}
+Las contraseñas se almacenan con \textit{bcrypt}, los tokens de acceso JWT duran quince minutos y se renuevan de forma rotativa, y las sesiones pueden revocarse por dispositivo. Los servicios rechazan toda solicitud que no traiga la credencial interna de la puerta de enlace, por lo que no pueden invocarse por fuera de la plataforma aunque su dirección quede expuesta. Toda operación del personal queda registrada con su autor, su fecha y su motivo, y ningún movimiento de dinero que dependa de una decisión humana se realiza fuera del panel de administración.
+
+\subsection{Metodología de desarrollo}
+
+\subsubsection{Marco híbrido por fases}
+El proyecto se extendió entre abril y octubre de 2026 y se gestionó con un enfoque ágil híbrido que combinó prácticas de Scrum y Kanban, adaptado a la naturaleza de cada fase (Tabla~\ref{tab:fases}). Se organizó en trece \textit{sprints} bisemanales. En la primera fase, la cadencia se mantuvo, pero sus resultados fueron entregables de investigación y análisis: El estudio de mercado, la selección de la idea entre cuatro propuestas, la definición del alcance del MVP, la arquitectura preliminar y la identidad de marca. La segunda fase se gobernó plenamente con Scrum, y cada \textit{sprint} cerró con un incremento funcional. Tras el \textit{sprint}~13, el equipo abandonó las iteraciones de duración fija y adoptó un flujo continuo de tipo Kanban para las correcciones, la documentación y la preparación de la defensa.
+
+\begin{table}[!t]
+\centering
+\caption{Fases del proyecto y marco de trabajo aplicado}
+\label{tab:fases}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.9cm} >{\raggedright\arraybackslash}p{1.35cm} >{\raggedright\arraybackslash}p{4.15cm}}
+\toprule
+\textbf{Fase} & \textbf{\textit{Sprints}} & \textbf{Resultado} \\
+\midrule
+1. Propuesta y viabilidad & 1 a 5 (abr.--jun.) & Estudio de mercado, alcance del MVP, arquitectura preliminar y anteproyecto \\
+2. Desarrollo del MVP (Scrum) & 6 a 12 (jul.--sep.) & Incrementos funcionales y sistema integrado \\
+3. Validación y cierre & 13 y Kanban (oct.) & Validación de mercado y legal, ajustes y documentación \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Ceremonias y seguimiento}
+Cada \textit{sprint} comenzó con una planificación en la que las historias de usuario se estimaron de forma consensuada mediante \textit{Planning Poker}, con puntos de historia en escala de Fibonacci; estimar por complejidad y no por horas permitió comparar tareas tan distintas como una pantalla y una regla de negocio del motor de reservas. Al cierre de cada iteración se realizó una revisión, en la que lo terminado se demostró ante los directores del trabajo, y una retrospectiva. El equipo se reunió con los directores con una periodicidad no mayor a dos semanas para validar el alcance y priorizar las funcionalidades del MVP.
+
+\subsubsection{Desarrollo en paralelo guiado por contratos}
+La división en microservicios se trasladó a la organización del equipo: Cada componente tuvo un responsable principal, y los contratos entre servicios (rutas, datos consultados y eventos publicados) se acordaron antes de implementarlos. Thiago F. Baez tuvo a cargo el \textit{frontend}, el diseño UX/UI, la gestión de usuarios, el panel de administración y la puerta de enlace; Santiago Domínguez, el aseguramiento de la calidad y los pagos; Facundo Luzzi, las reservas, las notificaciones, la aplicación móvil y la integración; y Santiago J. Varga, las cocheras y su geolocalización, la documentación, el negocio, la marca y el aseguramiento de la calidad. La aplicación móvil se construyó primero sobre datos simulados, con módulos de acceso a datos que replicaban las firmas de los \textit{endpoints} reales, de modo que conectarla al \textit{backend} no requirió modificar las pantallas, y cada integrante trabajó contra versiones simuladas de los servicios aún no disponibles.
+
+\subsubsection{Repositorios, integración continua y entornos}
+El código se organizó en una organización de GitHub con un repositorio por componente y un repositorio raíz que los integra mediante submódulos y levanta el sistema completo, con una base de datos por servicio y el intermediario de mensajes, con un único comando. Los cambios se incorporaron mediante \textit{pull requests}, que en los servicios de \textit{backend} dispararon un circuito de integración continua en GitHub Actions~\cite{githubactions} con análisis estático, verificación de tipos, compilación y pruebas automatizadas. El sistema se ejecutó en tres modalidades: Local, expuesto a la red local para probarlo desde teléfonos reales, y publicado en internet bajo el dominio del proyecto mediante Cloudflare Tunnel~\cite{cloudflaretunnel}.
+
+\subsection{Estrategia de validación}
+
+La validación se planteó en tres planos. En el técnico, se siguió el enfoque de la pirámide de pruebas: Una base amplia de pruebas unitarias de las reglas de negocio, un nivel intermedio de pruebas de integración de cada servicio con su base de datos y sus dependencias, y un nivel superior de pruebas de punta a punta. Cada integrante escribió las pruebas de sus componentes, y los responsables de calidad definieron los casos de los flujos completos, ejecutaron las pruebas exploratorias y dieron seguimiento a los defectos. En el plano de producto, la propuesta se contrastó con potenciales usuarios mediante una encuesta y, ya con el MVP integrado, con un referente del sector. En el plano legal, se verificó que la operatoria cumpliera la normativa argentina antes de habilitar su uso por personas reales.
+
+%================================================================
+\section{Resultados}\label{sec:resultados}
+%================================================================
+
+\subsection{Producto implementado}
+
+El resultado fue un MVP funcional que resuelve de punta a punta la búsqueda, la reserva, el pago y la operación de cocheras. La Fig.~\ref{fig:app} muestra el recorrido principal en la aplicación móvil. El conductor busca cocheras cerca de una dirección o de su ubicación, en una vista de lista o de mapa, con filtros por precio, distancia, tipo de cochera, tipo de reserva y horario; elige la franja o la estadía y el vehículo, confirma con el resumen de costos y la política de cancelación, y paga con Mercado Pago. El propietario aprueba o rechaza las solicitudes con un toque, consulta el calendario de reservas y sus finanzas, y publica cocheras con precios únicos o diferenciados por tipo de vehículo, horarios, capacidad, instrucciones de acceso y documentación de respaldo. La aplicación ofrece varios idiomas, modo claro y oscuro y distintos tamaños de texto.
+
+\begin{figure*}[!t]
+\centering
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cccccc}
+\includegraphics[width=0.158\textwidth]{mockup-8} &
+\includegraphics[width=0.158\textwidth]{mockup-22} &
+\includegraphics[width=0.158\textwidth]{mockup-25} &
+\includegraphics[width=0.158\textwidth]{mockup-23} &
+\includegraphics[width=0.158\textwidth]{mockup-38} &
+\includegraphics[width=0.158\textwidth]{mockup-10} \\
+\footnotesize (a) Lista & \footnotesize (b) Mapa & \footnotesize (c) Confirmación & \footnotesize (d) Código de llegada & \footnotesize (e) Solicitudes & \footnotesize (f) Publicación \\
+\end{tabular}
+\caption{Aplicación móvil de ParkLink: Búsqueda en lista y en mapa (a, b), confirmación de la reserva (c) y reserva confirmada con su código de llegada (d) en el modo conductor; solicitudes pendientes (e) y publicación de una cochera (f) en el modo propietario.}
+\label{fig:app}
+\end{figure*}
+
+El panel de administración se convirtió en la sala de operaciones de la plataforma. Su pantalla de inicio resume lo que requiere atención (cocheras por revisar, reservas sin verificar, tickets sin responder, denuncias, reembolsos pendientes y liquidaciones por confirmar) junto con métricas de reservas, facturación, cargo de servicio y reembolsos. Desde allí, el personal modera las publicaciones antes de que aparezcan en las búsquedas, resuelve los pagos retenidos, transfiere las ganancias a los propietarios mediante un flujo de liquidación de tres pasos con comprobante, atiende el soporte, oculta reseñas ofensivas, envía avisos y configura el cargo de servicio sin necesidad de publicar una nueva versión de la aplicación. El acceso se limita a cuentas de personal con dos niveles de permisos.
+
+\subsection{Validación técnica}
+
+Al cierre del desarrollo, el sistema contaba con 128 archivos de pruebas automatizadas, distribuidos como muestra la Tabla~\ref{tab:pruebas}. La distribución refleja dónde se concentra el riesgo: El servicio de reservas, que contiene la mayor parte de las reglas de negocio, reunió el 56\% de los archivos. Los casos críticos verificados de forma automatizada incluyeron el cálculo de disponibilidad en bordes de horarios, cambios de día y conversión horaria; la imposibilidad de sobre-reservar ante solicitudes simultáneas y la expiración de la retención temporal; la generación y validación de los códigos de ingreso y egreso y el cálculo del recargo por permanencia excedida; la verificación de firmas de Mercado Pago, la confirmación idempotente y los reintentos de reembolsos; la deduplicación de eventos y la tolerancia a mensajes malformados; y el rechazo, en la puerta de enlace, de solicitudes sin credenciales o con encabezados internos falsificados. Todas estas pruebas se ejecutaron ante cada cambio en el circuito de integración continua.
+
+\begin{table}[!t]
+\centering
+\caption{Archivos de pruebas automatizadas por componente}
+\label{tab:pruebas}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l r}
+\toprule
+\textbf{Componente} & \textbf{Marco de pruebas} & \textbf{Archivos} \\
+\midrule
+Reservas & Go \textit{testing}, \textit{testify}, \textit{gomock} & 72 \\
+Notificaciones & \textit{pytest} & 17 \\
+Autenticación & \textit{pytest} & 10 \\
+Aplicación móvil & \textit{Jest} & 9 \\
+Cocheras & \textit{Jest} & 7 \\
+Pagos & \textit{Jest}, \textit{supertest} & 7 \\
+Puerta de enlace & \textit{pytest} & 6 \\
+\midrule
+\textbf{Total} & & \textbf{128} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Sobre el sistema integrado se ejecutó un \textit{script} de punta a punta que crea un propietario, publica una cochera con horario y precio, crea un conductor, consulta la disponibilidad, genera una reserva y verifica el resultado de cada paso, lo que permitió detectar regresiones después de cada integración. Las pruebas manuales se realizaron sobre teléfonos Android e iOS reales para verificar lo que un emulador no reproduce con fidelidad: La recepción de notificaciones \textit{push}, la ubicación del dispositivo y la redirección al pago de Mercado Pago y el regreso a la aplicación. Los pagos se probaron en el entorno de pruebas de la pasarela, sin movimiento de dinero real, y la búsqueda se evaluó con un generador de datos de demostración con cocheras distribuidas en distintos barrios de CABA. El recorrido completo de búsqueda, reserva, pago y notificación se verificó sin fallas de concurrencia.
+
+\subsection{Riesgos técnicos materializados}
+
+La validación también expuso riesgos que obligaron a revisar decisiones. El más significativo fue de modelo de dominio: El motor de reservas original impedía la superposición de horarios con una restricción de exclusión a nivel de base de datos, que asumía cocheras de un solo lugar y rechazaba reservas válidas en playas comerciales. Se reemplazó por la verificación de capacidad bajo bloqueo pesimista descripta en la Sección~\ref{sec:propuesta}. La dependencia de servicios externos se materializó en las restricciones de la cuenta de prueba de Twilio, en los requisitos para compilar notificaciones \textit{push} en iOS y en los límites de frecuencia de Nominatim, y se mitigó con implementaciones simuladas de cada proveedor en los entornos de desarrollo y con la habilitación temprana de las credenciales productivas. Los \textit{webhooks} de pago, que la pasarela solo envía a direcciones públicas, se probaron mediante túneles seguros. Por último, el entorno distribuido presentó condiciones de carrera en el arranque de los contenedores, resueltas con controles de salud y dependencias condicionales, y fallas de los módulos nativos de notificaciones en el cliente genérico de Expo, resueltas con compilaciones de desarrollo propias mediante EAS~\cite{eas}.
+
+Un riesgo no previsto fue de alcance: El diseño inicial solo contemplaba la aplicación para conductores y propietarios, y al acercarse las pruebas se evidenció que una plataforma de dos lados no puede operar con usuarios reales sin herramientas para moderar publicaciones, resolver disputas y liquidar ganancias. Esto motivó la incorporación del panel de administración al MVP.
+
+\subsection{Validación de mercado}
+
+A principios de septiembre de 2026 se realizó una encuesta difundida por Instagram entre personas de CABA, que obtuvo 180 respuestas. La mayoría correspondió a conductores frecuentes, aunque también participó un grupo numeroso de personas con cocheras libres, lo que permitió relevar ambos lados del mercado. La posibilidad de salir con el lugar ya reservado y pagado fue el aspecto mejor valorado, con calificaciones de 4 o 5 sobre 5 en la gran mayoría de las respuestas, y alrededor del 70\% de los encuestados indicó que usaría la aplicación de forma regular, con frecuencias que van desde algunas veces al mes hasta todos los días. Los motivos más elegidos fueron el precio, conocido de antemano y comparable entre cocheras; la cercanía al destino; y el cuidado del vehículo frente a dejarlo en la calle. El rango de precio que los conductores declararon dispuestos a pagar resultó inferior al promedio de mercado usado en las proyecciones económicas, lo que confirma que el precio es el principal factor de decisión y refuerza la importancia de incorporar cocheras particulares capaces de competir con las playas comerciales.
+
+La encuesta permitió además identificar las fricciones que podían frenar la adopción. Cada una se trató como un riesgo de producto y se resolvió con una decisión implementada antes del lanzamiento, como resume la Tabla~\ref{tab:fricciones}.
+
+\begin{table}[!t]
+\centering
+\caption{Fricciones detectadas en la validación y decisiones implementadas}
+\label{tab:fricciones}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.35cm} >{\raggedright\arraybackslash}p{5.3cm}}
+\toprule
+\textbf{Fricción} & \textbf{Decisión implementada} \\
+\midrule
+Cochera ocupada por el conductor anterior & Período de gracia de 15 min entre turnos, código de egreso y recargo automático por permanencia excedida \\
+\rowcolor{plgray}
+Cómo ingresar a una cochera privada & Instrucciones de acceso privadas, visibles solo con la reserva aceptada \\
+Cocheras inexistentes o fraudulentas & Moderación previa con documentación de respaldo y verificación de correo y teléfono de todos los usuarios \\
+\rowcolor{plgray}
+Reglamentos de copropiedad & Declaración del propietario sobre su derecho a ofrecer la cochera en los Términos y Condiciones \\
+Propietario que no quiere estar presente & Aprobación con un toque, reembolso automático si no responde, acceso sin su presencia y liquidación periódica \\
+\rowcolor{plgray}
+Responsabilidad ante daños & Marco de responsabilidades en los Términos y Condiciones, mensajería y tickets de soporte por reserva \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Validación con un referente del sector}
+
+En la última semana de septiembre, ya con el MVP integrado, el equipo se reunió con Miguel Botbol, dueño de Parking Work S.R.L. y de otras empresas del rubro que suman cerca de 70 cocheras en CABA y el conurbano bonaerense. Se le demostraron en vivo la experiencia del conductor, la del propietario y el panel de administración. El encuentro ratificó que la plataforma resulta valiosa no solo para los propietarios particulares, sino también para los operadores comerciales, y que un canal digital que reúna toda la oferta, comercial y particular, con reserva anticipada y pago integrado, responde a una necesidad que el mercado no cubre. Sus aportes sobre la operación cotidiana de las playas orientaron las líneas de trabajo futuro.
 
 \subsection{Validación legal}
 
-Antes de habilitar el uso para usuarios reales, se redactaron y publicaron los términos de servicio y la política de privacidad de la plataforma. Los términos de servicio regulan reservas, pagos, cancelaciones, liquidaciones a propietarios y responsabilidades; exigen que los usuarios sean mayores de edad y obligan a los propietarios a declarar su derecho a publicar el espacio. Se preservan explícitamente los derechos de los consumidores garantizados por la Ley argentina 24.240. La política de privacidad se redactó de conformidad con la Ley 25.326 de Protección de Datos Personales, detallando qué datos se recopilan, por qué, con quién se comparten, durante cuánto tiempo se conservan y cómo pueden los usuarios ejercer sus derechos de acceso, rectificación y supresión. La aceptación de ambos documentos es un paso obligatorio del flujo de registro.
+Antes de habilitar el uso por personas reales se redactaron y publicaron en el sitio del proyecto los Términos y Condiciones y la Política de Privacidad. Los Términos regulan reservas, pagos, cancelaciones, liquidaciones y responsabilidades, exigen la mayoría de edad y la declaración del propietario sobre su derecho a ofrecer la cochera, y preservan los derechos que la Ley 24.240 de Defensa del Consumidor~\cite{ley24240} reconoce a los usuarios. La Política de Privacidad se elaboró conforme a la Ley 25.326 de Protección de los Datos Personales~\cite{ley25326} y detalla qué datos se recolectan, con qué finalidad, con quién se comparten, cuánto tiempo se conservan y cómo ejercer los derechos de acceso, rectificación y supresión. Su aceptación es un paso obligatorio del registro, y la aplicación permite consultarlos en todo momento y eliminar la propia cuenta.
 
-\subsection{Resultado consolidado}
+\subsection{Viabilidad económica}
 
-El proceso de validación concluyó con los siguientes resultados confirmados:
-\begin{enumerate}
-  \item Un MVP funcional con todos los flujos críticos cubiertos por 128 archivos de pruebas automatizadas ejecutados en cada cambio de código, y el recorrido completo buscar--reservar--pagar--notificar verificado en dispositivos reales y redes distribuidas sin fallas de concurrencia.
-  \item Demanda de mercado confirmada en ambos lados de la plataforma, con una intención de uso habitual del 70\% y una identificación clara de los puntos de fricción resueltos en el producto antes del lanzamiento.
-  \item Aval de un experto del dominio que valida el valor para operadores comerciales y el potencial de transformación del estacionamiento urbano.
-  \item Cumplimiento legal integral de la normativa argentina de protección del consumidor y privacidad de datos.
-\end{enumerate}
+El modelo económico se construyó sobre un mercado potencial de entre 180.000 y 270.000 búsquedas diarias de estacionamiento en CABA, equivalente al 10--15\% de los vehículos que circulan por la Ciudad. Con un ticket promedio de \$20.000~ARS por reserva, correspondiente a una estadía de dos horas y media, el cargo de servicio del 8\% genera unos USD~1,07 por reserva, a un tipo de cambio de referencia de \$1.500~ARS por dólar. Con una adopción del 0,28\% del mercado en el segundo año (600 reservas diarias), la operación alcanza el punto de equilibrio con un resultado positivo de USD~109.200, que permite recuperar la inversión inicial estimada de USD~69.000. En el largo plazo, con una adopción del 0,91\% (1.966 reservas diarias), la utilidad neta anual proyectada ronda los USD~600.000.
 
 %================================================================
-\section{Conclusiones y trabajo futuro}\label{sec:conclusions}
+\section{Conclusiones}\label{sec:conclusiones}
 %================================================================
 
 \subsection{Conclusiones}
 
-Este trabajo presentó ParkLink, un mercado digital bilateral que aborda la ineficiencia persistente de la búsqueda de estacionamiento urbano en Buenos Aires. La contribución central es arquitectónica y conceptual: al combinar en una única plataforma la agregación georreferenciada de la oferta, la reserva anticipada, el pago integrado y el acceso colaborativo a espacios de propiedad privada, ParkLink transforma la búsqueda de estacionamiento de un problema secuencial y ciego de detención óptima en una elección simultánea completamente informada.
+Este trabajo presentó ParkLink, un mercado digital de dos lados que aborda la ineficiencia de la búsqueda de estacionamiento en Buenos Aires. Su aporte central es haber transformado un problema de parada óptima con información incompleta en una elección simultánea entre opciones visibles, comparables y reservables antes de salir, integrando en una única plataforma la búsqueda georreferenciada, la disponibilidad real, el pago y el acceso a la oferta de propietarios particulares, combinación que ningún actor del mercado local ofrecía.
 
-Desde el punto de vista técnico, la plataforma demuestra que una arquitectura de microservicios independientes con una selección políglota de tecnologías, asincronía orientada a eventos y una estrategia de API basada en contratos no solo es viable, sino también prácticamente superior para un proyecto de este alcance y tamaño de equipo: permitió el desarrollo paralelo de ocho componentes, aisló fallas y habilitó entregas independientes sin dependencias bloqueantes.
+En el plano técnico, la arquitectura de microservicios políglota, con una base de datos por servicio, comunicación por eventos y contratos acordados de antemano, permitió que cuatro personas desarrollaran ocho componentes en paralelo sin bloqueos y que las fallas de un componente secundario no afectaran la operación principal. El motor de reservas resolvió la concurrencia sin sobre-reserva y admitió tanto cocheras particulares como playas comerciales de capacidad múltiple, y la integración de pagos se volvió confiable gracias a la verificación de firmas y al procesamiento idempotente. La metodología híbrida, aplicada de forma distinta en cada fase, ofreció la previsibilidad necesaria a lo largo de trece \textit{sprints} y unas 1.600 horas de trabajo del equipo. La validación confirmó la corrección técnica del sistema, el interés de ambos lados del mercado, el valor de la propuesta para los operadores comerciales y su encuadre en la normativa vigente.
 
-La metodología híbrida Scrum--Kanban, organizada en trece sprints de dos semanas y acompañada por revisiones quincenales de los tutores, proporcionó estructura suficiente para mantener la previsibilidad durante un horizonte de seis meses y, al mismo tiempo, adaptarse a los requisitos cambiantes de un mercado bilateral. El esfuerzo acumulado ascendió aproximadamente a 1.600 horas de equipo.
+El proyecto integró, además, conocimientos de toda la carrera de Ingeniería en Informática: Los algoritmos de intervalos y las transacciones de bases de datos en el motor de disponibilidad, la programación concurrente en el control de la sobre-reserva, los sistemas distribuidos en la comunicación por eventos y su idempotencia, la ingeniería de software en la metodología y la estrategia de pruebas, y la formación en empresas de base tecnológica en el análisis de mercado y el modelo de ingresos.
 
-La validación confirmó las cuatro hipótesis centrales: corrección técnica bajo carga concurrente, viabilidad comercial mediante una señal de intención de uso habitual del 70\%, alineación con la industria a través del aval de un experto y factibilidad legal bajo la normativa argentina vigente.
+\subsection{Lecciones aprendidas}
+
+Tres lecciones resultaron especialmente valiosas. Primero, acordar los contratos entre servicios antes de implementarlos y trabajar contra versiones simuladas fue lo que hizo posible el desarrollo en paralelo. Segundo, una plataforma de dos lados necesita desde el inicio herramientas de operación, como la moderación, la resolución de disputas y las liquidaciones, que no forman parte de la experiencia visible del usuario pero sin las cuales no puede funcionar. Tercero, contrastar el producto temprano con usuarios y con un referente del sector convirtió fricciones que podían frenar la adopción en decisiones concretas de diseño.
 
 \subsection{Trabajo futuro}
 
-Tres líneas estratégicas permiten extender ParkLink más allá del MVP actual:
+Quedaron fuera del alcance del MVP, de forma deliberada, la detección automática de la ocupación y la predicción de la demanda. La primera línea de trabajo consiste en reemplazar la disponibilidad declarada por sensado en tiempo real, mediante visión computacional, reconocimiento automático de patentes para el ingreso sin códigos y sensores IoT comunicados por protocolos livianos como MQTT o LoRaWAN, junto con modelos predictivos de demanda que permitan tarifas dinámicas. La segunda, surgida del encuentro con el referente del sector, es adaptar el motor de reservas y el panel de administración a la operatoria de las grandes playas: Cupos mixtos entre rotativos y abonados mensuales, asignación de pisos y sectores, reglas de precios complejas e integración con las barreras de acceso existentes. La tercera es la expansión a otras ciudades de América Latina y de Estados Unidos, con soporte multimoneda, pasarelas de pago internacionales y adecuación a normas de protección de datos como el RGPD y la CCPA.
 
-\paragraph{Detección de ocupación mediante IoT y visión computacional.}
-Reemplazar la disponibilidad basada en horarios declarados manualmente por la detección física de ocupación en tiempo real mediante visión computacional de aprendizaje profundo, reconocimiento automático de matrículas (LPR/ALPR) para un ingreso sin fricciones y sensores IoT ultrasónicos o geomagnéticos de bajo consumo para espacios subterráneos o estrechos, comunicados mediante MQTT/LoRaWAN. Los modelos predictivos de demanda entrenados con ocupación histórica, eventos locales y patrones climáticos permitirían sugerir precios dinámicos.
-
-\paragraph{Integración de operadores comerciales.}
-Adaptar el motor de reservas y el sistema administrativo a la complejidad operativa de las playas grandes: gestión de inventario mixto (rotación por hora frente a titulares de abonos mensuales), asignación de pisos y sectores, informes de auditoría financiera e integración directa con los sistemas electromecánicos de barreras existentes.
-
-\paragraph{Expansión regional e internacional.}
-Desplegar la plataforma en ciudades latinoamericanas con congestión urbana comparable o mayor (São Paulo, Ciudad de México, Bogotá, Santiago y Lima) y en ciudades estadounidenses de alta demanda (Miami, Los Ángeles, Nueva York y Chicago), con soporte completo de internacionalización (español, inglés y portugués), procesamiento de pagos multimoneda mediante Stripe y PayPal, y cumplimiento normativo del RGPD y de la CCPA/CPRA de California.
-
-Estas líneas consolidan la trayectoria de ParkLink desde una plataforma colaborativa de reservas de estacionamiento hacia una infraestructura integral e inteligente de movilidad urbana.
-
-%================================================================
-% References
 %================================================================
 \begin{thebibliography}{99}
 
-\bibitem{ferguson1989}
-Ferguson, T.S.: Who solved the secretary problem? Statistical Science \textbf{4}(3), 282--289 (1989)
+\bibitem{superauto2024}
+SuperAuto, ``¿Cuántos automóviles ingresan diariamente a Capital Federal?'' 2024. [En línea]. Disponible: \url{https://superauto.com.ar/automoviles-que-ingresan-a-capital-federal-por-dia/}
 
-\bibitem{macqueen1960}
-MacQueen, J., Miller, R.G.: Optimal persistence policies. Operations Research \textbf{8}(3), 362--380 (1960)
+\bibitem{aboy2025movilidad}
+R. Aboy, ``La movilidad porteña: Entre aciertos pioneros y el caos diario,'' 2025. [En línea]. Disponible: \url{https://www.iciudad.org.ar/9702-la-movilidad-portena-entre-aciertos-pioneros-y-el-caos-diario/}
+
+\bibitem{ferguson1989}
+T.~S. Ferguson, ``Who solved the secretary problem?'' \textit{Statistical Science}, vol.~4, no.~3, pp.~282--289, 1989.
 
 \bibitem{christian2016}
-Christian, B., Griffiths, T.: Algorithms to Live By: The Computer Science of Human Decisions. Macmillan, New York (2016)
+B. Christian y T. Griffiths, \textit{Algorithms to Live By: The Computer Science of Human Decisions}. New York, NY, USA: Henry Holt and Company, 2016.
+
+\bibitem{macqueen1960}
+J. MacQueen y R.~G. Miller, Jr., ``Optimal persistence policies,'' \textit{Operations Research}, vol.~8, no.~3, pp.~362--380, 1960.
+
+\bibitem{fergusonstopping}
+T.~S. Ferguson, \textit{Optimal Stopping and Applications}, cap.~2, sec.~2.5: ``The parking problem.'' Mathematics Department, University of California, Los Angeles. [En línea]. Disponible: \url{https://www.math.ucla.edu/~tom/Stopping/Contents.html}
 
 \bibitem{tamaki1988}
-Tamaki, M.: A secretary problem with uncertain employment. Journal of Applied Probability \textbf{25}(2), 360--366 (1988)
+M. Tamaki, ``Optimal stopping in the parking problem with U-turn,'' \textit{Journal of Applied Probability}, vol.~25, no.~2, pp.~363--374, 1988.
+
+\bibitem{infobae_salarios_2026}
+Infobae, ``Provincias líderes, brecha salarial y futuro del empleo: El mapa económico de la Argentina,'' 2026. [En línea]. Disponible: \url{https://www.infobae.com/economia/2026/05/03/provincias-lideres-brecha-salarial-y-futuro-del-empleo-el-mapa-economico-de-la-argentina-segun-6-indicadores-clave/}
+
+\bibitem{economista_nafta_2026}
+El Economista, ``Precio de la nafta hoy: Cuánto cuesta el litro en marzo de 2026,'' 2026. [En línea]. Disponible: \url{https://eleconomista.com.ar/energia/precio-nafta-hoy-cuanto-cuesta-litro-marzo-2026-n93548}
+
+\bibitem{infobae_multas_2026}
+Infobae, ``Aumentaron las multas de tránsito en la Ciudad de Buenos Aires: El ranking de las infracciones más caras,'' 2026. [En línea]. Disponible: \url{https://www.infobae.com/sociedad/2026/03/07/aumentaron-las-multas-de-transito-en-la-ciudad-de-buenos-aires-el-ranking-de-las-infracciones-mas-caras/}
+
+\bibitem{iprofesional2026cocheras}
+R. Ramallo, ``Cuánto cuesta estacionar en CABA: Hay zonas donde cobran hasta \$20.000 por hora y una cochera supera los \$300.000 por mes,'' \textit{iProfesional}, 6 jul. 2026. [En línea]. Disponible: \url{https://www.iprofesional.com/autos/459287-cuanto-cuesta-estacionar-en-caba-hay-zonas-donde-cobran-hasta-20000-por-hora}
+
+\bibitem{shoup2005}
+D.~C. Shoup, \textit{The High Cost of Free Parking}. Chicago, IL, USA: Planners Press, American Planning Association, 2005.
+
+\bibitem{shoup2006}
+D.~C. Shoup, ``Cruising for parking,'' \textit{Transport Policy}, vol.~13, no.~6, pp.~479--486, 2006.
 
 \bibitem{blinkay}
-Blinkay: Estacionamiento medido en Argentina. \url{https://www.blinkay.com} (2026)
-
-\bibitem{spothero}
-SpotHero: Find and reserve parking online. \url{https://spothero.com} (2026)
-
-\bibitem{easypark}
-EasyPark Group: Smart parking solutions. \url{https://easyparkgroup.com} (2026)
+Blinkay, ``Blinkay: Estacionamiento medido en Argentina,'' 2026. [En línea]. Disponible: \url{https://www.blinkay.com}
 
 \bibitem{waze}
-Waze: Free community-based GPS navigation app. \url{https://www.waze.com} (2026)
+Waze, ``Waze: Free community-based GPS navigation app,'' 2026. [En línea]. Disponible: \url{https://www.waze.com}
 
 \bibitem{googlemaps}
-Google LLC: Google Maps. \url{https://maps.google.com} (2026)
+Google LLC, ``Google Maps,'' 2026. [En línea]. Disponible: \url{https://maps.google.com}
 
 \bibitem{mercadolibre}
-Mercado Libre: Plataforma de compraventa online. \url{https://www.mercadolibre.com.ar} (2026)
+Mercado Libre, ``Mercado Libre: Plataforma de compraventa online,'' 2026. [En línea]. Disponible: \url{https://www.mercadolibre.com.ar}
 
-\bibitem{superauto2024}
-SuperAuto: ¿Cuántos automóviles ingresan diariamente a Capital Federal? \url{https://superauto.com.ar} (2024)
+\bibitem{spothero}
+SpotHero, ``SpotHero: Find and reserve parking online,'' 2026. [En línea]. Disponible: \url{https://spothero.com}
 
-\bibitem{reactnative}
-Meta Open Source: React Native. \url{https://reactnative.dev} (2026)
+\bibitem{easypark}
+EasyPark Group, ``EasyPark: Smart parking solutions,'' 2026. [En línea]. Disponible: \url{https://easyparkgroup.com}
 
-\bibitem{postgresql}
-The PostgreSQL Global Development Group: PostgreSQL 16. \url{https://www.postgresql.org} (2026)
-
-\bibitem{postgis}
-PostGIS Project: PostGIS --- Spatial and Geographic Objects for PostgreSQL. \url{https://postgis.net} (2026)
-
-\bibitem{rabbitmq}
-Broadcom: RabbitMQ --- Open Source Message Broker. \url{https://www.rabbitmq.com} (2026)
+\bibitem{mercadopago}
+Mercado Pago, ``Mercado Pago Developers: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://www.mercadopago.com.ar/developers}
 
 \bibitem{firebase}
-Google LLC: Firebase Cloud Messaging. \url{https://firebase.google.com} (2026)
+Google LLC, ``Firebase Cloud Messaging: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://firebase.google.com/docs/cloud-messaging}
+
+\bibitem{reactnative}
+Meta Open Source, ``React Native,'' 2026. [En línea]. Disponible: \url{https://reactnative.dev}
+
+\bibitem{expo}
+Expo, ``Expo: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://docs.expo.dev}
+
+\bibitem{brevo}
+Brevo, ``Brevo: Documentación para desarrolladores,'' 2026. [En línea]. Disponible: \url{https://developers.brevo.com}
+
+\bibitem{twilio}
+Twilio Inc., ``Twilio Programmable Messaging: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://www.twilio.com/docs/messaging}
+
+\bibitem{nominatim}
+OpenStreetMap Foundation, ``Nominatim: Geocodificación sobre datos de OpenStreetMap,'' 2026. [En línea]. Disponible: \url{https://nominatim.org}
+
+\bibitem{cloudflarer2}
+Cloudflare, Inc., ``Cloudflare R2: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://developers.cloudflare.com/r2/}
+
+\bibitem{sentry}
+Functional Software, Inc., ``Sentry: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://docs.sentry.io}
+
+\bibitem{docker}
+Docker, Inc., ``Docker: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://docs.docker.com}
+
+\bibitem{rabbitmq}
+Broadcom Inc., ``RabbitMQ: Reliable messaging and streaming broker,'' 2026. [En línea]. Disponible: \url{https://www.rabbitmq.com}
+
+\bibitem{githubactions}
+GitHub, Inc., ``GitHub Actions: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://docs.github.com/actions}
+
+\bibitem{cloudflaretunnel}
+Cloudflare, Inc., ``Cloudflare Tunnel: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/}
+
+\bibitem{eas}
+Expo, ``EAS Build: Expo Application Services,'' 2026. [En línea]. Disponible: \url{https://docs.expo.dev/build/introduction/}
+
+\bibitem{ley24240}
+Honorable Congreso de la Nación Argentina, ``Ley N.º 24.240 de Defensa del Consumidor,'' B.O. 15/10/1993. [En línea]. Disponible: \url{https://servicios.infoleg.gob.ar/infolegInternet/anexos/0-4999/638/texact.htm}
+
+\bibitem{ley25326}
+Honorable Congreso de la Nación Argentina, ``Ley N.º 25.326 de Protección de los Datos Personales,'' B.O. 02/11/2000. [En línea]. Disponible: \url{https://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/64790/norma.htm}
 
 \end{thebibliography}
 
