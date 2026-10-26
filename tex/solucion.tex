@@ -1,12 +1,291 @@
 \section{Solución implementada}\label{sec:solucion}
 
-Se propone el desarrollo de una plataforma web y móvil integral que actúe como un ecosistema transaccional y de geolocalización. Para asegurar la factibilidad técnica y respetar las restricciones de recursos humanos y temporales de la carrera, el alcance del Producto Mínimo Viable (MVP) se estructurará de forma modular, priorizando la carga manual y la reserva programada.
+% --- Macros locales para las figuras de esta sección ---
+\providecommand{\plmockup}[3][0.31]{%
+  \begin{minipage}[t]{#1\textwidth}\centering
+    \includegraphics[width=\linewidth]{img/mockups/mockup-#2}\\[3pt]
+    {\scriptsize #3}
+  \end{minipage}}
+\providecommand{\plpanel}[4][1]{%
+  \begin{figure}[!htbp]
+    \centering
+    \fcolorbox{midgray}{white}{\includegraphics[width=\dimexpr#1\textwidth-2\fboxsep-2\fboxrule\relax]{img/backoffice/#2}}
+    \caption{Panel de administración: #3}
+    \label{#4}
+  \end{figure}}
+% Par de capturas del panel, una sobre otra: [ancho]{archivo a}{epígrafe a}{archivo b}{epígrafe b}{epígrafe}{etiqueta}
+\providecommand{\plpar}[7][0.7]{%
+  \begin{figure}[!htbp]
+    \centering
+    \fcolorbox{midgray}{white}{\includegraphics[width=\dimexpr#1\textwidth-2\fboxsep-2\fboxrule\relax]{img/backoffice/#2}}\\[2pt]
+    {\scriptsize (a) #3}\\[8pt]
+    \fcolorbox{midgray}{white}{\includegraphics[width=\dimexpr#1\textwidth-2\fboxsep-2\fboxrule\relax]{img/backoffice/#4}}\\[2pt]
+    {\scriptsize (b) #5}
+    \caption{Panel de administración: #6}
+    \label{#7}
+  \end{figure}}
+
+ParkLink se materializó como un ecosistema de software compuesto por una aplicación móvil para conductores y propietarios, un panel web de administración para el personal de la plataforma, un sitio web público y un conjunto de microservicios que sostienen la lógica de negocio. En esta sección se presenta, en primer lugar, la solución desde la perspectiva de quienes la utilizan, recorriendo las pantallas principales de cada experiencia, y luego su arquitectura técnica y los atributos de calidad que guiaron su diseño.
+
+\subsection{Descripción general y alcance}
+
+La solución se compone de cuatro piezas que se comunican entre sí a través de una única puerta de enlace:
+
+\begin{itemize}
+    \item \textbf{Aplicación móvil:} Disponible para Android e iOS, es el canal principal de uso de la plataforma. Una misma cuenta puede utilizarse en modo conductor, para buscar, reservar y pagar cocheras, o en modo propietario, para publicarlas, gestionar sus reservas y cobrar.
+    \item \textbf{Panel de administración (\textit{backoffice}):} Aplicación web de uso interno, desde la cual el personal de ParkLink opera la plataforma: Atiende a los usuarios, revisa las publicaciones, gestiona las liquidaciones y los reembolsos y responde los pedidos de soporte.
+    \item \textbf{Sitio web:} Presenta el producto a conductores y propietarios y publica la documentación legal de la plataforma.
+    \item \textbf{\textit{Backend} de microservicios:} Conjunto de servicios independientes que resuelven la autenticación, la gestión de cocheras, las reservas, los pagos y las notificaciones, descripto en la Sección~\ref{sec:microservicios}.
+\end{itemize}
+
+Las interfaces respetan la identidad visual de la marca, basada en el azul marino profundo y el verde azulado definidos en el \hyperref[anexo:colorimetria]{Anexo 2}, y ofrecen modo claro y oscuro, distintos tamaños de texto y soporte para varios idiomas.
+
+\subsection{Aplicación móvil}
+
+\subsubsection{Registro y cuenta única con dos modos de uso}
+
+El registro se realiza mediante un asistente de tres pasos. En los dos primeros, el usuario verifica su correo electrónico y su número de teléfono con un código de seis dígitos; en el último, completa sus datos personales y define su contraseña, y acepta los Términos y Condiciones y la Política de Privacidad. La verificación de ambos canales antes de crear la cuenta garantiza que todas las personas que operan en la plataforma tengan una identidad comprobada.
+
+Una de las decisiones centrales del diseño fue que conductores y propietarios no necesiten cuentas separadas. Al terminar el registro, la aplicación pregunta cómo se la va a utilizar (como conductor, como propietario o de ambas formas) y muestra la experiencia correspondiente. La elección no es definitiva: Desde el perfil, el usuario puede cambiar de modo en cualquier momento, de manera que una misma persona puede estacionar su auto durante la semana y alquilar su propia cochera cuando no la usa. Desde el perfil se gestionan también los vehículos, el idioma, el tema visual, el tamaño del texto y los documentos legales.
+
+\begin{figure}[H]
+\centering
+\plmockup{36}{Registro: Datos personales}\hfill
+\plmockup{37}{Elección del modo de uso}\hfill
+\plmockup{28}{Perfil y cambio de modo}
+\caption{Registro y cuenta única con modos conductor y propietario.}
+\label{fig:app_cuenta}
+\end{figure}
+
+\subsubsection{Modo conductor}
+
+\paragraph{Búsqueda de cocheras.} La pantalla principal del conductor permite buscar cocheras cerca de una dirección o de su ubicación actual, y alternar entre una vista de lista y una vista de mapa. En la lista, cada cochera muestra su foto, su precio por hora, su ubicación, su calificación promedio y la distancia; en el mapa, las cocheras se representan con su precio y se agrupan cuando hay muchas cercanas entre sí. Los filtros permiten acotar los resultados por precio, distancia, tipo de cochera (cubierta o descubierta), tipo de reserva (por hora o por estadía) y fecha y horario necesitados, y las cocheras pueden guardarse como favoritas. De este modo, el conductor ve y compara toda la oferta disponible antes de decidir, lo que responde directamente al problema planteado en la Sección~\ref{sec:problema}.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{8}{Búsqueda en vista de lista}\hspace{0.06\textwidth}
+\plmockup[0.4]{22}{Búsqueda en vista de mapa}
+\caption{Búsqueda de cocheras del conductor.}
+\label{fig:app_busqueda}
+\end{figure}
+
+\paragraph{Reserva y pago.} Al elegir una cochera, el conductor consulta su disponibilidad real, selecciona la franja horaria (o una estadía por días, semanas o meses) y el vehículo con el que va a llegar, y confirma la reserva viendo el resumen de costos y la política de cancelación. El pago se realiza a través de Mercado Pago. Una vez acreditado, la solicitud pasa al propietario, que debe aceptarla dentro de un plazo determinado; si no responde a tiempo o la rechaza, el dinero se le devuelve automáticamente al conductor.
+
+Una vez confirmada, la reserva muestra todos sus datos, el comprobante descargable y un \textbf{código de llegada} que el conductor le comunica al propietario al llegar, con el que se registra su ingreso. Las instrucciones privadas para ingresar a la cochera solo se le muestran al conductor cuando su reserva fue aceptada.
+
+\begin{figure}[H]
+\centering
+\plmockup{25}{Confirmación de la reserva}\hfill
+\plmockup{26}{Pago recibido y estado}\hfill
+\plmockup{23}{Detalle con código de llegada}
+\caption{Flujo de reserva y pago del conductor.}
+\label{fig:app_reserva}
+\end{figure}
+
+\paragraph{Comunicación, reseñas y confianza.} Cada reserva cuenta con un canal de mensajes entre el conductor y el propietario, y con la posibilidad de abrir un ticket de soporte ante cualquier inconveniente. Al finalizar la estadía, ambas partes se califican mutuamente, y esas calificaciones quedan visibles en el perfil público de cada usuario, lo que permite conocer la reputación de la otra parte antes de concretar una reserva.
+
+\begin{figure}[H]
+\centering
+\plmockup{13}{Mensajes de una reserva}\hfill
+\plmockup{29}{Calificación de la estadía}\hfill
+\plmockup{15}{Perfil público con reseñas}
+\caption{Comunicación y reseñas entre conductores y propietarios.}
+\label{fig:app_confianza}
+\end{figure}
+
+\paragraph{Notificaciones.} La bandeja de notificaciones reúne los avisos de ambos modos de uso, como recordatorios de inicio de una reserva, confirmaciones, solicitudes y pedidos de calificación. Estos avisos llegan además como notificaciones \textit{push}, aun con la aplicación cerrada, y se actualizan en tiempo real mientras está abierta, de modo que el usuario se entera al instante de cualquier cambio en sus reservas.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{19}{Bandeja de notificaciones}
+\caption{Bandeja de notificaciones.}
+\label{fig:app_notificaciones}
+\end{figure}
+
+\paragraph{Vehículos.} El conductor registra sus vehículos con su marca, su modelo, su patente y su tipo (auto, SUV, \textit{pick-up}, utilitario, moto o bicicleta), y elige con cuál va a llegar al momento de reservar. Esto le permite al propietario saber de antemano qué vehículo va a ingresar a su cochera, y al conductor encontrar las cocheras que admiten su tipo de vehículo, con el precio que corresponde a cada uno.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{20}{Vehículos del conductor}\hspace{0.06\textwidth}
+\plmockup[0.4]{31}{Alta de un vehículo}
+\caption{Gestión de los vehículos del conductor.}
+\label{fig:app_vehiculos}
+\end{figure}
+
+\subsubsection{Modo propietario}
+
+\paragraph{Gestión diaria y calendario.} La pantalla de inicio del propietario resume la actividad del día: Las solicitudes de reserva pendientes, con el plazo para responderlas y el monto que va a recibir, que puede aprobar o rechazar con un toque, junto con las reservas y los ingresos de la jornada. El calendario muestra, día por día, las reservas confirmadas de todas sus cocheras, con el conductor y los horarios de ingreso y egreso.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{38}{Inicio con solicitudes pendientes}\hspace{0.06\textwidth}
+\plmockup[0.4]{39}{Calendario de reservas}
+\caption{Gestión diaria del propietario.}
+\label{fig:app_propietario}
+\end{figure}
+
+\paragraph{Publicación de cocheras.} Para publicar una cochera, el propietario indica su ubicación, sube fotos y define si es cubierta o descubierta, qué tipos de vehículo admite, su capacidad, sus horarios de disponibilidad y sus precios, que pueden ser únicos o diferenciados según el tipo de vehículo, tanto por hora como por estadía. También carga las instrucciones privadas de acceso y la documentación de respaldo que un administrador revisa antes de que la cochera aparezca en las búsquedas. Una vez publicada, puede bloquear las fechas en las que la necesita para uso propio.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{10}{Publicación de una cochera}
+\caption{Publicación de una cochera.}
+\label{fig:app_publicacion}
+\end{figure}
+
+\paragraph{Finanzas y liquidaciones.} La sección de finanzas muestra lo generado en los últimos meses, su evolución mensual, la cantidad de reservas, la ocupación promedio y los ingresos de cada cochera, junto con la fecha y el monto de la próxima liquidación. El propietario recibe el 100\% del precio de cada reserva, que la plataforma le transfiere a la cuenta bancaria que registró en su perfil.
+
+\begin{figure}[H]
+\centering
+\plmockup[0.4]{24}{Finanzas del propietario}
+\caption{Finanzas del propietario.}
+\label{fig:app_finanzas}
+\end{figure}
+
+\subsection{Panel de administración (\textit{backoffice})}\label{sec:backoffice}
+
+El panel de administración es una aplicación web de uso exclusivo del personal de ParkLink, diseñada para usarse desde una computadora. Si la aplicación móvil es la cara visible de la plataforma, el panel es su sala de operaciones: Desde allí se resuelve todo lo que no puede ni debe automatizarse, como aprobar una cochera nueva, decidir qué ocurre con un pago cuando el ingreso no se verificó, transferir sus ganancias a los propietarios o responder un reclamo.
+
+Solo pueden ingresar las cuentas de personal, con usuario y contraseña propios e independientes de las cuentas de la aplicación, y con dos niveles de permisos: Administrador y superadministrador. Una barra de navegación lateral reúne todas las secciones e indica con un contador cuáles tienen elementos pendientes de atención. En las capturas que siguen se difuminaron los datos personales y bancarios de los usuarios.
+
+\FloatBarrier
+\subsubsection{Inicio y métricas}
+
+La pantalla de inicio está organizada en torno a la pregunta de qué requiere atención en el momento. Un primer bloque resume las tareas pendientes de cada sección (cocheras nuevas por revisar, reservas sin verificar, tickets de soporte sin responder, denuncias sin resolver, reembolsos pendientes, liquidaciones sin confirmar y propietarios con saldo a cobrar), y cada tarjeta lleva directamente a la sección correspondiente. Debajo, un bloque de métricas muestra, para los últimos 7, 30 o 90 días, la cantidad de reservas pagas, el monto total facturado, el cargo de servicio obtenido por la plataforma y el monto reembolsado, junto con la evolución diaria de las reservas pagas.
+
+\plpanel{02-inicio}{Inicio con tareas pendientes y métricas de la plataforma.}{fig:backoffice_inicio}
+
+\FloatBarrier
+\subsubsection{Reservas y pagos}
+
+La sección de reservas lista todas las reservas de la plataforma, con filtros por estado (esperando al propietario, confirmada, en curso, finalizada, cancelada, esperando pago y expirada), búsqueda por identificador o por patente del vehículo, filtro por rango de fechas y exportación a CSV. El detalle de cada reserva reúne el monto que pagó el conductor y el que le corresponde al propietario, el vehículo, el pago de Mercado Pago asociado, los datos de contacto de ambas partes y, en modo de solo lectura, los mensajes que intercambiaron desde la aplicación, que sirven como evidencia ante un reclamo. Desde allí, el personal puede cancelar la reserva con el reembolso correspondiente.
+
+\plpar[0.69]{03-reservas}{Listado de reservas con filtros}{04-reserva-detalle}{Detalle de una reserva}{Gestión de reservas.}{fig:backoffice_reservas}
+
+El panel cumple además un rol de control sobre el dinero. La sección de \textbf{reservas sin verificar} reúne las reservas pagas que finalizaron sin que el propietario registrara el código de llegada del conductor: En esos casos, el pago al propietario queda retenido hasta que el personal, luego de contactar a las partes, decide reembolsarle el dinero al conductor o liberar el pago al propietario. La sección de \textbf{pagos} lista todos los cobros de Mercado Pago con su reserva asociada y marca los que se cobraron sin que la reserva quedara paga, y la de \textbf{reembolsos pendientes} reúne las devoluciones que la pasarela no pudo completar: Las fallas transitorias se reintentan de forma automática, y el resto se resuelve desde allí, ya sea reintentando la operación o registrando que la devolución se realizó por otro medio.
+
+\plpar[0.85]{11-sin-verificar}{Reservas sin verificar}{17-pagos}{Pagos de Mercado Pago}{Control de reservas sin verificar y de pagos.}{fig:backoffice_pagos}
+
+\FloatBarrier
+\subsubsection{Moderación de cocheras}
+
+Ninguna cochera aparece en las búsquedas sin la revisión previa del personal. La cola de \textbf{cocheras nuevas} muestra cada publicación recién creada con sus datos, su precio y la documentación de respaldo que cargó el propietario. El personal puede aprobarla, con lo que pasa a estar activa y visible para los conductores, o rechazarla indicando el motivo, que el propietario ve en la aplicación. Una vez publicada, cada cochera puede consultarse en detalle, con sus fotos, su descripción, sus precios y su documentación, y suspenderse ante una denuncia o un problema con su publicación: Deja de mostrarse y el propietario recibe el motivo, sin que se cancelen las reservas ya realizadas.
+
+\plpar[0.64]{12-cocheras-nuevas}{Cola de cocheras nuevas}{06-cochera-detalle}{Detalle y moderación de una cochera}{Revisión y moderación de cocheras.}{fig:backoffice_cocheras}
+
+\FloatBarrier
+\subsubsection{Gestión de usuarios}
+
+El buscador de usuarios permite encontrar a cualquier persona por nombre, correo electrónico o documento. Su ficha reúne los datos personales y la verificación del correo y del teléfono, el modo de uso de la cuenta, los datos bancarios a los que se le liquidan sus ganancias y, en pestañas separadas, sus cocheras, las reservas que realizó como conductor y las que recibió como propietario. La ficha advierte, además, sobre comportamientos que afectan la confianza en la plataforma, como las cancelaciones de reservas ya aceptadas por parte de un propietario. Desde allí, la cuenta puede suspenderse o eliminarse a pedido de su titular.
+
+\plpanel[0.85]{08-usuario-detalle}{Ficha de un usuario.}{fig:backoffice_usuario}
+
+\FloatBarrier
+\subsubsection{Liquidaciones a propietarios}
+
+Las ganancias de los propietarios se transfieren desde el panel mediante un flujo de tres pasos. La sección de \textbf{saldos pendientes} lista a los propietarios que tienen dinero a cobrar, con el monto y la antigüedad de la deuda. Al seleccionar uno, el personal ve sus datos de cobro y las reservas incluidas, y \textbf{prepara la liquidación}, que agrupa esas reservas en un único pago. Luego de realizar la transferencia bancaria, adjunta el comprobante y \textbf{confirma el pago}, una acción que no puede deshacerse y que marca la liquidación como pagada. Mientras no se confirme, la liquidación puede cancelarse, y sus reservas vuelven a quedar como saldo pendiente. Las liquidaciones, a confirmar y pagadas, pueden exportarse a CSV para su conciliación contable.
+
+\plpar[0.66]{10-saldo-propietario}{Preparación de una liquidación}{02-liquidacion-comprobante-adjunto}{Confirmación del pago con comprobante}{Liquidación de las ganancias de un propietario.}{fig:backoffice_liquidaciones}
+
+\FloatBarrier
+\subsubsection{Soporte, denuncias y reseñas}
+
+Los tickets que conductores y propietarios abren desde una reserva llegan a la sección de \textbf{soporte}, ordenados de modo que los que esperan respuesta aparecen primero, con el tiempo de espera de cada uno. Cada ticket funciona como una conversación entre el usuario y el personal, junto a los datos de la reserva y de ambas partes, y puede marcarse como resuelto o cerrarse, lo que se le notifica al usuario; si este vuelve a escribir en un ticket resuelto, se reabre automáticamente.
+
+\plpar[0.64]{13-soporte}{Tickets de soporte}{14-soporte-detalle}{Conversación de un ticket}{Atención de soporte.}{fig:backoffice_soporte}
+
+Las \textbf{denuncias} que los usuarios realizan desde la aplicación pueden referirse a otro usuario, a una cochera, a una reserva o a una reseña, y el personal las resuelve o las descarta después de revisar el elemento denunciado. La sección de \textbf{reseñas}, por su parte, permite ocultar las calificaciones ofensivas o falsas, que dejan de mostrarse y de contar para el promedio, lo que protege la confiabilidad del sistema de reputación ilustrado en la Figura~\ref{fig:app_confianza}.
+
+\plpar[0.7]{15-denuncias}{Denuncias de los usuarios}{16-resenas}{Moderación de reseñas}{Denuncias y reseñas.}{fig:backoffice_moderacion}
+
+\FloatBarrier
+\subsubsection{Avisos, auditoría y configuración}
+
+La sección de \textbf{avisos} permite enviar comunicaciones a todos los usuarios o solo a los conductores o a los propietarios, que les llegan como notificación dentro de la aplicación y como notificación \textit{push}. El \textbf{registro de acciones} documenta cada operación realizada desde el panel (quién la hizo, sobre qué elemento, cuándo y con qué motivo), lo que garantiza la trazabilidad de las decisiones que afectan a los usuarios y a su dinero.
+
+\plpar[0.64]{22-avisos}{Envío de avisos}{23-registro-de-acciones}{Registro de acciones}{Avisos a los usuarios y registro de acciones.}{fig:backoffice_avisos}
+
+Por último, los superadministradores gestionan las cuentas del personal, a las que asignan el rol de administrador o de superadministrador, y la \textbf{configuración} de la plataforma, que incluye el porcentaje del cargo de servicio que se aplica a cada reserva. Este valor, fijado en el 8\% según el modelo de negocio descripto en la Sección~\ref{sec:negocio}, puede modificarse sin necesidad de una nueva versión de la aplicación.
+
+\begin{figure}[!htbp]
+\centering
+\fcolorbox{midgray}{white}{\includegraphics[width=\dimexpr0.85\textwidth-2\fboxsep-2\fboxrule\relax]{img/backoffice/21-administradores}}\\[2pt]
+{\scriptsize (a) Cuentas del personal}\\[8pt]
+\fcolorbox{midgray}{white}{\includegraphics[width=\dimexpr0.5\textwidth-2\fboxsep-2\fboxrule\relax]{img/backoffice/24-configuracion}}\\[2pt]
+{\scriptsize (b) Cargo de servicio de la plataforma}
+\caption{Panel de administración: Administradores y configuración.}
+\label{fig:backoffice_config}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Sitio web}
+
+El sitio web del proyecto (\url{https://www.parklink.com.ar}) funciona como carta de presentación de la plataforma. Presenta la propuesta de valor para conductores y propietarios, muestra capturas reales de la aplicación, enumera sus funcionalidades, presenta al equipo y el estado del proyecto, responde las preguntas frecuentes y ofrece un canal de contacto. Además, publica los Términos y Condiciones y la Política de Privacidad que los usuarios aceptan al registrarse, y el procedimiento para solicitar la eliminación de una cuenta.
+
+\begin{figure}[H]
+\centering
+\fcolorbox{midgray}{white}{\includegraphics[width=0.52\textwidth]{img/sitio/web-inicio}}
+\caption{Página de inicio del sitio web de ParkLink.}
+\label{fig:sitio_web}
+\end{figure}
 
 \subsection{Arquitectura de microservicios}\label{sec:microservicios}
 
 El \textit{backend} de ParkLink se construyó sobre una arquitectura de microservicios. Cada dominio funcional del sistema se implementó como un servicio independiente, con su propio repositorio, su propia base de datos y su propio ciclo de despliegue, y con la tecnología más adecuada para su problema. Esta separación permite escalar cada servicio según su carga, aislar las fallas para que un problema en un componente no afecte al resto y modificar una parte del sistema sin intervenir sobre las demás.
 
-Como contrapartida, la división exigió acordar desde el inicio los contratos de comunicación entre servicios: Las rutas expuestas a través de la puerta de enlace, los datos que cada servicio necesita consultar de otro y los eventos que se publican de forma asincrónica. A continuación se describe cada componente, su responsabilidad y las implicaciones que tuvo dentro del proyecto.
+Como contrapartida, la división exigió acordar desde el inicio los contratos de comunicación entre servicios: Las rutas expuestas a través de la puerta de enlace, los datos que cada servicio necesita consultar de otro y los eventos que se publican de forma asincrónica.
+
+La Figura~\ref{fig:arquitectura} presenta la vista de contenedores del sistema, inspirada en el nivel 2 del modelo C4: Los clientes, la puerta de enlace, los microservicios con sus bases de datos, el bus de eventos y los proveedores externos con los que se integra cada servicio. A continuación se describe cada componente, su responsabilidad y las implicaciones que tuvo dentro del proyecto.
+
+\begin{figure}[H]
+\centering
+\shorthandoff{<>}%
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\scriptsize, >=stealth,
+  cli/.style={draw=deepnavy, fill=deepnavy, text=white, rounded corners=3pt, align=center, minimum height=0.95cm, text width=4.6cm},
+  gw/.style={draw=modernteal, fill=modernteal, text=white, rounded corners=3pt, align=center, minimum height=0.85cm, minimum width=15.6cm},
+  svc/.style={draw=deepnavy, fill=white, line width=0.7pt, rounded corners=3pt, align=center, text width=2.62cm, minimum height=2.05cm},
+  bus/.style={draw=modernteal, fill=modernteal!12, rounded corners=3pt, align=center, minimum height=0.6cm, minimum width=15.6cm},
+  ext/.style={draw=midgray, fill=plgray, rounded corners=3pt, align=center, text width=2.62cm, minimum height=0.9cm},
+  sync/.style={<->, draw=deepnavy, line width=0.6pt},
+  async/.style={<->, draw=modernteal, line width=0.6pt, dashed},
+  extl/.style={-, draw=midgray!70!black, line width=0.5pt, dotted}
+]
+\node[cli] (app) at (-3.6,0) {\textbf{Aplicación móvil}\\React Native + Expo\\Conductores y propietarios};
+\node[cli] (adm) at (3.6,0) {\textbf{Panel de administración}\\React Native Web + Expo\\Personal de ParkLink};
+\node[gw] (gw) at (0,-1.6) {\textbf{Puerta de enlace (API Gateway)} --- Python + FastAPI\\Autenticación JWT $\cdot$ Límite de solicitudes $\cdot$ Enrutamiento $\cdot$ WebSocket de notificaciones};
+\draw[sync] (app) -- node[right, font=\tiny]{HTTPS / WSS} (app |- gw.north);
+\draw[sync] (adm) -- node[right, font=\tiny]{HTTPS} (adm |- gw.north);
+\foreach \n/\x/\t in {
+  auth/-6.24/{\textbf{auth-service}\\Python + FastAPI\\[2pt]\textit{PostgreSQL}},
+  park/-3.12/{\textbf{parking-service}\\NestJS + TypeScript\\[2pt]\textit{PostgreSQL + PostGIS}},
+  book/0/{\textbf{booking-service}\\Go\\[2pt]\textit{PostgreSQL}},
+  pay/3.12/{\textbf{payment-service}\\Node.js + Express\\[2pt]\textit{PostgreSQL}},
+  noti/6.24/{\textbf{notifications-}\\[-1pt]\textbf{service}\\Python + FastAPI\\[2pt]\textit{PostgreSQL}}}{
+  \node[svc] (\n) at (\x,-3.75) {\t};
+  \draw[sync] (\n.north |- gw.south) -- (\n.north);
+}
+\node[bus] (bus) at (0,-5.55) {\textbf{RabbitMQ} --- Bus de eventos de dominio (reservas, pagos, notificaciones)};
+\foreach \n in {park,book,pay,noti}{ \draw[async] (\n.south) -- (\n.south |- bus.north); }
+\draw[async] (gw.west) -- ++(-0.35,0) |- (bus.west);
+\foreach \n/\x/\t in {
+  e1/-6.24/{Brevo (correo)\\Twilio (SMS)\\Cloudflare R2},
+  e2/-3.12/{Nominatim\\(geocodificación)\\Cloudflare R2},
+  e3/0/{Cloudflare R2\\(comprobantes)},
+  e4/3.12/{Mercado Pago\\(cobros y\\reembolsos)},
+  e5/6.24/{Firebase Cloud\\Messaging $\cdot$ Brevo}}{
+  \node[ext] (\n) at (\x,-7.05) {\t};
+}
+\foreach \s/\e in {auth/e1,park/e2,book/e3,pay/e4,noti/e5}{
+  \draw[extl] ([xshift=-0.9cm]\s.south) -- ([xshift=-0.9cm]\e.north);
+}
+\node[font=\tiny, anchor=west] at (-7.8,-8.0) {\tikz\draw[sync](0,0)--(0.5,0); HTTP sincrónico \quad \tikz\draw[async](0,0)--(0.5,0); Eventos asincrónicos \quad \tikz\draw[extl](0,0)--(0.5,0); Integración con proveedor externo};
+\end{tikzpicture}}
+\caption{Vista de contenedores de la arquitectura de ParkLink.}
+\label{fig:arquitectura}
+\end{figure}
 
 \subsubsection{Puerta de enlace perimetral (\textit{API Gateway})}
 
@@ -56,6 +335,30 @@ Aplicación web de uso interno, construida con React Native Web y Expo, desde la
 
 \paragraph{Implicaciones de diseño:} Su incorporación hizo necesario un rol de administrador reconocido por la puerta de enlace y por cada servicio, de modo que el personal pudiera operar sobre recursos de terceros sin debilitar los controles de pertenencia que protegen a los usuarios.
 
-\subsection{Nota sobre el Alcance y Restricciones del MVP}
+\subsubsection{Mecanismos de comunicación entre componentes}
 
-Si bien la visión a largo plazo contempla la integración de sensores IoT para la detección automática de ocupación física en tiempo real y componentes de Inteligencia Artificial descriptiva para predicción de demanda, se concluye que dichos elementos representan un riesgo de complejidad elevado para la fase inicial. Por lo tanto, se posponen como evoluciones futuras del sistema, tal como se detalla en la sección de Trabajos Futuros.
+La comunicación dentro del sistema combina tres mecanismos, elegidos según la naturaleza de cada interacción:
+
+\begin{itemize}
+    \item \textbf{HTTP sincrónico a través de la puerta de enlace:} Los clientes nunca se comunican directamente con los microservicios. Cada solicitud llega a la puerta de enlace, que valida el token del usuario, elimina los encabezados internos que un cliente pudiera intentar falsificar y reenvía la petición al servicio correspondiente junto con la identidad verificada y una credencial interna. Los servicios rechazan cualquier solicitud que no traiga esa credencial, de modo que no pueden ser invocados por fuera de la plataforma aunque su dirección quede expuesta.
+    \item \textbf{HTTP sincrónico entre servicios:} Se utiliza cuando un servicio necesita una respuesta inmediata de otro para completar una operación. Por ejemplo, el servicio de reservas consulta al de cocheras los horarios y precios vigentes antes de cotizar y crear una reserva, y el servicio de pagos le comunica al de reservas que un pago fue aprobado para que la reserva pase a esperar la aprobación del propietario.
+    \item \textbf{Eventos asincrónicos sobre RabbitMQ:} Los cambios de estado relevantes (una reserva pendiente de aprobación, confirmada, cancelada o próxima a comenzar, un pago o un reembolso completado) se publican como eventos de dominio en un \textit{exchange} compartido. El servicio de notificaciones los consume para generar los avisos de cada usuario y publica, a su vez, un evento por cada notificación creada, que la puerta de enlace reenvía en tiempo real a la aplicación abierta a través de su conexión WebSocket. Este desacople permite que quien produce un evento no dependa de quién lo consume ni de su disponibilidad en ese momento.
+\end{itemize}
+
+La integración con Mercado Pago agrega un cuarto mecanismo, de tipo \textit{webhook}: La pasarela notifica al servicio de pagos cada cambio en el estado de un cobro, y el servicio verifica la firma de la notificación antes de procesarla. Como la aplicación también consulta el estado del pago mientras el conductor espera, la confirmación de la reserva se diseñó de forma idempotente, de manera que el mismo pago informado por ambas vías nunca se procese dos veces.
+
+\subsection{Atributos de calidad}
+
+El diseño de la plataforma priorizó un conjunto de atributos de calidad que responden a las necesidades de un servicio que maneja datos personales y dinero de sus usuarios:
+
+\begin{itemize}
+    \item \textbf{Seguridad:} Las contraseñas se almacenan mediante una función de derivación de claves, los tokens de acceso duran quince minutos y se renuevan de forma rotativa, y las sesiones pueden revocarse por dispositivo. La puerta de enlace concentra la validación de identidad, limita la cantidad de solicitudes por cliente, agrega encabezados de seguridad HTTP y elimina los encabezados internos que un cliente externo intentara falsificar. Las notificaciones de pago se aceptan solo si su firma es válida, y la aplicación guarda los tokens en el almacenamiento cifrado del dispositivo.
+    \item \textbf{Escalabilidad:} Cada servicio, con su propia base de datos, puede escalarse de forma independiente según su carga, y la comunicación por eventos desacopla a quienes producen la información de quienes la consumen.
+    \item \textbf{Disponibilidad y resiliencia:} Una falla en un componente secundario, como el envío de notificaciones, no impide reservar ni pagar. Los eventos se procesan de forma idempotente, los reembolsos fallidos se reintentan automáticamente, cada servicio expone controles de salud y todos los errores en ejecución se centralizan para su seguimiento.
+    \item \textbf{Trazabilidad y control:} Cada operación administrativa queda registrada con su autor, su fecha y su motivo, y ningún movimiento de dinero que dependa de una decisión humana, como liberar un pago retenido, confirmar una liquidación o resolver un reembolso fallido, se realiza sin pasar por el panel de administración descripto en la Sección~\ref{sec:backoffice}.
+    \item \textbf{Usabilidad y accesibilidad:} Las experiencias del conductor y del propietario se diseñaron por separado, con flujos cortos y la información relevante a la vista. La aplicación ofrece varios idiomas, modo claro y oscuro y distintos tamaños de texto, y las decisiones de diseño se ajustaron a partir de la validación con usuarios presentada en la Sección~\ref{sec:encuesta}.
+\end{itemize}
+
+\subsection{Alcance del MVP}
+
+El Producto Mínimo Viable se centró en resolver de punta a punta la búsqueda, la reserva, el pago y la operación de cocheras con disponibilidad cargada por sus propietarios. Quedaron fuera de su alcance, de manera deliberada, la detección automática de la ocupación física mediante sensores IoT y la predicción de la demanda mediante inteligencia artificial, por representar un riesgo de complejidad elevado para la primera versión del producto. Estas y otras evoluciones se plantean en la Sección~\ref{sec:trabajos_futuros}.
