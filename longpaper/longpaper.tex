@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[spanish, es-nodecimaldot]{babel}
-\usepackage[a4paper,margin=1.7cm,columnsep=0.7cm]{geometry}
+\usepackage[a4paper,left=1.7cm,right=1.7cm,top=30mm,bottom=30mm,columnsep=0.7cm]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -13,17 +13,42 @@
 \usepackage{float}
 \usepackage[table]{xcolor}
 \usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\graphicspath{{../}}
+\pagestyle{fancy}
+\setlength{\headheight}{30pt}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\lhead{\includegraphics[width=2.5cm]{logo}}
+\rhead{\footnotesize \textsc{Long Paper - ParkLink\\ Trabajo Práctico Profesional}}
+\cfoot{\small \textsc{Página \thepage\ de \pageref*{LastPage}}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{1pt}%
+  \renewcommand{\footrulewidth}{1pt}%
+  \lhead{\includegraphics[width=2.5cm]{logo}}%
+  \rhead{\footnotesize \textsc{Long Paper - ParkLink\\ Trabajo Práctico Profesional}}%
+  \cfoot{\small \textsc{Página \thepage\ de \pageref*{LastPage}}}%
+}
 
 \begin{document}
 
 \title{\bfseries ParkLink: una plataforma basada en microservicios para la reserva de estacionamiento urbano y el uso colaborativo de espacios}
 
-\author{
-  Thiago Fernando Baez \and
-  Santiago Domínguez \and
-  Facundo Luzzi \and
-  Santiago Jorge Varga\\
-  \small Facultad de Ingeniería, Universidad de Buenos Aires (UBA), Buenos Aires, Argentina\\
+\author{%
+  \renewcommand{\arraystretch}{1.4}%
+  \setlength{\tabcolsep}{1.2em}%
+  \begin{tabular}[t]{|c|c|}
+    \hline
+    Thiago Fernando Baez & Santiago Domínguez \\
+    \hline
+    Facundo Luzzi & Santiago Jorge Varga \\
+    \hline
+  \end{tabular}\\
+  \small \rule{0pt}{2.2em}Facultad de Ingeniería, Universidad de Buenos Aires (UBA)\\
+  \small Buenos Aires, Argentina\\[0.3em]
   \small \texttt{\{tbaez, sdominguez, fluzzi, svarga\}@fi.uba.ar}
 }
 
