@@ -1,4 +1,4 @@
-.PHONY: pdf watch clean
+.PHONY: pdf watch clean ficha
 
 # LaTeX corre dentro de la imagen oficial de TeX Live (no hace falta instalarlo).
 TEX := docker run --rm -it -u $(shell id -u):$(shell id -g) -e HOME=/tmp \
@@ -7,6 +7,10 @@ TEX := docker run --rm -it -u $(shell id -u):$(shell id -g) -e HOME=/tmp \
 # Compila una sola vez.
 pdf:
 	$(TEX) latexmk -pdf -interaction=nonstopmode main.tex
+
+# Compila la ficha ejecutiva (ficha/ficha_ejecutiva.pdf).
+ficha:
+	$(TEX) latexmk -pdf -interaction=nonstopmode -cd ficha/ficha_ejecutiva.tex
 
 # Abre el PDF y recompila automáticamente cada vez que guardás un .tex/.cls/.bib/imagen.
 # Evince recarga el PDF solo. Cortalo con Ctrl+C.

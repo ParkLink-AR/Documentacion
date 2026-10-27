@@ -1,0 +1,212 @@
+% Ficha Ejecutiva de ParkLink. Respeta el formato del "Modelo para completar" de la
+% Plantilla para la Ficha ejecutiva final v2026: Carta, márgenes de 1", Arial 11 pt,
+% interlineado 1,15. No reducir márgenes, cuerpo ni interlineado (lo exige la plantilla).
+\documentclass[11pt,letterpaper]{article}
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[letterpaper, margin=1in]{geometry}
+\linespread{1.07}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[labelsep=period, font=normalsize, labelfont=normalfont, skip=4pt]{caption}
+\usepackage{float}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+
+% =====================================================================
+% Enlace a la demo: Pegar la URL entre las llaves y recompilar.
+% =====================================================================
+\newcommand{\demourl}{https://youtu.be/Ur2tQOZUaPo}
+
+% Colores de la plantilla
+\definecolor{tplblue}{HTML}{D9E2F3}
+\definecolor{tpltext}{HTML}{1F3864}
+\definecolor{tplgray}{HTML}{666666}
+% Paleta ParkLink (solo para la figura)
+\definecolor{deepnavy}{HTML}{042347}
+\definecolor{modernteal}{HTML}{168B8D}
+\definecolor{plgray}{HTML}{F5F5F5}
+\definecolor{midgray}{HTML}{CCCCCC}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5ex}
+\setlength{\arrayrulewidth}{0.6pt}
+\setlength{\tabcolsep}{5pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\small\color{tplgray}\thepage\ de \pageref{LastPage}}
+
+\newcommand{\fsection}[1]{\par\Needspace{8\baselineskip}\vspace{1.4ex}{\large\bfseries #1}\par\vspace{0.6ex}}
+\newcommand{\thead}[1]{\cellcolor{tplblue}\color{tpltext}\bfseries #1}
+\newcommand{\tlabel}[1]{\cellcolor{tplblue}\bfseries #1}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+
+{\LARGE\bfseries Ficha Ejecutiva del proyecto}\par\vspace{1.5ex}
+\begin{center}
+{\itshape\color{tplgray} Trabajo Profesional de Ingeniería en Informática $\cdot$ Kit de lectura del jurado}
+\end{center}
+\vspace{-1ex}
+
+% =====================================================================
+% Bloque de identificación
+% =====================================================================
+{\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{|L{4.6cm}|Y|}
+\hline
+\tlabel{Título del proyecto} & ParkLink: Sistema Integral de Mapeo, Gestión y Reserva de Cocheras Urbanas \\ \hline
+\tlabel{Modalidad} & Cursada \\ \hline
+\tlabel{Integrantes del equipo} & Baez, Thiago Fernando -- 110703\newline Domínguez, Santiago -- 110010\newline Luzzi, Facundo -- 105229\newline Varga, Santiago Jorge -- 110561 \\ \hline
+\tlabel{Director / co-Director} & Director: Mg. Ing. Piñeiro, Gabriel\newline Co-Director: Ing. Perrotta, Agustín \\ \hline
+\tlabel{Orientador en el campo de desempeño} & Botbol, Miguel -- Parking Work S.R.L. \\ \hline
+\tlabel{Informe Final al que corresponde} & Versión 1.0 del 27/10/2026. Las remisiones a secciones y páginas de la Sección 2 se entienden sobre esta versión. \\ \hline
+\tlabel{Fecha de esta Ficha} & 27/10/2026 \\ \hline
+\end{tabularx}}
+
+
+% =====================================================================
+% 1. Abstract gráfico
+% =====================================================================
+\fsection{1. Abstract gráfico}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize, >=Stealth,
+  actor/.style={draw=modernteal, fill=white, line width=0.7pt, rounded corners=7pt, align=center, text width=3.2cm, inner sep=2pt, text=deepnavy},
+  cli/.style={draw=deepnavy, fill=deepnavy, text=white, rounded corners=3pt, align=center, text width=4.5cm, inner sep=2.5pt},
+  gw/.style={draw=modernteal, fill=modernteal, text=white, rounded corners=3pt, align=center, minimum width=15.4cm, inner sep=2.5pt},
+  svc/.style={draw=deepnavy, fill=white, line width=0.7pt, rounded corners=3pt, align=center, text width=2.8cm, minimum height=1.75cm, inner sep=1.5pt},
+  bus/.style={draw=modernteal, fill=modernteal!12, rounded corners=3pt, align=center, minimum width=15.4cm, inner sep=2.5pt},
+  ext/.style={draw=midgray, fill=plgray, rounded corners=3pt, align=center, text width=2.8cm, minimum height=0.7cm, inner sep=1.5pt},
+  sync/.style={<->, draw=deepnavy, line width=0.6pt},
+  async/.style={<->, draw=modernteal, line width=0.6pt, dashed},
+  use/.style={->, draw=modernteal, line width=0.6pt},
+  extl/.style={-, draw=midgray!70!black, line width=0.5pt, dotted}
+]
+% Usuarios
+\node[actor] (con) at (-5.5,1.45) {\textbf{Conductor}\\Busca, reserva y paga};
+\node[actor] (pro) at (-1.95,1.45) {\textbf{Propietario}\\Publica, aprueba y cobra};
+\node[actor] (stf) at (2.4,1.45) {\textbf{Personal de ParkLink}\\Modera, liquida y asiste};
+\node[actor, text width=2.6cm] (pub) at (6.1,1.45) {\textbf{Público general}\\Conoce el producto};
+% Clientes
+\node[cli] (app) at (-3.7,0) {\textbf{Aplicación móvil} (Android e iOS)\\React Native + Expo\\Modo conductor $\cdot$ Modo propietario};
+\node[cli, text width=3.4cm] (adm) at (2.4,0) {\textbf{Panel de administración}\\React Native Web + Expo\\Uso interno};
+\node[draw=deepnavy, fill=plgray, rounded corners=3pt, align=center, text width=2.4cm, inner sep=2.5pt, text=deepnavy] (web) at (6.1,0) {\textbf{Sitio web}\\Términos y Política\\de Privacidad};
+\draw[use] (con) -- (con |- app.north);
+\draw[use] (pro) -- (pro |- app.north);
+\draw[use] (stf) -- (adm);
+\draw[use] (pub) -- (web);
+% Puerta de enlace
+\node[gw] (gw) at (0,-1.35) {\textbf{Puerta de enlace (API Gateway)} --- Python + FastAPI\\Autenticación JWT $\cdot$ Límite de solicitudes $\cdot$ Enrutamiento $\cdot$ WebSocket de notificaciones};
+\draw[sync] (app) -- node[right]{HTTPS / WSS} (app |- gw.north);
+\draw[sync] (adm) -- node[right]{HTTPS} (adm |- gw.north);
+% Microservicios
+\foreach \n/\x/\t in {
+  auth/-6.2/{\textbf{auth-service}\\Identidad y\\cuentas de usuario\\[1pt]\textit{Python $\cdot$ PostgreSQL}},
+  park/-3.1/{\textbf{parking-service}\\Publicación y\\búsqueda geográfica\\[1pt]\textit{NestJS $\cdot$ PostGIS}},
+  book/0/{\textbf{booking-service}\\Reservas, códigos\\y liquidaciones\\[1pt]\textit{Go $\cdot$ PostgreSQL}},
+  pay/3.1/{\textbf{payment-service}\\Cobros y\\reembolsos\\[1pt]\textit{Node.js $\cdot$ PostgreSQL}},
+  noti/6.2/{\textbf{notifications-service}\\Avisos \textit{push}\\y en tiempo real\\[1pt]\textit{Python $\cdot$ PostgreSQL}}}{
+  \node[svc] (\n) at (\x,-3.1) {\t};
+  \draw[sync] (\n.north |- gw.south) -- (\n.north);
+}
+% Bus de eventos
+\node[bus] (bus) at (0,-4.6) {\textbf{RabbitMQ} --- Bus de eventos de dominio (reservas, pagos, notificaciones)};
+\foreach \n in {park,book,pay,noti}{ \draw[async] (\n.south) -- (\n.south |- bus.north); }
+\draw[async] (gw.west) -- ++(-0.12,0) |- (bus.west);
+% Proveedores externos
+\foreach \n/\x/\t in {
+  e1/-6.2/{Brevo (correo)\\Twilio (SMS)},
+  e2/-3.1/{Nominatim\\Cloudflare R2},
+  e3/0/{Cloudflare R2\\(comprobantes)},
+  e4/3.1/{Mercado Pago},
+  e5/6.2/{Firebase Cloud\\Messaging}}{
+  \node[ext] (\n) at (\x,-5.75) {\t};
+}
+\foreach \s/\e in {auth/e1,park/e2,book/e3,pay/e4,noti/e5}{
+  \draw[extl] ([xshift=-0.95cm]\s.south) -- ([xshift=-0.95cm]\e.north);
+}
+\node at (0,-6.45) {\tikz\draw[use](0,0)--(0.5,0); Uso \quad \tikz\draw[sync](0,0)--(0.5,0); HTTP sincrónico \quad \tikz\draw[async](0,0)--(0.5,0); Eventos asincrónicos \quad \tikz\draw[extl](0,0)--(0.5,0); Proveedor externo};
+\end{tikzpicture}
+\caption{Arquitectura de ParkLink (vista de contenedores, nivel 2 del modelo C4). Los clientes acceden a los microservicios, cada uno con base de datos propia, solo a través de la puerta de enlace.}
+\label{fig:abstract}
+\end{figure}
+
+% =====================================================================
+% 2. Matriz de Contribuciones y Resultados
+% =====================================================================
+\fsection{2. Matriz de Contribuciones y Resultados}
+
+{\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\linewidth}{|L{3.45cm}|Y|Y|L{2.9cm}|}
+\hline
+\thead{Problema / Necesidad identificada} & \thead{Solución de ingeniería implementada} & \thead{Validación / Métrica obtenida} & \thead{Responsable(s)} \\ \hline
+\endhead
+El conductor no puede asegurarse un lugar antes de salir; cada búsqueda cuesta unos 15 min y \$5.612 ARS (§9.3). &
+Motor de reservas en Go que calcula la disponibilidad real, retiene el lugar durante el pago e impide la sobre-reserva. &
+72 de 128 archivos de prueba cubren disponibilidad y concurrencia (§14.2, p.~57); reservar antes de salir fue lo más valorado (§14.4, p.~58). &
+F. Luzzi \\ \hline
+La oferta es invisible: Las cocheras se descubren de a una, sin comparar precio ni cercanía (§9.2). &
+Publicación de cocheras y búsqueda por proximidad con PostgreSQL + PostGIS e índices espaciales. &
+Precio y cercanía, principales motivos de uso; el 70\,\% de 180 encuestados la usaría con regularidad (§14.4, p.~58). Un operador de unas 70 cocheras ratificó su valor (§14.5, p.~59). &
+S. J. Varga;\newline S. Domínguez (geolocalización) \\ \hline
+Pagarle a un desconocido genera desconfianza y riesgo de cobros perdidos o duplicados. &
+Servicio de pagos sobre Mercado Pago con firma HMAC, confirmación idempotente y reembolsos con reintentos. &
+Pruebas automatizadas de firmas y reembolsos (§14.2, p.~57); pagos verificados en el entorno de pruebas de Mercado Pago (§14.3, p.~58). &
+S. Domínguez \\ \hline
+Un mercado entre desconocidos exige identidades verificadas y control de publicaciones falsas. &
+Puerta de enlace con JWT rotativos, verificación de correo y teléfono, y panel de administración con moderación y auditoría. &
+Pruebas de tokens y de encabezados falsificados (§14.2, p.~57); mitiga la fricción de cocheras fraudulentas (§16.3, p.~67). &
+T. F. Baez \\ \hline
+Conductor y propietario necesitan enterarse a tiempo de cada cambio en la reserva. &
+Eventos sobre RabbitMQ con avisos \textit{push} (Firebase) y en tiempo real (WebSocket), sin duplicados. &
+Pruebas de eventos duplicados y malformados (§14.2, p.~57); \textit{push} verificado en Android e iOS reales (§14.3, p.~58). &
+F. Luzzi \\ \hline
+\end{xltabular}}
+
+% =====================================================================
+% 3. Perfil bibliométrico
+% =====================================================================
+\fsection{3. Perfil bibliométrico}
+
+{\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\linewidth}{|L{3.3cm}|Y|L{4.9cm}|}
+\hline
+\thead{Indicador} & \thead{Valor reportado} & \thead{Referencia orientativa} \\ \hline
+\endhead
+\textbf{Volumen de referencias} & 54 referencias citadas en el Informe Final. & Adecuado al alcance del proyecto. Mínimo sugerido: 20--30. \\ \hline
+\textbf{Índice de actualidad} & 77,8\,\% (42 de 54) entre 2021 y 2026; en fuentes web se toma el año de consulta. Las 12 restantes son teoría de base (parada óptima y Shoup), leyes vigentes y una guía de 2016. & Deseable superior al 60\,\% en los últimos 5 años, salvo fundamentos teóricos o matemáticos de base. \\ \hline
+\textbf{Calidad y tipología de fuentes} & 14,8\,\% académicas (5 artículos en revistas, 2 libros y 1 apunte), 44,4\,\% documentación técnica oficial, 13,0\,\% prensa y datos de mercado, 11,1\,\% competidores, 7,4\,\% normativa, 5,6\,\% cátedra y 3,7\,\% diseño. Predomina la documentación oficial por tratarse de un desarrollo de producto. & Priorizar revistas indexadas y conferencias (IEEE, Springer, ACM), estándares, patentes y documentación técnica oficial. \\ \hline
+\textbf{Referencias semilla (core)} & Según la numeración del Informe Final:\newline [9] MacQueen y Miller (1960)\newline [10] Ferguson, \textit{Optimal Stopping}, cap.~2.5\newline [44] Shoup (2006)\newline [28] PostGIS\newline [32] Mercado Pago Developers & Fuentes de jerarquía y relevancia directa para la metodología o la tecnología elegida. \\ \hline
+\end{xltabular}}
+
+% =====================================================================
+% 4. Pitch
+% =====================================================================
+\fsection{4. Pitch}
+
+{\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.72\linewidth}{|L{4.6cm}|Y|}
+\hline
+\thead{Descripción} & \thead{URL} \\ \hline
+Video demostrativo del prototipo en funcionamiento (5 minutos, YouTube). &
+\ifx\demourl\empty {\color{red}[Completar enlace]}\else \href{\demourl}{\nolinkurl{\demourl}}\fi \\ \hline
+\end{tabularx}}
+
+\end{document}
