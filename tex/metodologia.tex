@@ -4,7 +4,7 @@ La gestión del ciclo de vida del proyecto se basó en un enfoque ágil híbrido
 
 \subsection{División del sistema en microservicios}\label{sec:division_microservicios}
 
-Como se detalla en la Sección~\ref{sec:microservicios}, el sistema se dividió en servicios independientes, cada uno con su propio repositorio y su propia base de datos. Esta división se trasladó también a la organización del equipo: Cada componente tuvo un responsable principal, lo que permitió avanzar en paralelo sobre distintas partes del sistema a partir de contratos de comunicación acordados de antemano. La Tabla~\ref{tab:microservicios} resume la tecnología de cada componente y el integrante que tuvo a cargo su desarrollo principal.
+Como se detalla en la Sección~\ref{sec:microservicios}, el sistema se dividió en servicios independientes, cada uno con su propio repositorio y su propia base de datos. Esta división se trasladó también a la organización del equipo: Cada componente tuvo un responsable principal, lo que permitió avanzar en paralelo sobre distintas partes del sistema a partir de contratos de comunicación acordados de antemano. La Tabla~\ref{tab:microservicios} resume la tecnología de cada componente y los integrantes que participaron en su desarrollo, encabezados por su responsable principal. La participación de cada uno en el código puede verificarse en el historial de cada repositorio (\hyperref[anexo:repositorios]{Anexo 4}).
 
 \begin{table}[H]
 \centering
@@ -14,14 +14,15 @@ Como se detalla en la Sección~\ref{sec:microservicios}, el sistema se dividió 
 \toprule
 \textbf{Componente} & \textbf{Tecnología} & \textbf{Responsabilidad principal} & \textbf{Responsable} \\
 \midrule
-\textit{gateway} & Python, FastAPI & Punto de entrada, autenticación perimetral y tiempo real & Thiago Baez, Facundo Luzzi, Santiago Varga \\
+\textit{gateway} & Python, FastAPI & Punto de entrada, autenticación perimetral y tiempo real & Thiago Baez, Facundo Luzzi \\
 \textit{auth-service} & Python, FastAPI & Identidad, registro, sesiones y perfil de usuarios & Thiago Baez \\
-\textit{parking-service} & TypeScript, NestJS, PostGIS & Publicación, geolocalización y gestión de cocheras & Santiago Varga \\
-\textit{booking-service} & Go & Disponibilidad, reservas, liquidaciones y soporte & Facundo Luzzi \\
-\textit{payment-service} & Node.js, Express & Cobros, confirmación y reembolsos con Mercado Pago & Santiago Domínguez \\
+\textit{parking-service} & TypeScript, NestJS, PostGIS & Publicación, geolocalización y gestión de cocheras & Santiago Varga, Thiago Baez, Facundo Luzzi \\
+\textit{booking-service} & Go & Disponibilidad, reservas, liquidaciones y soporte & Facundo Luzzi, Thiago Baez \\
+\textit{payment-service} & Node.js, Express & Cobros, confirmación y reembolsos con Mercado Pago & Thiago Baez, Santiago Domínguez \\
 \textit{notifications-service} & Python, FastAPI, RabbitMQ & Bandeja, notificaciones \textit{push} y en tiempo real & Facundo Luzzi \\
 \textit{mobile} & React Native, Expo & Aplicación para conductores y propietarios & Thiago Baez, Facundo Luzzi \\
 \textit{admin-web} & React Native Web, Expo & Panel de administración interno & Thiago Baez \\
+\textit{landing-webpage} & HTML, CSS, JavaScript & Sitio web público y documentación legal de la plataforma & Thiago Baez \\
 \bottomrule
 \end{tabularx}
 \caption{Componentes del sistema, tecnología y responsable principal.}
@@ -48,13 +49,13 @@ Con el MVP integrado, la tercera fase se orientó a preparar la plataforma para 
 
 \subsection{Distribución de Roles por Integrante}\label{sec:roles}
 
-Si bien los cuatro integrantes participaron de manera transversal en todas las fases del proyecto, cada uno asumió la responsabilidad principal sobre un conjunto de componentes y áreas. Esta asignación permitió que cada parte del sistema tuviera un referente encargado de su diseño, su calidad y su integración con el resto.
+Si bien los cuatro integrantes participaron de manera transversal en todas las fases del proyecto, cada uno asumió un conjunto de componentes y áreas, según se detalla a continuación.
 
 \begin{itemize}
-    \item \textbf{Thiago Fernando Baez:} Se encargó del desarrollo de \textit{frontend} y del diseño de la experiencia y la interfaz de usuario (UX/UI). Tuvo a su cargo la gestión de usuarios, el panel de administración (\textit{backoffice}) utilizado por el personal de la plataforma y la integración de los servicios a través de la puerta de enlace (\textit{API gateway}).
-    \item \textbf{Santiago Domínguez:} Fue responsable del aseguramiento de la calidad (QA) del sistema y de la integración del sistema de pagos con Mercado Pago, incluyendo la confirmación de transacciones y los reembolsos. Colaboró además en la documentación del proyecto y en el sistema de geolocalización de cocheras.
-    \item \textbf{Facundo Luzzi:} Se encargó del sistema de reservas, núcleo transaccional de la plataforma, y del sistema de notificaciones. Tuvo a su cargo la aplicación móvil para conductores y propietarios, además de la integración general entre los distintos componentes y el desarrollo orientado a garantizar la compatibilidad de la aplicación en dispositivos móviles.
-    \item \textbf{Santiago Jorge Varga:} Fue responsable de la documentación del proyecto, del entendimiento del negocio y del contacto con actores externos. En el plano técnico, tuvo a su cargo la creación, geolocalización y gestión de cocheras, y fue el encargado de la imagen de la marca. Participó además en las tareas de aseguramiento de la calidad (QA) del sistema.
+    \item \textbf{Thiago Fernando Baez:} Responsable de los clientes de la plataforma (aplicación móvil, panel de administración y sitio web), de la identidad de los usuarios (\textit{auth-service}), de la puerta de enlace (\textit{gateway}) y de la infraestructura de despliegue e integración continua. Participó en el motor de reservas, donde desarrolló las reseñas, las cancelaciones y las liquidaciones, fue corresponsable del servicio de pagos y responsable del diseño UX/UI y de la identidad visual de la marca.
+    \item \textbf{Santiago Domínguez:} Responsable de la integración con la pasarela de pagos (\textit{payment-service}) y de la prueba de punta a punta del sistema (QA). Corresponsable de la documentación del proyecto.
+    \item \textbf{Facundo Luzzi:} Responsable del motor de disponibilidad y reservas (\textit{booking-service}), donde desarrolló la verificación presencial del ingreso y del egreso, las deudas, la mensajería y el soporte, y del servicio de notificaciones (\textit{notifications-service}). Corresponsable de la aplicación móvil.
+    \item \textbf{Santiago Jorge Varga:} Responsable del servicio de cocheras (\textit{parking-service}), del análisis de viabilidad y del modelo de negocio, y del contacto con actores externos. Corresponsable de la documentación del proyecto.
 \end{itemize}
 
 Por su parte, los directores del Trabajo Profesional, el Mg. Ing. Gabriel Piñeiro y el Ing. Agustín Perrotta, acompañaron al equipo como facilitadores durante todo el proyecto: Validaron los incrementos presentados, aportaron correcciones y orientaron las decisiones técnicas y de negocio en las reuniones periódicas de seguimiento.
