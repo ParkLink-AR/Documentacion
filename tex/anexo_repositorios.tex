@@ -1,0 +1,28 @@
+\newpage
+\section{Anexo 4: Repositorios del Proyecto}\label{anexo:repositorios}
+
+El código fuente de ParkLink está alojado en la organización \href{https://github.com/ParkLink-AR}{\textbf{ParkLink-AR}} de GitHub, con un repositorio independiente por cada servicio y aplicación. El repositorio \texttt{root} los agrupa como submódulos de Git y contiene la configuración para levantar el sistema completo. La Tabla~\ref{tab:repositorios} reúne los enlaces a cada uno de ellos.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}l X l@{}}
+\toprule
+\textbf{Repositorio} & \textbf{Contenido} & \textbf{Enlace} \\
+\midrule
+\texttt{root} & Repositorio raíz: agrupa los servicios como submódulos y define el entorno de ejecución completo. & \href{https://github.com/ParkLink-AR/root}{ParkLink-AR/root} \\
+\texttt{mobile} & Aplicación móvil multiplataforma para conductores y propietarios. & \href{https://github.com/ParkLink-AR/mobile}{ParkLink-AR/mobile} \\
+\texttt{admin-web} & Panel web de administración y moderación (\textit{backoffice}). & \href{https://github.com/ParkLink-AR/admin-web}{ParkLink-AR/admin-web} \\
+\texttt{landing-webpage} & Sitio web del proyecto, con los Términos y Condiciones, la Política de Privacidad y las preguntas frecuentes. & \href{https://github.com/ParkLink-AR/landing-webpage}{ParkLink-AR/landing-webpage} \\
+\texttt{gateway} & Puerta de enlace perimetral (\textit{API Gateway}). & \href{https://github.com/ParkLink-AR/gateway}{ParkLink-AR/gateway} \\
+\texttt{auth-service} & Autenticación y gestión de usuarios: registro, inicio y cierre de sesión con JWT, roles y recuperación de contraseña. & \href{https://github.com/ParkLink-AR/auth-service}{ParkLink-AR/auth-service} \\
+\texttt{parking-service} & Gestión de cocheras y búsqueda por cercanía y filtros de geolocalización. & \href{https://github.com/ParkLink-AR/parking-service}{ParkLink-AR/parking-service} \\
+\texttt{booking-service} & Reservas, gestión de franjas horarias y reseñas entre conductor y propietario. & \href{https://github.com/ParkLink-AR/booking-service}{ParkLink-AR/booking-service} \\
+\texttt{payment-service} & Integración con la pasarela de pagos. & \href{https://github.com/ParkLink-AR/payment-service}{ParkLink-AR/payment-service} \\
+\texttt{notifications-service} & Envío de notificaciones \textit{push} a partir de los eventos publicados por el resto de los servicios. & \href{https://github.com/ParkLink-AR/notifications-service}{ParkLink-AR/notifications-service} \\
+\texttt{Documentacion} & Fuentes de este informe. & \href{https://github.com/ParkLink-AR/Documentacion}{ParkLink-AR/Documentacion} \\
+\bottomrule
+\end{tabularx}
+\caption{Repositorios de la organización ParkLink-AR en GitHub.}
+\label{tab:repositorios}
+\end{table}
