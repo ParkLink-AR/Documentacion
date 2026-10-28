@@ -162,7 +162,7 @@ El \textit{backend} se construyó sobre una arquitectura de microservicios en la
 \begin{itemize}
     \item \textbf{Puerta de enlace} (Python, FastAPI): Único punto de entrada para los clientes. Valida el token de acceso, elimina los encabezados internos que un cliente intente falsificar y reenvía la solicitud con la identidad verificada y una credencial interna que los servicios exigen. Centraliza la limitación de solicitudes, los encabezados de seguridad HTTP y la conexión WebSocket de notificaciones.
     \item \textbf{Autenticación} (Python, FastAPI): Registro con verificación previa del correo y del teléfono mediante códigos de seis dígitos, sesiones por dispositivo, recuperación de contraseña, perfil, vehículos y datos bancarios para las liquidaciones.
-    \item \textbf{Cocheras} (TypeScript, NestJS, PostGIS): Ubicación, fotos, precios por hora y por estadía, horarios semanales, fechas bloqueadas, capacidad, documentación y estado de moderación. Resuelve la búsqueda por proximidad con índices espaciales y la geocodificación de direcciones.
+    \item \textbf{Cocheras} (TypeScript, NestJS, PostGIS~\cite{postgis}): Ubicación, fotos, precios por hora y por estadía, horarios semanales, fechas bloqueadas, capacidad, documentación y estado de moderación. Resuelve la búsqueda por proximidad con índices espaciales y la geocodificación de direcciones.
     \item \textbf{Reservas} (Go): Núcleo transaccional. Calcula la disponibilidad, crea reservas por hora y por estadía, y gestiona la aprobación del propietario, los códigos de ingreso y egreso, las extensiones, cancelaciones, reseñas, mensajes, tickets de soporte y liquidaciones.
     \item \textbf{Pagos} (Node.js, Express): Integración con Mercado Pago~\cite{mercadopago}, confirmación de cobros y reembolsos.
     \item \textbf{Notificaciones} (Python, FastAPI): Consume eventos de dominio, registra la bandeja de cada usuario y envía notificaciones \textit{push} mediante Firebase Cloud Messaging~\cite{firebase}.
@@ -449,6 +449,9 @@ SpotHero, ``SpotHero: Find and reserve parking online,'' 2026. [En línea]. Disp
 
 \bibitem{easypark}
 EasyPark Group, ``EasyPark: Smart parking solutions,'' 2026. [En línea]. Disponible: \url{https://easyparkgroup.com}
+
+\bibitem{postgis}
+PostGIS Project, ``PostGIS: Spatial and geographic objects for PostgreSQL,'' 2026. [En línea]. Disponible: \url{https://postgis.net}
 
 \bibitem{mercadopago}
 Mercado Pago, ``Mercado Pago Developers: Documentación oficial,'' 2026. [En línea]. Disponible: \url{https://www.mercadopago.com.ar/developers}
