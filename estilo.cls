@@ -25,6 +25,7 @@
 \RequirePackage{tikz}
 
 \RequirePackage{xfp}
+\RequirePackage{pdfpages}
 
 % Función para poner los asteriscos
 \newcommand{\andreas}[5][1.0]{
