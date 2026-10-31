@@ -1,10 +1,22 @@
 \section{Trabajos futuros}\label{sec:trabajos_futuros}
 
-Como proyección de mediano y largo plazo para ParkLink, se identifican líneas de evolución estratégica orientadas a la incorporación de tecnologías de hardware inteligente, el desarrollo de alianzas con grandes operadores del sector comercial y la expansión geográfica hacia mercados internacionales de alta densidad vehicular.
+Como proyección de mediano y largo plazo para ParkLink, se identifican líneas de evolución estratégica orientadas a la incorporación de un seguro por reserva que refuerce el modelo de negocio, la adopción de tecnologías de hardware inteligente, el desarrollo de alianzas con grandes operadores del sector comercial y la expansión geográfica hacia mercados internacionales de alta densidad vehicular.
+
+\subsection{Seguro por Reserva como Propuesta de Valor y Barrera a la Desintermediación}
+
+Una vez que un conductor y un propietario se conocen a través de ParkLink, nada les impide acordar las siguientes estadías de forma directa y evitar el cargo de servicio del 8\%. Este riesgo de desintermediación es común a todos los \textit{marketplaces} de servicios recurrentes y afecta directamente la sostenibilidad del modelo de ingresos descripto en la Sección~\ref{sec:plan_economico}. Para mitigarlo, se proyecta incorporar un seguro asociado a cada reserva, de modo que el cargo de servicio deje de percibirse como un sobreprecio y pase a representar una protección concreta para el conductor:
+
+\begin{itemize}
+    \item \textbf{Cobertura del vehículo durante la estadía:} Cada reserva concretada en la plataforma incluiría automáticamente una póliza que cubra daños al vehículo mientras permanece en la cochera durante la franja reservada. La póliza se emitiría al confirmarse el pago y caducaría al finalizar la reserva, sin trámites adicionales para el conductor ni para el propietario.
+    \item \textbf{Incentivo a operar dentro de la plataforma:} El seguro solo existe si la reserva se realiza a través de ParkLink. Si el conductor arregla por fuera con el propietario, ahorra el cargo de servicio pero queda sin cobertura ante cualquier siniestro. De este modo, el valor percibido de la plataforma no se agota en el primer contacto entre las partes, sino que se renueva en cada reserva.
+    \item \textbf{Respaldo para el propietario:} La cobertura también reduce la exposición del propietario frente a reclamos por daños ocurridos en su espacio, lo que refuerza su incentivo a mantener las operaciones dentro de la plataforma y a publicar su cochera con mayor confianza.
+    \item \textbf{Integración con aseguradoras de modalidad por uso:} Para su implementación se evaluarán alianzas con aseguradoras o \textit{insurtechs} que ya comercializan pólizas de corta duración con emisión digital instantánea. Un referente local es MeCubro \autocite{mecubro}, que ofrece seguros contratables por día o por el período exacto que se necesite, 100\% en línea, prepagos y sin renovaciones automáticas. Este esquema se adapta a la naturaleza de las reservas de ParkLink, cuya duración va de unas pocas horas a un mes. La integración se resolvería mediante un nuevo microservicio que solicite la emisión de la póliza a la aseguradora al confirmarse cada reserva y que canalice la denuncia de siniestros desde la aplicación.
+    \item \textbf{Impacto en el modelo económico:} El costo de la prima se cubriría con una parte del cargo de servicio; su valor por reserva y su efecto sobre el margen de la plataforma se definirán en la negociación con la aseguradora elegida. Si la prima resultara elevada para las estadías cortas, se evaluará ajustar el porcentaje del cargo de servicio o negociar una póliza colectiva que cubra todas las reservas de la plataforma.
+\end{itemize}
 
 \subsection{Integración con Sistemas Complejos de Detección mediante IoT y Cámaras con Inteligencia Artificial}
 
-La primera línea técnica de trabajo comprende la transición desde un modelo de disponibilidad basado en reservas de franjas horarias declaradas hacia un ecosistema automatizado de sensado en tiempo real:
+La siguiente línea de trabajo, de carácter técnico, comprende la transición desde un modelo de disponibilidad basado en reservas de franjas horarias declaradas hacia un ecosistema automatizado de sensado en tiempo real:
 
 \begin{itemize}
     \item \textbf{Cámaras de Visión Computacional con Inteligencia Artificial:} Despliegue de modelos de aprendizaje profundo (\textit{Deep Learning}) para la detección y segmentación de vehículos en plazas de estacionamiento a partir de transmisiones de video. Estos sistemas permiten monitorear de forma continua el estado de ocupación de múltiples cocheras en simultáneo sin necesidad de intervención humana.

@@ -73,12 +73,13 @@
 %	HEADERS, FOOTERS EN SECCIONES
 %------------------------------------------------------------------------------
 \pagestyle{fancy}
-\setlength{\headheight}{27pt}
+\setlength{\headheight}{28pt}
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
 \rhead{\footnotesize \textsc {Informe Final ParkLink\\ Trabajo Práctico Profesional}} % Trabajo práctico
-\lhead{\includegraphics[width=2.5cm]{logo}}
+% Se recorta el margen transparente del PNG para que el logo apoye sobre la línea
+\lhead{\includegraphics[width=3cm, trim=50 40 59 47, clip]{fiuba-logo.png}}
 \cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
 
 \fancypagestyle{firststyle}
